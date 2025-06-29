@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phiếu Kiểm Tra Xe - PHILONGAUTO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* CSS chung cho toàn bộ trang */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+            color: #1e293b;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Các biến CSS tùy chỉnh cho màu sắc */
+        :root {
+            --gjs-t-color-primary: #cf549e;
+            --gjs-t-color-secondary: #b9227d;
+            --gjs-t-color-accent: #ffb347;
+            --gjs-t-color-success: #28a745;
+            --gjs-t-color-warning: #ffc107;
+            --gjs-t-color-error: #dc3545;
+        }
+
+        /* Thiết lập lại kiểu cho thẻ a */
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Kiểu dáng cho các trường input và textarea */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        input[type="datetime-local"],
+        select,
+        textarea {
+            font: inherit;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            width: 100%;
+            transition: border-color 0.3s ease;
+            outline-offset: 2px;
+        }
+
+        /* Hiệu ứng focus cho input và textarea */
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="number"]:focus,
+        input[type="datetime-local"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #2563eb;
+            outline: 2px solid #2563eb;
+        }
+
+        /* Kiểu dáng cho label */
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+            color: #334155;
+        }
+
+        /* Header và Footer (giữ nguyên) */
+        header,
+        footer {
+            background: #003366;
+            color: white;
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 6px rgb(0 0 0 / 0.2);
+        }
+
+        header .header-content,
+        footer .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo img {
+            height: 36px;
+            vertical-align: middle;
+        }
+
+        /* Điều hướng Desktop (giữ nguyên) */
+        nav.desktop-nav {
+            display: flex;
+            gap: 24px;
+        }
+
+        nav.desktop-nav a {
+            font-weight: 600;
+            padding: 1.5px 3px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        nav.desktop-nav a:hover,
+        nav.desktop-nav a:focus-visible {
+            background: #0ea5e9;
+            outline: none;
+        }
+
+        /* Nút menu Mobile (giữ nguyên) */
+        button.mobile-menu-button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: none;
+            font-size: 28px;
+            line-height: 1;
+        }
+
+        /* Breadcrumb (không sử dụng trong code này nhưng giữ lại style) */
+        .breadcrumb span {
+            user-select: none;
+        }
+
+        .breadcrumb .separator {
+            margin: 0 6px;
+            user-select: none;
+        }
+
+        /* Điều hướng Mobile (giữ nguyên) */
+        nav.mobile-nav {
+            display: none;
+            flex-direction: column;
+            background: #014380;
+            padding: 16px 24px;
+            position: absolute;
+            top: 56px;
+            width: 100%;
+            left: 0;
+            box-shadow: 0 2px 10px rgb(0 0 0 / 0.5);
+            z-index: 998;
+        }
+
+        nav.mobile-nav a {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav.mobile-nav a:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Main content area */
+        main {
+            padding: 15px 0 24px;
+        }
+
+        /* Tiêu đề chính của form */
+        h1 {
+            text-align: center;
+            font-weight: 900;
+            font-size: 1.75rem;
+            margin-bottom: 24px;
+            letter-spacing: 0.05em;
+            color: #1e293b;
+        }
+
+        /* Form kiểm tra */
+        .inspection-form {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgb(0 0 0 / 0.1);
+            padding: 32px;
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+
+        /* *** ĐIỀU CHỈNH CHÍNH CHO PHẦN THÔNG TIN KHÁCH HÀNG VÀ XE *** */
+        .top-info-container {
+            display: flex; /* Sử dụng flexbox để sắp xếp các khối con */
+            flex-wrap: wrap; /* Cho phép các khối wrap xuống hàng trên màn hình nhỏ */
+            gap: 20px; /* Khoảng cách giữa các khối thông tin */
+            margin-bottom: 24px;
+            align-items: flex-start; /* Căn chỉnh các khối từ trên cùng */
+        }
+
+        .user-info-block,
+        .vehicle-info-block {
+            flex: 1; /* Cho phép các khối giãn nở để chiếm không gian */
+            min-width: 400px; /* Đảm bảo kích thước tối thiểu cho mỗi khối */
+            padding: 20px; /* Thêm padding để tạo khoảng trống bên trong */
+            border: 1px solid #e0e0e0; /* Viền để phân biệt rõ ràng các khối */
+            border-radius: 8px;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .user-info-block h2,
+        .vehicle-info-block h2 {
+            font-size: 1.2rem;
+            color: #2563eb;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .input-row > div {
+            flex: 1 1 120px;
+            min-width: 140px;
+        }
+
+        /* Fieldset cho kiểm tra an toàn */
+        fieldset {
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-top: 10px;
+        }
+
+        fieldset legend {
+            font-weight: 700;
+            color: #2563eb;
+            padding: 0 5px;
+        }
+
+        fieldset label {
+            display: inline-block;
+            margin-right: 20px;
+            font-weight: 400;
+            color: #1e293b;
+        }
+
+        fieldset input[type="radio"] {
+            width: auto;
+            margin-right: 5px;
+        }
+
+        /* Áp suất khí lốp và kích thước */
+        .inspection-sections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 24px;
+            align-items: flex-start; /* Quan trọng để các section con căn trên cùng */
+        }
+
+        .inspection-sections > section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        #tire-pressure-title {
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+
+        .tire-pressure-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            align-items: flex-start;
+            user-select: none;
+        }
+
+        .tire-inputs-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .tire-input-group {
+            background: #f0f4ff;
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .tire-input-group h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #2563eb;
+        }
+
+        .tire-input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .tire-input-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .tire-input-field {
+            flex: 1;
+        }
+
+        .tire-input-field label {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 4px;
+            color: #64748b;
+        }
+
+        .tire-input-field input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .recommended-size {
+            flex: 1 1 240px;
+            min-width: 200px;
+            background: #eef2ff;
+            border-radius: 12px;
+            padding: 24px 20px;
+            box-shadow: 0 5px 15px rgb(99 102 241 / 0.1);
+            font-weight: 700;
+            color: #4f46e5;
+            font-size: 1rem;
+            user-select: none;
+            height: fit-content;
+            min-height: 170px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .recommended-size h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #2563eb;
+        }
+
+        /* Phần kiểm tra an toàn */
+        .safety-check-group {
+            margin-bottom: 32px;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .safety-check-title {
+            font-weight: 700;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 6px;
+            font-size: 1.1rem;
+            color: #1e293b;
+            user-select: none;
+        }
+
+        .checklist-grid {
+            width: 100%;
+            border-collapse: collapse;
+            user-select: none;
+        }
+
+        .checklist-grid th,
+        .checklist-grid td {
+            border: 1px solid #cbd5e1;
+            padding: 6px 8px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .checklist-grid th:first-child,
+        .checklist-grid td:first-child {
+            text-align: left;
+            padding-left: 12px;
+            font-weight: 600;
+            min-width: 200px;
+        }
+
+        .checklist-grid th:nth-child(2) {
+            min-width: 90px;
+        }
+
+        .checklist-grid td input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checklist-grid th {
+            background: #e0e7ff;
+            color: #1e293b;
+            user-select: none;
+        }
+
+        /* Ghi chú chung */
+        .notes-section label {
+            margin-bottom: 8px;
+            font-weight: 700;
+            user-select: none;
+        }
+
+        .notes-section textarea {
+            resize: vertical;
+            min-height: 72px;
+            max-height: 160px;
+        }
+
+        /* Bảng hạng mục bảo trì */
+        .maintenance-table-section {
+            overflow-x: auto;
+            margin-top: 24px;
+            user-select: none;
+        }
+
+        table.maintenance-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 900px;
+        }
+
+        table.maintenance-table th,
+        table.maintenance-table td {
+            border: 1px solid #cbd5e1;
+            padding: 6px 8px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        table.maintenance-table th {
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+            user-select: none;
+        }
+
+        table.maintenance-table th.stt-col,
+        table.maintenance-table td.stt-col {
+            width: 32px;
+            font-weight: 900;
+            color: #2563eb;
+        }
+
+        table.maintenance-table th.hangmuc-col,
+        table.maintenance-table td.hangmuc-col {
+            width: 100px;
+            text-align: left;
+            padding-left: 12px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        table.maintenance-table th.diengiai-col,
+        table.maintenance-table td.diengiai-col {
+            width: 260px;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        table.maintenance-table th.sl-col,
+        table.maintenance-table td.sl-col {
+            width: 60px;
+        }
+
+        table.maintenance-table th.dongia-col,
+        table.maintenance-table td.dongia-col,
+        table.maintenance-table th.thanhtien-col,
+        table.maintenance-table td.thanhtien-col {
+            width: 100px;
+        }
+
+        table.maintenance-table th.kho-col,
+        table.maintenance-table td.kho-col {
+            width: 60px;
+        }
+
+        table.maintenance-table th.xacnhan-col,
+        table.maintenance-table td.xacnhan-col {
+            width: 30px;
+        }
+
+        table.maintenance-table td input[type="text"],
+        table.maintenance-table td input[type="number"] {
+            width: 100%;
+            height: 30px;
+            box-sizing: border-box;
+            border-radius: 4px;
+            border: 1px solid #cbd5e1;
+            padding: 4px 6px;
+            text-align: center;
+        }
+        table.maintenance-table td input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin: auto;
+            cursor: pointer;
+        }
+
+
+        .total-row {
+            font-weight: 700;
+            background: #e0e7ff;
+            color: #1e293b;
+            text-align: right;
+        }
+
+        .total-row td {
+            border-top: 2px solid #2563eb;
+            padding-right: 12px;
+        }
+
+        /* Chữ ký */
+        .signatures-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+            margin-top: 48px;
+            user-select: none;
+        }
+
+        .signature-block {
+            flex: 1 1 240px;
+            border-top: 2px solid #2563eb;
+            padding-top: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #334155;
+            text-align: center;
+        }
+
+        .signature-block small {
+            display: block;
+            font-weight: 400;
+            font-size: 12px;
+            margin-top: 4px;
+            color: #64748b;
+        }
+
+        /* Footer */
+        footer p {
+            font-size: 11px;
+            color: #cbd5e1;
+            max-width: 1000px;
+            margin: 8px auto 0 auto;
+            text-align: center;
+            user-select: none;
+            line-height: 1.3;
+        }
+
+        /* Nút gửi thông tin */
+        .submit-button-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .submit-button {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 1023px) {
+            .top-info-container {
+                flex-direction: column; /* Chuyển sang stack cột trên màn hình nhỏ */
+                align-items: center;
+            }
+            .user-info-block,
+            .vehicle-info-block {
+                min-width: auto; /* Xóa min-width khi stack cột */
+                width: 100%; /* Chiếm toàn bộ chiều rộng có sẵn */
+            }
+            .inspection-sections {
+                flex-direction: column;
+                align-items: center;
+            }
+            .tire-pressure-section {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            .recommended-size {
+                width: 100%;
+            }
+            nav.mobile-nav {
+                position: fixed;
+                top: 56px;
+                left: 0;
+                width: 100%;
+                bottom: 0;
+                overflow-y: auto;
+                display: none;
+                flex-direction: column;
+                padding: 6px 8px;
+            }
+            nav.mobile-nav.show {
+                display: flex;
+            }
+            .maintenance-table-section {
+                overflow-x: auto;
+            }
+            table.maintenance-table {
+                min-width: 700px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            header {
+                padding: 6px 8px;
+            }
+            nav.desktop-nav {
+                display: none;
+            }
+            button.mobile-menu-button {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body class="gjs-t-body">
+    <main>
+        <h1>Phiếu Kiểm Tra Xe - PHILONGAUTO</h1>
+        <form method="post" action="/submit-inspection-data" aria-label="Phiếu kiểm tra xe ô tô" class="inspection-form">
+            <div class="top-info-container">
+                <section aria-labelledby="customer-info-heading" class="user-info-block">
+                    <h2 id="customer-info-heading">Thông tin khách hàng</h2>
+                    <div class="input-row">
+                        <div>
+                            <label for="fullname">Họ tên:</label>
+                            <input type="text" id="fullname" name="fullname" placeholder="Nguyễn Văn A" required/>
+                        </div>
+                        <div>
+                            <label for="phone">Điện thoại:</label>
+                            <input type="tel" id="phone" name="phone" placeholder="0123 456 789"/>
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div>
+                            <label for="email">E-mail:</label>
+                            <input type="email" id="email" name="email" placeholder="ten@example.com"/>
+                        </div>
+                        <div>
+                            <label for="receive-time">Ngày giờ nhận xe:</label>
+                            <input type="datetime-local" id="receive-time" name="receive-time"/>
+                        </div>
+                    </div>
+                    <fieldset>
+                        <legend>Kiểm tra an toàn:</legend>
+                        <label>
+                            <input type="radio" name="safety-check" value="yes" autocomplete="off"/> Có
+                        </label>
+                        <label>
+                            <input type="radio" name="safety-check" value="no" checked/> Không
+                        </label>
+                    </fieldset>
+                </section>
+
+                <section aria-labelledby="vehicle-info-heading" class="vehicle-info-block">
+                    <h2 id="vehicle-info-heading">Thông tin xe</h2>
+                    <div class="input-row">
+                        <div>
+                            <label for="car-type">Loại &amp; kiểu xe:</label>
+                            <input type="text" id="car-type" name="car-type" placeholder="Ô tô 4 chỗ"/>
+                        </div>
+                        <div>
+                            <label for="license-plate">Biển số:</label>
+                            <input type="text" id="license-plate" name="license-plate" placeholder="30A-123.45"/>
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div>
+                            <label for="kilometers">Ki-lô-mét:</label>
+                            <input type="number" id="kilometers" name="kilometers" min="0" placeholder="12345"/>
+                        </div>
+                        <div>
+                            <label for="delivery-time">Ngày giờ giao xe:</label>
+                            <input type="datetime-local" id="delivery-time" name="delivery-time"/>
+                        </div>
+                    </div>
+                    <div style="height: 100px;"></div>
+                </section>
+            </div>
+
+            <strong>Khách Hàng tự đồng ý rằng bất kỳ dữ liệu cá nhân nào được cung cấp theo mẫu này có thể được thu thập và xử lý bởi Phi Long Auto (Công Ty) nhằm mục đích cải thiện chất lượng dịch vụ và tiếp thị. Vui lòng liên hệ với chúng tôi theo số hotline 0975.76.77.78 nếu bạn muốn giới hạn việc xử lý dữ liệu.</strong>
+
+            <h2 id="tire-pressure-title">Áp suất khí lốp và kích thước</h2>
+            <div class="inspection-sections">
+                <section aria-labelledby="tire-pressure-section-title" class="tire-pressure-section">
+                    <h3 id="tire-pressure-section-title" class="sr-only">Thông tin lốp xe</h3>
+                    <div class="tire-inputs-container">
+                        <div class="tire-input-group">
+                            <h3>Lốp trước trái</h3>
+                            <div class="tire-input-row">
+                                <div class="tire-input-field">
+                                    <label for="fl-pressure-mm">Độ dày (mm)</label>
+                                    <input type="number" id="fl-pressure-mm" name="fl-pressure-mm" min="0" step="0.1"/>
+                                </div>
+                                <div class="tire-input-field">
+                                    <label for="fl-pressure-kgcm2">Áp suất (kg/cm²)</label>
+                                    <input type="number" id="fl-pressure-kgcm2" name="fl-pressure-kgcm2" min="0" step="0.1"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tire-input-group">
+                            <h3>Lốp trước phải</h3>
+                            <div class="tire-input-row">
+                                <div class="tire-input-field">
+                                    <label for="fr-pressure-mm">Độ dày (mm)</label>
+                                    <input type="number" id="fr-pressure-mm" name="fr-pressure-mm" min="0" step="0.1"/>
+                                </div>
+                                <div class="tire-input-field">
+                                    <label for="fr-pressure-kgcm2">Áp suất (kg/cm²)</label>
+                                    <input type="number" id="fr-pressure-kgcm2" name="fr-pressure-kgcm2" min="0" step="0.1"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tire-input-group">
+                            <h3>Lốp sau trái</h3>
+                            <div class="tire-input-row">
+                                <div class="tire-input-field">
+                                    <label for="rl-pressure-mm">Độ dày (mm)</label>
+                                    <input type="number" id="rl-pressure-mm" name="rl-pressure-mm" min="0" step="0.1"/>
+                                </div>
+                                <div class="tire-input-field">
+                                    <label for="rl-pressure-kgcm2">Áp suất (kg/cm²)</label>
+                                    <input type="number" id="rl-pressure-kgcm2" name="rl-pressure-kgcm2" min="0" step="0.1"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tire-input-group">
+                            <h3>Lốp sau phải</h3>
+                            <div class="tire-input-row">
+                                <div class="tire-input-field">
+                                    <label for="rr-pressure-mm">Độ dày (mm)</label>
+                                    <input type="number" id="rr-pressure-mm" name="rr-pressure-mm" min="0" step="0.1"/>
+                                </div>
+                                <div class="tire-input-field">
+                                    <label for="rr-pressure-kgcm2">Áp suất (kg/cm²)</label>
+                                    <input type="number" id="rr-pressure-kgcm2" name="rr-pressure-kgcm2" min="0" step="0.1"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recommended-size">
+                        <h3>Kích thước lốp khuyến cáo</h3>
+                        <input type="text" id="recommended-tire-size" name="recommended-tire-size" placeholder="Nhập kích thước lốp khuyến cáo..."/>
+                        <small>Lưu ý : ...............................................<br/>...........................................................<br/>...........................................................<br/>...........................................................<br/>...........................................................<br/>...........................................................</small>
+                    </div>
+                </section>
+
+                <section aria-labelledby="safety-check-list-title" class="safety-check-group">
+                    <h2 id="safety-check-list-title" class="safety-check-title">Hạng mục kiểm tra an toàn</h2>
+                    <table role="grid" aria-readonly="true" class="checklist-grid">
+                        <thead>
+                            <tr>
+                                <th>Hạng mục</th>
+                                <th>Tốt</th>
+                                <th>Lưu ý</th>
+                                <th>Thay</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Lốp</td>
+                                <td><input type="checkbox" name="safe-tire" aria-label="Lốp tốt"/></td>
+                                <td><input type="checkbox" name="note-tire" aria-label="Lốp lưu ý"/></td>
+                                <td><input type="checkbox" name="replace-tire" aria-label="Lốp thay"/></td>
+                            </tr>
+                            <tr>
+                                <td>Gạt mưa</td>
+                                <td><input type="checkbox" name="safe-wiper" aria-label="Gạt mưa tốt"/></td>
+                                <td><input type="checkbox" name="note-wiper" aria-label="Gạt mưa lưu ý"/></td>
+                                <td><input type="checkbox" name="replace-wiper" aria-label="Gạt mưa thay"/></td>
+                            </tr>
+                            <tr>
+                                <td>Nước rửa kính</td>
+                                <td><input type="checkbox" name="safe-washwater" aria-label="Nước rửa kính tốt"/></td>
+                                <td><input type="checkbox" name="note-washwater" aria-label="Nước rửa kính lưu ý"/></td>
+                                <td><input type="checkbox" name="replace-washwater" aria-label="Nước rửa kính thay"/></td>
+                            </tr>
+                            <tr>
+                                <td>Má phanh</td>
+                                <td><input type="checkbox" name="safe-brakepad" aria-label="Má phanh tốt"/></td>
+                                <td><input type="checkbox" name="note-brakepad" aria-label="Má phanh lưu ý"/></td>
+                                <td><input type="checkbox" name="replace-brakepad" aria-label="Má phanh thay"/></td>
+                            </tr>
+                            <tr>
+                                <td>Đĩa phanh</td>
+                                <td><input type="checkbox" name="safe-brakedisc" aria-label="Đĩa phanh tốt"/></td>
+                                <td><input type="checkbox" name="note-brakedisc" aria-label="Đĩa phanh lưu ý"/></td>
+                                <td><input type="checkbox" name="replace-brakedisc" aria-label="Đĩa phanh thay"/></td>
+                            </tr>
+                            <tr>
+                                <td>Dầu phanh</td>
+                                <td><input type="checkbox" name="safe-brakeoil" aria-label="Dầu phanh tốt"/></td>
+                                <td><input type="checkbox" name="note-brakeoil" aria-label="Dầu phanh lưu ý"/></td>
+                                <td><input type="checkbox" name="replace-brakeoil" aria-label="Dầu phanh thay"/></td>
+                            </tr>
+                            <tr>
+                                <td>Dầu động cơ</td>
+                                <td><input type="checkbox" name="safe-enginoil" aria-label="Dầu động cơ tốt"/></td>
+                                <td><input type="checkbox" name="note-enginoil" aria-label="Dầu động cơ lưu ý"/></td>
+                                <td><input type="checkbox" name="replace-enginoil" aria-label="Dầu động cơ thay"/></td>
+                            </tr>
+                            <tr>
+                                <td>Lọc dầu động cơ</td>
+                                <td><input type="checkbox" name="safe-engfoilfilter" aria-label="Lọc dầu động cơ tốt"/></td>
+                                <td><input type="checkbox" name="note-engfoilfilter" aria-label="Lọc dầu động cơ lưu ý"/></td>
+                                <td><input type="checkbox" name="replace-engfoilfilter" aria-label="Lọc dầu động cơ thay"/></td>
+                            </tr>
+                            <tr>
+                                <td>Nước làm mát</td>
+                                <td><input type="checkbox" name="safe-coolant" aria-label="Nước làm mát tốt"/></td>
+                                <td><input type="checkbox" name="note-coolant" aria-label="Nước làm mát lưu ý"/></td>
+                                <td><input type="checkbox" name="replace-coolant" aria-label="Nước làm mát thay"/></td>
+                            </tr>
+                            <tr>
+                                <td>Ắc quy</td>
+                                <td><input type="checkbox" name="safe-battery" aria-label="Ắc quy tốt"/></td>
+                                <td><input type="checkbox" name="note-battery" aria-label="Ắc quy lưu ý"/></td>
+                                <td><input type="checkbox" name="replace-battery" aria-label="Ắc quy thay"/></td>
+                            </tr>
+                            <tr>
+                                <td>Lọc gió động cơ</td>
+                                <td><input type="checkbox" name="safe-airfilter" aria-label="Lọc gió động cơ tốt"/></td>
+                                <td><input type="checkbox" name="note-airfilter" aria-label="Lọc gió động cơ lưu ý"/></td>
+                                <td><input type="checkbox" name="replace-airfilter" aria-label="Lọc gió động cơ thay"/></td>
+                            </tr>
+                            <tr>
+                                <td>Lọc gió điều hòa</td>
+                                <td><input type="checkbox" name="safe-acfilter" aria-label="Lọc gió điều hòa tốt"/></td>
+                                <td><input type="checkbox" name="note-acfilter" aria-label="Lọc gió điều hòa lưu ý"/></td>
+                                <td><input type="checkbox" name="replace-acfilter" aria-label="Lọc gió điều hòa thay"/></td>
+                            </tr>
+                            <tr>
+                                <td>Thước lái</td>
+                                <td colspan="3"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+
+            <label for="extra-notes">Lưu ý:</label>
+            <textarea id="extra-notes" name="extra-notes" placeholder="Ghi chú thêm..." rows="3"></textarea>
+
+            <section aria-labelledby="maintenance-items-title" class="maintenance-table-section">
+                <h2 id="maintenance-items-title">Danh sách hạng mục bảo trì</h2>
+                <table role="grid" aria-readonly="false" aria-multiselectable="false" class="maintenance-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="stt-col">STT</th>
+                            <th scope="col" class="hangmuc-col">Hạng mục</th>
+                            <th scope="col" class="diengiai-col">Diễn giải</th>
+                            <th scope="col" class="sl-col">SL</th>
+                            <th scope="col" class="dongia-col">Đơn giá</th>
+                            <th scope="col" class="thanhtien-col">Thành tiền</th>
+                            <th scope="col" class="kho-col">Kho</th>
+                            <th scope="col" class="xacnhan-col">Xác nhận</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="stt-col">01</td><td class="hangmuc-col">Lốp</td><td><input type="text" name="desc-1" aria-label="Diễn giải cho hạng mục Lốp"/></td><td><input type="number" name="qty-1" min="0" step="1" aria-label="Số lượng cho hạng mục Lốp"/></td><td><input type="number" name="price-1" min="0" step="1000" aria-label="Đơn giá cho hạng mục Lốp"/></td><td><input type="text" name="total-1" readonly aria-label="Thành tiền hạng mục Lốp"/></td><td><input type="text" name="stock-1" aria-label="Kho cho hạng mục Lốp"/></td><td><input type="checkbox" name="confirm-1" aria-label="Xác nhận hạng mục Lốp"/></td></tr>
+                        <tr><td class="stt-col">02</td><td class="hangmuc-col">Van</td><td><input type="text" name="desc-2" aria-label="Diễn giải cho hạng mục Van"/></td><td><input type="number" name="qty-2" min="0" step="1" aria-label="Số lượng cho hạng mục Van"/></td><td><input type="number" name="price-2" min="0" step="1000" aria-label="Đơn giá cho hạng mục Van"/></td><td><input type="text" name="total-2" readonly aria-label="Thành tiền hạng mục Van"/></td><td><input type="text" name="stock-2" aria-label="Kho cho hạng mục Van"/></td><td><input type="checkbox" name="confirm-2" aria-label="Xác nhận hạng mục Van"/></td></tr>
+                        <tr><td class="stt-col">03</td><td class="hangmuc-col">Cân bằng động</td><td><input type="text" name="desc-3" aria-label="Diễn giải cho hạng mục Cân bằng động"/></td><td><input type="number" name="qty-3" min="0" step="1" aria-label="Số lượng cho hạng mục Cân bằng động"/></td><td><input type="number" name="price-3" min="0" step="1000" aria-label="Đơn giá cho hạng mục Cân bằng động"/></td><td><input type="text" name="total-3" readonly aria-label="Thành tiền hạng mục Cân bằng động"/></td><td><input type="text" name="stock-3" aria-label="Kho cho hạng mục Cân bằng động"/></td><td><input type="checkbox" name="confirm-3" aria-label="Xác nhận hạng mục Cân bằng động"/></td></tr>
+                        <tr><td class="stt-col">04</td><td class="hangmuc-col">Cân chỉnh thước lái</td><td><input type="text" name="desc-4" aria-label="Diễn giải cho hạng mục Cân chỉnh thước lái"/></td><td><input type="number" name="qty-4" min="0" step="1" aria-label="Số lượng cho hạng mục Cân chỉnh thước lái"/></td><td><input type="number" name="price-4" min="0" step="1000" aria-label="Đơn giá cho hạng mục Cân chỉnh thước lái"/></td><td><input type="text" name="total-4" readonly aria-label="Thành tiền hạng mục Cân chỉnh thước lái"/></td><td><input type="text" name="stock-4" aria-label="Kho cho hạng mục Cân chỉnh thước lái"/></td><td><input type="checkbox" name="confirm-4" aria-label="Xác nhận hạng mục Cân chỉnh thước lái"/></td></tr>
+                        <tr><td class="stt-col">05</td><td class="hangmuc-col">Phanh</td><td><input type="text" name="desc-5" aria-label="Diễn giải cho hạng mục Phanh"/></td><td><input type="number" name="qty-5" min="0" step="1" aria-label="Số lượng cho hạng mục Phanh"/></td><td><input type="number" name="price-5" min="0" step="1000" aria-label="Đơn giá cho hạng mục Phanh"/></td><td><input type="text" name="total-5" readonly aria-label="Thành tiền hạng mục Phanh"/></td><td><input type="text" name="stock-5" aria-label="Kho cho hạng mục Phanh"/></td><td><input type="checkbox" name="confirm-5" aria-label="Xác nhận hạng mục Phanh"/></td></tr>
+                        <tr><td class="stt-col">06</td><td class="hangmuc-col">Gạt mưa</td><td><input type="text" name="desc-6" aria-label="Diễn giải cho hạng mục Gạt mưa"/></td><td><input type="number" name="qty-6" min="0" step="1" aria-label="Số lượng cho hạng mục Gạt mưa"/></td><td><input type="number" name="price-6" min="0" step="1000" aria-label="Đơn giá cho hạng mục Gạt mưa"/></td><td><input type="text" name="total-6" readonly aria-label="Thành tiền hạng mục Gạt mưa"/></td><td><input type="text" name="stock-6" aria-label="Kho cho hạng mục Gạt mưa"/></td><td><input type="checkbox" name="confirm-6" aria-label="Xác nhận hạng mục Gạt mưa"/></td></tr>
+                        <tr><td class="stt-col">07</td><td class="hangmuc-col">Nước rửa kính</td><td><input type="text" name="desc-7" aria-label="Diễn giải cho hạng mục Nước rửa kính"/></td><td><input type="number" name="qty-7" min="0" step="1" aria-label="Số lượng cho hạng mục Nước rửa kính"/></td><td><input type="number" name="price-7" min="0" step="1000" aria-label="Đơn giá cho hạng mục Nước rửa kính"/></td><td><input type="text" name="total-7" readonly aria-label="Thành tiền hạng mục Nước rửa kính"/></td><td><input type="text" name="stock-7" aria-label="Kho cho hạng mục Nước rửa kính"/></td><td><input type="checkbox" name="confirm-7" aria-label="Xác nhận hạng mục Nước rửa kính"/></td></tr>
+                        <tr><td class="stt-col">08</td><td class="hangmuc-col">Dầu động cơ</td><td><input type="text" name="desc-8" aria-label="Diễn giải cho hạng mục Dầu động cơ"/></td><td><input type="number" name="qty-8" min="0" step="1" aria-label="Số lượng cho hạng mục Dầu động cơ"/></td><td><input type="number" name="price-8" min="0" step="1000" aria-label="Đơn giá cho hạng mục Dầu động cơ"/></td><td><input type="text" name="total-8" readonly aria-label="Thành tiền hạng mục Dầu động cơ"/></td><td><input type="text" name="stock-8" aria-label="Kho cho hạng mục Dầu động cơ"/></td><td><input type="checkbox" name="confirm-8" aria-label="Xác nhận hạng mục Dầu động cơ"/></td></tr>
+                        <tr><td class="stt-col">09</td><td class="hangmuc-col">Lọc dầu động cơ</td><td><input type="text" name="desc-9" aria-label="Diễn giải cho hạng mục Lọc dầu động cơ"/></td><td><input type="number" name="qty-9" min="0" step="1" aria-label="Số lượng cho hạng mục Lọc dầu động cơ"/></td><td><input type="number" name="price-9" min="0" step="1000" aria-label="Đơn giá cho hạng mục Lọc dầu động cơ"/></td><td><input type="text" name="total-9" readonly aria-label="Thành tiền hạng mục Lọc dầu động cơ"/></td><td><input type="text" name="stock-9" aria-label="Kho cho hạng mục Lọc dầu động cơ"/></td><td><input type="checkbox" name="confirm-9" aria-label="Xác nhận hạng mục Lọc dầu động cơ"/></td></tr>
+                        <tr><td class="stt-col">10</td><td class="hangmuc-col">Lọc gió động cơ</td><td><input type="text" name="desc-10" aria-label="Diễn giải cho hạng mục Lọc gió động cơ"/></td><td><input type="number" name="qty-10" min="0" step="1" aria-label="Số lượng cho hạng mục Lọc gió động cơ"/></td><td><input type="number" name="price-10" min="0" step="1000" aria-label="Đơn giá cho hạng mục Lọc gió động cơ"/></td><td><input type="text" name="total-10" readonly aria-label="Thành tiền hạng mục Lọc gió động cơ"/></td><td><input type="text" name="stock-10" aria-label="Kho cho hạng mục Lọc gió động cơ"/></td><td><input type="checkbox" name="confirm-10" aria-label="Xác nhận hạng mục Lọc gió động cơ"/></td></tr>
+                        <tr><td class="stt-col">11</td><td class="hangmuc-col">Lọc gió điều hòa</td><td><input type="text" name="desc-11" aria-label="Diễn giải cho hạng mục Lọc gió điều hòa"/></td><td><input type="number" name="qty-11" min="0" step="1" aria-label="Số lượng cho hạng mục Lọc gió điều hòa"/></td><td><input type="number" name="price-11" min="0" step="1000" aria-label="Đơn giá cho hạng mục Lọc gió điều hòa"/></td><td><input type="text" name="total-11" readonly aria-label="Thành tiền hạng mục Lọc gió điều hòa"/></td><td><input type="text" name="stock-11" aria-label="Kho cho hạng mục Lọc gió điều hòa"/></td><td><input type="checkbox" name="confirm-11" aria-label="Xác nhận hạng mục Lọc gió điều hòa"/></td></tr>
+                        <tr><td class="stt-col">12</td><td class="hangmuc-col"></td><td><input type="text" name="desc-12"/></td><td><input type="number" name="qty-12" min="0" step="1"/></td><td><input type="number" name="price-12" min="0" step="1000"/></td><td><input type="text" name="total-12" readonly/></td><td><input type="text" name="stock-12"/></td><td><input type="checkbox" name="confirm-12"/></td></tr>
+                        <tr><td class="stt-col">13</td><td class="hangmuc-col"></td><td><input type="text" name="desc-13"/></td><td><input type="number" name="qty-13" min="0" step="1"/></td><td><input type="number" name="price-13" min="0" step="1000"/></td><td><input type="text" name="total-13" readonly/></td><td><input type="text" name="stock-13"/></td><td><input type="checkbox" name="confirm-13"/></td></tr>
+                        <tr><td class="stt-col">14</td><td class="hangmuc-col"></td><td><input type="text" name="desc-14"/></td><td><input type="number" name="qty-14" min="0" step="1"/></td><td><input type="number" name="price-14" min="0" step="1000"/></td><td><input type="text" name="total-14" readonly/></td><td><input type="text" name="stock-14"/></td><td><input type="checkbox" name="confirm-14"/></td></tr>
+                        <tr><td class="stt-col">15</td><td class="hangmuc-col"></td><td><input type="text" name="desc-15"/></td><td><input type="number" name="qty-15" min="0" step="1"/></td><td><input type="number" name="price-15" min="0" step="1000"/></td><td><input type="text" name="total-15" readonly/></td><td><input type="checkbox" name="confirm-15"/></td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="5" style="text-align: right; padding-right: 14px;">Tổng cộng:</td>
+                            <td id="grand-total" aria-live="polite" aria-atomic="true">0 VND</td>
+                            <td colspan="2"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </section>
+
+            <section aria-label="Ký tên đại lý và khách hàng" class="signatures-section">
+                <div class="signature-block">
+                    Đại lý<br/><small>(ký tên)</small>
+                </div>
+                <div class="signature-block">
+                    Khách hàng<br/><small>(ký tên)</small>
+                </div>
+            </section>
+
+            <div class="submit-button-container">
+                <button type="submit" class="submit-button">Gửi thông tin</button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        // Chú thích: Script này xử lý các chức năng tương tác trên trang
+
+        /**
+         * @description Xử lý đóng/mở menu mobile khi nhấn nút.
+         */
+        (() => {
+            const menuButton = document.querySelector('.mobile-menu-button');
+            const mobileNav = document.getElementById('mobile-navigation'); // Đảm bảo ID này tồn tại nếu bạn có menu mobile
+
+            if (menuButton && mobileNav) {
+                menuButton.addEventListener('click', () => {
+                    const expanded = menuButton.getAttribute('aria-expanded') === 'true';
+                    menuButton.setAttribute('aria-expanded', String(!expanded));
+                    if (mobileNav.hasAttribute('hidden')) {
+                        mobileNav.removeAttribute('hidden');
+                        mobileNav.classList.add('show');
+                    } else {
+                        mobileNav.setAttribute('hidden', '');
+                        mobileNav.classList.remove('show');
+                    }
+                });
+            }
+        })();
+
+        /**
+         * @description Tự động tính toán tổng tiền cho các hạng mục bảo trì và tổng cộng.
+         */
+        (() => {
+            const table = document.querySelector('table.maintenance-table');
+            const grandTotalEl = document.getElementById('grand-total');
+
+            // Kiểm tra nếu các phần tử cần thiết không tồn tại thì dừng thực thi
+            if (!table || !grandTotalEl) return;
+
+            /**
+             * @description Chuyển đổi giá trị sang số, trả về 0 nếu không phải số.
+             * @param {string} value - Giá trị cần chuyển đổi.
+             * @returns {number} Giá trị số.
+             */
+            function parseNumber(value) {
+                const num = parseFloat(value);
+                return isNaN(num) ? 0 : num;
+            }
+
+            /**
+             * @description Cập nhật tổng tiền cho từng hàng và tổng cộng.
+             */
+            function updateTotals() {
+                let grandTotal = 0;
+
+                // Lặp qua các hàng mục từ 1 đến 15 để tính toán
+                for (let i = 1; i <= 15; i++) {
+                    const qtyInput = table.querySelector(`input[name="qty-${i}"]`);
+                    const priceInput = table.querySelector(`input[name="price-${i}"]`);
+                    const totalInput = table.querySelector(`input[name="total-${i}"]`);
+
+                    // Nếu không tìm thấy bất kỳ input nào trong hàng thì bỏ qua
+                    if (!qtyInput || !priceInput || !totalInput) continue;
+
+                    const quantity = parseNumber(qtyInput.value);
+                    const price = parseNumber(priceInput.value);
+                    const total = quantity * price;
+
+                    // Cập nhật giá trị "Thành tiền" cho từng hàng
+                    if (totalInput) {
+                        totalInput.value = total ? total.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}) : '';
+                    }
+                    grandTotal += total;
+                }
+                // Cập nhật giá trị "Tổng cộng" cuối cùng
+                grandTotalEl.textContent = grandTotal.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+            }
+
+            // Lắng nghe sự kiện 'input' trên bảng để cập nhật tổng tiền
+            table.addEventListener('input', event => {
+                // Chỉ cập nhật khi input thay đổi là số lượng hoặc đơn giá
+                if (
+                    event.target.matches('input[name^="qty-"]') ||
+                    event.target.matches('input[name^="price-"]')
+                ) {
+                    updateTotals();
+                }
+            });
+
+            // Gọi hàm cập nhật tổng tiền một lần khi tải trang để hiển thị giá trị ban đầu (nếu có)
+            updateTotals();
+        })();
+    </script>
+</body>
+</html>
