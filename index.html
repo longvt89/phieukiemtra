@@ -439,6 +439,16 @@
             margin-bottom: 30px;
         }
 
+        .signature-input { /* Added style for the new input */
+            border: none;
+            border-bottom: 1px dotted #000;
+            width: 100%;
+            text-align: center;
+            padding: 2px 0;
+            font-size: 12px;
+            margin-top: -20px; /* Adjust as needed to align with signature line */
+        }
+
         .signature-line {
             border-bottom: 1px solid #000;
             margin-bottom: 5px;
@@ -688,6 +698,11 @@
             .signature-title {
                 margin-bottom: 15px;
                 font-size: 10px;
+            }
+
+            .signature-input { /* Adjusted for print */
+                font-size: 10px;
+                margin-top: -10px;
             }
 
             .signature-subtitle {
@@ -974,7 +989,7 @@
                     </tr>
                     <tr>
                         <td>02</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" value="Vận"></td>
+                        <td class="hang-muc"><input type="text" class="hang-muc-input" value="Van"></td>
                         <td><input type="text" class="dien-giai-input"></td>
                         <td><input type="text" class="sl-input" oninput="calculateRowTotal(this)"></td>
                         <td><input type="text" class="don-gia-input" oninput="calculateRowTotal(this)"></td>
@@ -1114,7 +1129,13 @@
             <div class="signature-section">
                 <div class="signature-box">
                     <div class="signature-title">Đại lý</div>
-                    <div class="signature-line"></div>
+                    <input type="text" list="nguoiPhuTrachList" class="signature-input" placeholder="Chọn hoặc nhập tên">
+                    <datalist id="nguoiPhuTrachList">
+                        <option value="Cao Thanh Duy">
+                        <option value="Trần Ngọc Hào">
+                        <option value="Nguyễn Phước Hiếu">
+                        <option value="Nguyễn Trung Kiên">
+                    </datalist>
                     <div class="signature-subtitle">(Ký tên)</div>
                 </div>
                 <div class="signature-box">
@@ -1177,10 +1198,8 @@
                         localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
                         localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
                     } else {
-                        // Vẫn trong cùng tháng/năm, tăng số thứ tự lên 1 cho lần tải đầu tiên
-                        // (hoặc giữ nguyên nếu đây là lần tải sau khi in và số đã được tăng)
-                        // Logic này sẽ được điều chỉnh để chỉ tăng khi nhấn nút in.
-                        // Tại đây, chỉ lấy số hiện có.
+                        // Vẫn trong cùng tháng/năm, giữ nguyên số hiện có.
+                        // Logic tăng số phiếu sẽ nằm trong hàm incrementReceiptNumberOnPrint().
                     }
                 } catch (e) {
                     console.error("Lỗi khi đọc dữ liệu tháng từ localStorage:", e);
