@@ -483,7 +483,33 @@
         .print-button:hover {
             background: #0056b3;
         }
+.button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Khoảng cách giữa các nút */
+            margin-bottom: 20px;
+        }
 
+        .tire-form-button {
+            background: #28a745; /* Màu xanh lá cây cho nút mới */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .tire-form-button:hover {
+            background: #218838;
+        }
+
+        /* Thêm vào @media print để ẩn nút này khi in */
+        @media print {
+            .button-group {
+                display: none;
+            }
+        }
         /* Print Styles */
         @media print {
             body {
@@ -720,8 +746,11 @@
 </head>
 <body>
     <div class="container">
-        <button class="print-button" onclick="handlePrint()">🖨️ In Phiếu Kiểm Tra</button>
-        
+ 	    <div class="button-group">
+    <button class="print-button" onclick="handlePrint()">🖨️ In Phiếu Kiểm Tra</button>
+    <button class="tire-form-button" onclick="window.location.href='phieu_kiem_tra_lop.html'">📄 Phiếu Kiểm Tra Lốp</button>
+    <button class="tire-form-button" id="submitToSheet">📤 Gửi Thông Tin</button>
+</div>    
         <div class="form-content">
             <div class="header">
                 <div class="header-left">
@@ -989,7 +1018,7 @@
                     </tr>
                     <tr>
                         <td>02</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" value="Van"></td>
+                        <td class="hang-muc"><input type="text" class="hang-muc-input" value="Vận"></td>
                         <td><input type="text" class="dien-giai-input"></td>
                         <td><input type="text" class="sl-input" oninput="calculateRowTotal(this)"></td>
                         <td><input type="text" class="don-gia-input" oninput="calculateRowTotal(this)"></td>
@@ -1277,5 +1306,41 @@
             receivedDateTimeInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
         });
     </script>
+<script>
+const scriptURL = 'https://script.google.com/macros/s/AKfycbz2rZEZIy8FhN7Xk68TkwUWU8_SzyPnjVdBH2MWzUZ_OweEPt_MlsmbC5eZ4hM_mg-c/exec'; // THAY bằng link Web App Google Script của bạn
+
+function collectFormData() {
+  const data = {
+    hoTen: document.getElementById('customerName')?.value || '',
+    dienThoai: document.getElementById('customerPhone')?.value || '',
+    email: document.getElementById('customerEmail')?.value || '',
+    nhanXe: document.getElementById('receivedDateTime')?.value || '',
+    giaoXe: document.getElementById('deliveryDateTime')?.value || '',
+    loaiXe: document.getElementById('carType')?.value || '',
+    bienSo: document.getElementById('licensePlate')?.value || '',
+    soKm: document.getElementById('kilometer')?.value || '',
+    sizeLop: document.getElementById('tireSize')?.value || '',
+    ghiChu: document.getElementById('notes')?.value || ''
+  };
+  return data;
+}
+
+document.getElementById('submitToSheet')?.addEventListener('click', () => {
+  const formData = collectFormData();
+  const urlEncoded = new URLSearchParams(formData);
+
+  fetch(scriptURL, {
+    method: 'POST',
+    body: urlEncoded
+  })
+  .then(response => {
+    alert('✅ Gửi thông tin thành công!');
+  })
+  .catch(error => {
+    alert('❌ Có lỗi xảy ra khi gửi.');
+    console.error(error);
+  });
+});
+</script>
 </body>
 </html>
