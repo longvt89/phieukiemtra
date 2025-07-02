@@ -768,21 +768,21 @@
                 <div class="customer-left">
                     <div class="info-group">
                         <label for="customerName">Họ tên:</label>
-                        <input type="text" id="customerName" class="info-input name-input">
+                        <input type="text" id="customerName" Name="hoten" class="info-input name-input">
                     </div>
                     <div class="info-group inline-fields">
                         <div>
                             <label for="customerPhone">Điện thoại:</label>
-                            <input type="tel" id="customerPhone" class="info-input phone-email-input">
+                            <input type="tel" id="customerPhone" name="dienThoai" class="info-input phone-email-input">
                         </div>
                         <div>
                             <label for="customerEmail">E-mail:</label>
-                            <input type="email" id="customerEmail" class="info-input phone-email-input">
+                            <input type="email" id="customerEmail" name="email" class="info-input phone-email-input">
                         </div>
                     </div>
                     <div class="info-group">
                         <label for="receivedDateTime">Ngày giờ nhận xe:</label>
-                        <input type="datetime-local" id="receivedDateTime" class="info-input datetime-input">
+                        <input type="datetime-local" id="receivedDateTime" name="nhanxe" class="info-input datetime-input">
                     </div>
                     <div class="info-group">
                         <label>Kiểm tra an toàn:</label>
@@ -793,21 +793,21 @@
                 <div class="customer-right">
                     <div class="info-group">
                         <label for="carType">Loại & kiểu xe:</label>
-                        <input type="text" id="carType" class="info-input car-type-input">
+                        <input type="text" id="carType" name="loaiXe" class="info-input car-type-input">
                     </div>
                     <div class="info-group inline-fields">
                         <div>
                             <label for="licensePlate">Biển số:</label>
-                            <input type="text" id="licensePlate" class="info-input license-km-input">
+                            <input type="text" id="licensePlate" name="bienso"class="info-input license-km-input">
                         </div>
                         <div>
                             <label for="kilometer">Kilô-mét:</label>
-                            <input type="text" id="kilometer" class="info-input license-km-input">
+                            <input type="text" id="kilometer" name="sokm" class="info-input license-km-input">
                         </div>
                     </div>
                     <div class="info-group">
                         <label for="deliveryDateTime">Ngày gởi giao xe:</label>
-                        <input type="datetime-local" id="deliveryDateTime" class="info-input datetime-input">
+                        <input type="datetime-local" id="deliveryDateTime" name="giaoxe" class="info-input datetime-input">
                     </div>
                 </div>
             </div>
@@ -880,13 +880,13 @@
                         
                         <div class="tire-size-recommendation">
                             <label for="tireSize">Size lốp khuyến cáo:</label>
-                            <input type="text" id="tireSize" placeholder="Nhập size lốp">
+                            <input type="text" id="tireSize" name="sizelop" placeholder="Nhập size lốp">
                         </div>
                     </div>
                     
                     <div class="recommendation">
                         <label for="notes">Lưu ý:</label>
-                        <textarea id="notes" placeholder="Ghi chú các lưu ý cần thiết" style="width: 100%; height: auto; flex-grow: 1; border: 1px dotted #000; padding: 5px; resize: vertical; font-size: 11px;"></textarea>
+                        <textarea id="notes" name="ghichu" placeholder="Ghi chú các lưu ý cần thiết" style="width: 100%; height: auto; flex-grow: 1; border: 1px dotted #000; padding: 5px; resize: vertical; font-size: 11px;"></textarea>
                     </div>
                 </div>
 
@@ -1311,16 +1311,16 @@ const scriptURL = 'https://script.google.com/macros/s/AKfycbz2rZEZIy8FhN7Xk68Tkw
 
 function collectFormData() {
   const data = {
-    hoTen: document.getElementById('customerName')?.value || '',
-    dienThoai: document.getElementById('customerPhone')?.value || '',
+    hoten: document.getElementById('customerName')?.value || '',
+    dienthoai: document.getElementById('customerPhone')?.value || '',
     email: document.getElementById('customerEmail')?.value || '',
-    nhanXe: document.getElementById('receivedDateTime')?.value || '',
-    giaoXe: document.getElementById('deliveryDateTime')?.value || '',
-    loaiXe: document.getElementById('carType')?.value || '',
-    bienSo: document.getElementById('licensePlate')?.value || '',
-    soKm: document.getElementById('kilometer')?.value || '',
-    sizeLop: document.getElementById('tireSize')?.value || '',
-    ghiChu: document.getElementById('notes')?.value || ''
+    nhanxe: document.getElementById('receivedDateTime')?.value || '',
+    giaoxe: document.getElementById('deliveryDateTime')?.value || '',
+    loaixe: document.getElementById('carType')?.value || '',
+    bienso: document.getElementById('licensePlate')?.value || '',
+    sokm: document.getElementById('kilometer')?.value || '',
+    sizelop: document.getElementById('tireSize')?.value || '',
+    ghichu: document.getElementById('notes')?.value || ''
   };
   return data;
 }
