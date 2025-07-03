@@ -1177,6 +1177,55 @@
     </div>
 
     <script>
+        // Polyfill cho URLSearchParams (để đảm bảo tương thích với các trình duyệt cũ hơn)
+        (function() {
+            if (typeof URLSearchParams !== 'function') {
+                window.URLSearchParams = function(search) {
+                    var params = {};
+                    if (search) {
+                        search = search.substring(1); // Remove '?'
+                        search.split('&').forEach(function(pair) {
+                            var parts = pair.split('=');
+                            var key = decodeURIComponent(parts[0]);
+                            var value = decodeURIComponent(parts[1] || '');
+                            params[key] = value;
+                        });
+                    }
+                    this.append = function(name, value) {
+                        params[name] = value;
+                    };
+                    this.toString = function() {
+                        var arr = [];
+                        for (var key in params) {
+                            if (params.hasOwnProperty(key)) {
+                                arr.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
+                            }
+                        }
+                        return arr.join('&');
+                    };
+                    // Thêm phương thức fromEntries để tương thích với cách sử dụng mới
+                    if (!window.URLSearchParams.prototype.fromEntries) {
+                        window.URLSearchParams.prototype.fromEntries = function(iterable) {
+                            var obj = {};
+                            for (var pair of iterable) {
+                                obj[pair[0]] = pair[1];
+                            }
+                            return obj;
+                        };
+                    }
+                    // Thêm phương thức entries để tương thích
+                    this.entries = function*() {
+                        for (let key in params) {
+                            if (params.hasOwnProperty(key)) {
+                                yield [key, params[key]];
+                            }
+                        }
+                    };
+                };
+            }
+        })();
+
+
         // Các hàm tính toán tổng và ngày giờ vẫn được giữ nguyên
         function calculateRowTotal(inputElement) {
             const row = inputElement.closest('tr');
@@ -1310,35 +1359,36 @@
         // THAY THẾ BẰNG LINK WEB APP GOOGLE SCRIPT CỦA BẠN SAU KHI TRIỂN KHAI
         const scriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; 
 
+        // Hàm thu thập dữ liệu vào một đối tượng JavaScript thuần túy
         function collectFormData() {
-            const formData = new FormData();
+            const data = {};
             
-            // 1. Thông tin khách hàng và xe
-            formData.append('receiptNumber', document.getElementById('receiptNumber')?.textContent || '');
-            formData.append('currentMonthYear', document.getElementById('currentMonth')?.textContent || '');
-            formData.append('hoten', document.getElementById('customerName')?.value || '');
-            formData.append('dienThoai', document.getElementById('customerPhone')?.value || '');
-            formData.append('email', document.getElementById('customerEmail')?.value || '');
-            formData.append('nhanXe', document.getElementById('receivedDateTime')?.value || '');
-            formData.append('giaoXe', document.getElementById('deliveryDateTime')?.value || '');
-            formData.append('loaiXe', document.getElementById('carType')?.value || '');
-            formData.append('bienSo', document.getElementById('licensePlate')?.value || '');
-            formData.append('soKm', document.getElementById('kilometer')?.value || '');
+            // 1. Thông tin chung phiếu và khách hàng/xe
+            data.receiptNumber = document.getElementById('receiptNumber')?.textContent || '';
+            data.currentMonthYear = document.getElementById('currentMonth')?.textContent || '';
+            data.hoten = document.getElementById('customerName')?.value || '';
+            data.dienThoai = document.getElementById('customerPhone')?.value || '';
+            data.email = document.getElementById('customerEmail')?.value || '';
+            data.nhanXe = document.getElementById('receivedDateTime')?.value || '';
+            data.giaoXe = document.getElementById('deliveryDateTime')?.value || '';
+            data.loaiXe = document.getElementById('carType')?.value || '';
+            data.bienSo = document.getElementById('licensePlate')?.value || '';
+            data.soKm = document.getElementById('kilometer')?.value || '';
             
             const kiemTraAnToan_Co = document.querySelector('input[name="kiemTraAnToan_Co"]')?.checked;
             const kiemTraAnToan_Khong = document.querySelector('input[name="kiemTraAnToan_Khong"]')?.checked;
-            formData.append('kiemTraAnToanTongQuat', kiemTraAnToan_Co ? 'Có' : (kiemTraAnToan_Khong ? 'Không' : ''));
+            data.kiemTraAnToanTongQuat = kiemTraAnToan_Co ? 'Có' : (kiemTraAnToan_Khong ? 'Không' : '');
 
-            // 2. Thông tin lốp
-            formData.append('sizeLopKhuyenCao', document.getElementById('tireSize')?.value || '');
-            formData.append('ghiChuChung', document.getElementById('notes')?.value || '');
+            // 2. Thông tin lốp và ghi chú chung
+            data.sizeLopKhuyenCao = document.getElementById('tireSize')?.value || '';
+            data.ghiChuChung = document.getElementById('notes')?.value || '';
 
             const tirePositions = ['FL', 'FR', 'RL', 'RR', 'Spare'];
             tirePositions.forEach(pos => {
                 const pressure = document.querySelector(`[name="tire_pressure_${pos}"]`)?.value || '';
                 const thickness = document.querySelector(`[name="tire_thickness_${pos}"]`)?.value || '';
-                formData.append(`tire_pressure_${pos}`, pressure);
-                formData.append(`tire_thickness_${pos}`, thickness);
+                data[`tire_pressure_${pos}`] = pressure;
+                data[`tire_thickness_${pos}`] = thickness;
             });
 
             // 3. Hạng mục kiểm tra an toàn chi tiết
@@ -1360,13 +1410,12 @@
                 
                 safetyChecks[item] = status;
             });
-            formData.append('chiTietKiemTraAnToan', JSON.stringify(safetyChecks)); // Gửi dưới dạng JSON string
+            data.chiTietKiemTraAnToan = JSON.stringify(safetyChecks); // Gửi dưới dạng JSON string
 
             // 4. Bảng chi tiết công việc/vật tư
             const detailedItems = [];
-            document.querySelectorAll('.detailed-check tbody tr').forEach((row, index) => {
-                if (row.classList.contains('total-row')) return; // Bỏ qua hàng tổng cộng
-                
+            // Lấy tất cả các hàng trong bảng trừ hàng tổng cộng
+            document.querySelectorAll('.detailed-check tbody tr:not(.total-row)').forEach((row, index) => {
                 const stt = String(index + 1).padStart(2, '0');
                 const hangMuc = row.querySelector(`[name="item_hangMuc_${index+1}"]`)?.value || '';
                 const dienGiai = row.querySelector(`[name="item_dienGiai_${index+1}"]`)?.value || '';
@@ -1375,30 +1424,25 @@
                 const thanhTien = row.querySelector(`[name="item_thanhTien_${index+1}"]`)?.value || '';
                 const xacNhan = row.querySelector(`[name="item_xacNhan_${index+1}"]`)?.checked ? 'Xác nhận' : '';
                 
-                if (hangMuc || dienGiai || sl || donGia || thanhTien) { // Chỉ thêm hàng có dữ liệu
+                if (hangMuc || dienGiai || sl || donGia || thanhTien || xacNhan) { // Chỉ thêm hàng có dữ liệu
                     detailedItems.push(`${stt}| ${hangMuc}| ${dienGiai}| ${sl}| ${donGia}| ${thanhTien}| ${xacNhan}`);
                 }
             });
-            formData.append('bangChiTietCongViec', detailedItems.join('\n')); // Nối các dòng bằng ký tự xuống dòng
+            data.bangChiTietCongViec = detailedItems.join('\n'); // Nối các dòng bằng ký tự xuống dòng
 
-            formData.append('tongCongThanhToan', document.getElementById('grand-total')?.value || '');
+            data.tongCongThanhToan = document.getElementById('grand-total')?.value || '';
 
 
             // 5. Chữ ký
-            formData.append('daiLyPhuTrach', document.querySelector('[name="daiLyPhuTrach"]')?.value || '');
-            formData.append('khachHangKyTen', document.querySelector('[name="khachHangKyTen"]')?.value || '');
+            data.daiLyPhuTrach = document.querySelector('[name="daiLyPhuTrach"]')?.value || '';
+            data.khachHangKyTen = document.querySelector('[name="khachHangKyTen"]')?.value || '';
 
-
-            // Chuyển FormData object thành URLSearchParams
-            const urlSearchParams = new URLSearchParams();
-            for (const pair of formData.entries()) {
-                urlSearchParams.append(pair[0], pair[1]);
-            }
-            return urlSearchParams;
+            return data; // TRẢ VỀ ĐỐI TƯỢNG THUẦN TÚY
         }
 
         document.getElementById('submitToSheet')?.addEventListener('click', () => {
-            const formData = collectFormData();
+            const plainDataObject = collectFormData(); // Lấy đối tượng dữ liệu thuần túy
+            const urlEncoded = new URLSearchParams(plainDataObject); // Chuyển đổi thành URLSearchParams tại đây
             
             // Vô hiệu hóa nút gửi để tránh gửi nhiều lần
             const submitButton = document.getElementById('submitToSheet');
@@ -1410,7 +1454,7 @@
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded' // Khai báo rõ ràng Content-Type
                 },
-                body: formData // formData đã là URLSearchParams
+                body: urlEncoded // Truyền đối tượng URLSearchParams
             })
             .then(response => {
                 // Luôn cố gắng đọc phản hồi JSON, ngay cả khi có lỗi HTTP
