@@ -1018,7 +1018,7 @@
                     </tr>
                     <tr>
                         <td>02</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_2" value="Van"></td>
+                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_2" value="Vận"></td>
                         <td><input type="text" class="dien-giai-input" name="item_dienGiai_2"></td>
                         <td><input type="text" class="sl-input" name="item_soLuong_2" oninput="calculateRowTotal(this)"></td>
                         <td><input type="text" class="don-gia-input" name="item_donGia_2" oninput="calculateRowTotal(this)"></td>
@@ -1177,22 +1177,65 @@
     </div>
 
     <script>
+        // HỢP NHẤT TẤT CẢ JAVASCRIPT VÀO ĐÂY
+
         // Polyfill cho URLSearchParams (để đảm bảo tương thích với các trình duyệt cũ hơn)
+        // Đây là polyfill đơn giản hơn, tập trung vào việc định nghĩa constructor URLSearchParams(object)
         (function() {
-            if (typeof URLSearchParams !== 'function') {
-                window.URLSearchParams = function(search) {
+            if (typeof window.URLSearchParams === 'undefined') {
+                window.URLSearchParams = function(init) {
                     var params = {};
-                    if (search) {
-                        search = search.substring(1); // Remove '?'
-                        search.split('&').forEach(function(pair) {
-                            var parts = pair.split('=');
-                            var key = decodeURIComponent(parts[0]);
-                            var value = decodeURIComponent(parts[1] || '');
-                            params[key] = value;
-                        });
+                    if (init && typeof init === 'object') {
+                        if (init instanceof HTMLFormElement) { // Xử lý trường hợp nếu truyền form element
+                            new FormData(init).forEach(function(value, key) {
+                                params[key] = value;
+                            });
+                        } else if (init instanceof URLSearchParams) { // Xử lý trường hợp nếu truyền URLSearchParams
+                            init.forEach(function(value, key) {
+                                params[key] = value;
+                            });
+                        } else { // Xử lý đối tượng JS thuần túy
+                            for (var key in init) {
+                                if (init.hasOwnProperty(key)) {
+                                    params[key] = init[key];
+                                }
+                            }
+                        }
                     }
+
                     this.append = function(name, value) {
                         params[name] = value;
+                    };
+                    this.set = function(name, value) {
+                        params[name] = value;
+                    };
+                    this.get = function(name) {
+                        return params[name];
+                    };
+                    this.has = function(name) {
+                        return params.hasOwnProperty(name);
+                    };
+                    this.forEach = function(callback) {
+                        for (var key in params) {
+                            if (params.hasOwnProperty(key)) {
+                                callback(params[key], key, this);
+                            }
+                        }
+                    };
+                    this.entries = function() {
+                        var _this = this;
+                        var index = 0;
+                        var keys = Object.keys(params);
+                        return {
+                            next: function() {
+                                if (index < keys.length) {
+                                    var key = keys[index++];
+                                    return { value: [key, params[key]], done: false };
+                                } else {
+                                    return { done: true };
+                                }
+                            }
+                        };
                     };
                     this.toString = function() {
                         var arr = [];
@@ -1203,30 +1246,12 @@
                         }
                         return arr.join('&');
                     };
-                    // Thêm phương thức fromEntries để tương thích với cách sử dụng mới
-                    if (!window.URLSearchParams.prototype.fromEntries) {
-                        window.URLSearchParams.prototype.fromEntries = function(iterable) {
-                            var obj = {};
-                            for (var pair of iterable) {
-                                obj[pair[0]] = pair[1];
-                            }
-                            return obj;
-                        };
-                    }
-                    // Thêm phương thức entries để tương thích
-                    this.entries = function*() {
-                        for (let key in params) {
-                            if (params.hasOwnProperty(key)) {
-                                yield [key, params[key]];
-                            }
-                        }
-                    };
                 };
             }
         })();
 
 
-        // Các hàm tính toán tổng và ngày giờ vẫn được giữ nguyên
+        // Các hàm tính toán tổng và ngày giờ
         function calculateRowTotal(inputElement) {
             const row = inputElement.closest('tr');
             const quantity = parseFloat(row.querySelector('.sl-input').value) || 0;
@@ -1277,11 +1302,9 @@
                         localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
                     } else {
                         // Vẫn trong cùng tháng/năm, giữ nguyên số hiện có.
-                        // Logic tăng số phiếu sẽ nằm trong hàm incrementReceiptNumberOnPrint().
                     }
                 } catch (e) {
                     console.error("Lỗi khi đọc dữ liệu tháng từ localStorage:", e);
-                    // Reset nếu dữ liệu bị lỗi
                     receiptNumber = 1;
                     localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
                     localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
@@ -1314,37 +1337,29 @@
                     lastStoredYear = parsedMonthData.year;
                 } catch (e) {
                     console.error("Lỗi khi đọc dữ liệu tháng từ localStorage:", e);
-                    // Xử lý lỗi, có thể reset nếu cần
                 }
             }
 
             if (currentMonth !== lastStoredMonth || currentYear !== lastStoredYear) {
-                // Tháng hoặc năm đã thay đổi, reset số thứ tự
                 receiptNumber = 1;
             } else {
-                // Vẫn trong cùng tháng/năm, tăng số thứ tự
                 receiptNumber++;
             }
 
-            // Cập nhật localStorage
             localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
             localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
             
-            // Cập nhật hiển thị trên phiếu trước khi in
             document.getElementById('receiptNumber').textContent = String(receiptNumber).padStart(6, '0');
             document.getElementById('currentMonth').textContent = `${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
         }
 
         function handlePrint() {
-            // Tăng số phiếu trước khi in
             incrementReceiptNumberOnPrint();
             window.print();
         }
 
-        // Gọi các hàm khi trang tải
         document.addEventListener('DOMContentLoaded', () => {
-            initializeReceiptNumber(); // Khởi tạo số phiếu và tháng khi tải trang
-            
+            initializeReceiptNumber();
             const receivedDateTimeInput = document.getElementById('receivedDateTime');
             const now = new Date();
             const year = now.getFullYear();
@@ -1354,8 +1369,7 @@
             const minutes = String(now.getMinutes()).padStart(2, '0');
             receivedDateTimeInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
         });
-    </script>
-    <script>
+
         // THAY THẾ BẰNG LINK WEB APP GOOGLE SCRIPT CỦA BẠN SAU KHI TRIỂN KHAI
         const scriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; 
 
