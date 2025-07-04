@@ -773,7 +773,7 @@
                     <div class="info-group inline-fields">
                         <div>
                             <label for="customerPhone">Điện thoại:</label>
-                            <input type="tel" id="customerPhone" name="dienThoai" class="info-input phone-email-input">
+                            <input type="tel" id="customerPhone" name="dienthoai" class="info-input phone-email-input">
                         </div>
                         <div>
                             <label for="customerEmail">E-mail:</label>
@@ -782,7 +782,7 @@
                     </div>
                     <div class="info-group">
                         <label for="receivedDateTime">Ngày giờ nhận xe:</label>
-                        <input type="datetime-local" id="receivedDateTime" name="nhanXe" class="info-input datetime-input">
+                        <input type="datetime-local" id="receivedDateTime" name="nhanxe" class="info-input datetime-input">
                     </div>
                     <div class="info-group">
                         <label>Kiểm tra an toàn (Có/Không):</label>
@@ -793,21 +793,21 @@
                 <div class="customer-right">
                     <div class="info-group">
                         <label for="carType">Loại & kiểu xe:</label>
-                        <input type="text" id="carType" name="loaiXe" class="info-input car-type-input">
+                        <input type="text" id="carType" name="loaixe" class="info-input car-type-input">
                     </div>
                     <div class="info-group inline-fields">
                         <div>
                             <label for="licensePlate">Biển số:</label>
-                            <input type="text" id="licensePlate" name="bienSo" class="info-input license-km-input">
+                            <input type="text" id="licensePlate" name="bienso" class="info-input license-km-input">
                         </div>
                         <div>
                             <label for="kilometer">Kilô-mét:</label>
-                            <input type="text" id="kilometer" name="soKm" class="info-input license-km-input">
+                            <input type="text" id="kilometer" name="sokm" class="info-input license-km-input">
                         </div>
                     </div>
                     <div class="info-group">
                         <label for="deliveryDateTime">Ngày gửi giao xe:</label>
-                        <input type="datetime-local" id="deliveryDateTime" name="giaoXe" class="info-input datetime-input">
+                        <input type="datetime-local" id="deliveryDateTime" name="giaoxe" class="info-input datetime-input">
                     </div>
                 </div>
             </div>
@@ -1377,19 +1377,18 @@
             data.daiLyPhuTrach = document.querySelector('[name="daiLyPhuTrach"]')?.value || '';
             data.khachHangKyTen = document.querySelector('[name="khachHangKyTen"]')?.value || '';
 
-            // CHUYỂN ĐỔI ĐỐI TƯỢNG THUẦN TÚY THÀNH CHUỖI URL-ENCODED BẰNG TAY
-            let urlEncodedParams = [];
-            for (const key in data) {
-                if (data.hasOwnProperty(key)) {
-                    urlEncodedParams.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
-                }
-            }
-            return urlEncodedParams.join('&'); // Trả về chuỗi
+            return data; // TRẢ VỀ ĐỐI TƯỢNG THUẦN TÚY
         }
 
         // HÀM GỬI DỮ LIỆU ĐẾN APPS SCRIPT (ĐÂY LÀ PHẦN SỬA CHỮA CHÍNH)
         document.getElementById('submitToSheet')?.addEventListener('click', () => {
-            const urlEncodedString = collectFormData(); // Giờ đây hàm này trả về một CHUỖI đã được mã hóa thủ công
+            const formData = collectFormData(); // Lấy đối tượng dữ liệu thuần túy
+            const formDataObj = new FormData(); // Tạo FormData object
+            
+            // Thêm tất cả dữ liệu từ plain object vào FormData
+            for (const key in formData) {
+                formDataObj.append(key, formData[key]);
+            }
             
             // Vô hiệu hóa nút gửi để tránh gửi nhiều lần
             const submitButton = document.getElementById('submitToSheet');
@@ -1398,10 +1397,8 @@
 
             fetch(scriptURL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded' // Khai báo rõ ràng Content-Type
-                },
-                body: urlEncodedString // Truyền CHUỖI đã mã hóa bằng tay
+                // Content-Type sẽ tự động được đặt là multipart/form-data khi dùng FormData
+                body: formDataObj // Truyền đối tượng FormData
             })
             .then(response => {
                 // Luôn cố gắng đọc phản hồi JSON, ngay cả khi có lỗi HTTP
