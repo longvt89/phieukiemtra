@@ -1179,78 +1179,6 @@
     <script>
         // HỢP NHẤT TẤT CẢ JAVASCRIPT VÀO ĐÂY
 
-        // Polyfill cho URLSearchParams (để đảm bảo tương thích với các trình duyệt cũ hơn)
-        // Đây là polyfill đơn giản hơn, tập trung vào việc định nghĩa constructor URLSearchParams(object)
-        (function() {
-            if (typeof window.URLSearchParams === 'undefined') {
-                window.URLSearchParams = function(init) {
-                    var params = {};
-                    if (init && typeof init === 'object') {
-                        if (init instanceof HTMLFormElement) { // Xử lý trường hợp nếu truyền form element
-                            new FormData(init).forEach(function(value, key) {
-                                params[key] = value;
-                            });
-                        } else if (init instanceof URLSearchParams) { // Xử lý trường hợp nếu truyền URLSearchParams
-                            init.forEach(function(value, key) {
-                                params[key] = value;
-                            });
-                        } else { // Xử lý đối tượng JS thuần túy
-                            for (var key in init) {
-                                if (init.hasOwnProperty(key)) {
-                                    params[key] = init[key];
-                                }
-                            }
-                        }
-                    }
-
-                    this.append = function(name, value) {
-                        params[name] = value;
-                    };
-                    this.set = function(name, value) {
-                        params[name] = value;
-                    };
-                    this.get = function(name) {
-                        return params[name];
-                    };
-                    this.has = function(name) {
-                        return params.hasOwnProperty(name);
-                    };
-                    this.forEach = function(callback) {
-                        for (var key in params) {
-                            if (params.hasOwnProperty(key)) {
-                                callback(params[key], key, this);
-                            }
-                        }
-                    };
-                    this.entries = function() {
-                        var _this = this;
-                        var index = 0;
-                        var keys = Object.keys(params);
-                        return {
-                            next: function() {
-                                if (index < keys.length) {
-                                    var key = keys[index++];
-                                    return { value: [key, params[key]], done: false };
-                                } else {
-                                    return { done: true };
-                                }
-                            }
-                        };
-                    };
-                    this.toString = function() {
-                        var arr = [];
-                        for (var key in params) {
-                            if (params.hasOwnProperty(key)) {
-                                arr.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
-                            }
-                        }
-                        return arr.join('&');
-                    };
-                };
-            }
-        })();
-
-
         // Các hàm tính toán tổng và ngày giờ
         function calculateRowTotal(inputElement) {
             const row = inputElement.closest('tr');
@@ -1373,7 +1301,7 @@
         // THAY THẾ BẰNG LINK WEB APP GOOGLE SCRIPT CỦA BẠN SAU KHI TRIỂN KHAI
         const scriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; 
 
-        // Hàm thu thập dữ liệu vào một đối tượng JavaScript thuần túy
+        // Hàm thu thập dữ liệu vào một đối tượng JavaScript thuần túy và chuyển đổi thành chuỗi URL-encoded thủ công
         function collectFormData() {
             const data = {};
             
@@ -1451,12 +1379,18 @@
             data.daiLyPhuTrach = document.querySelector('[name="daiLyPhuTrach"]')?.value || '';
             data.khachHangKyTen = document.querySelector('[name="khachHangKyTen"]')?.value || '';
 
-            return data; // TRẢ VỀ ĐỐI TƯỢNG THUẦN TÚY
+            // CHUYỂN ĐỔI ĐỐI TƯỢNG THUẦN TÚY THÀNH CHUỖI URL-ENCODED BẰNG TAY
+            let urlEncodedParams = [];
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    urlEncodedParams.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+                }
+            }
+            return urlEncodedParams.join('&'); // Trả về chuỗi
         }
 
         document.getElementById('submitToSheet')?.addEventListener('click', () => {
-            const plainDataObject = collectFormData(); // Lấy đối tượng dữ liệu thuần túy
-            const urlEncoded = new URLSearchParams(plainDataObject); // Chuyển đổi thành URLSearchParams tại đây
+            const urlEncodedString = collectFormData(); // Giờ đây hàm này trả về một CHUỖI
             
             // Vô hiệu hóa nút gửi để tránh gửi nhiều lần
             const submitButton = document.getElementById('submitToSheet');
@@ -1468,7 +1402,7 @@
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded' // Khai báo rõ ràng Content-Type
                 },
-                body: urlEncoded // Truyền đối tượng URLSearchParams
+                body: urlEncodedString // Truyền chuỗi đã mã hóa bằng tay
             })
             .then(response => {
                 // Luôn cố gắng đọc phản hồi JSON, ngay cả khi có lỗi HTTP
