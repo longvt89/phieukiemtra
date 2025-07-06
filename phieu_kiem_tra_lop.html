@@ -12,12 +12,12 @@
         .form-section { padding: 15px; }
         .print-section {
             background: white;
-            width: 148mm;
-            height: 205mm;
+            width: 148mm; /* Chiều rộng A5 */
+            height: 205mm; /* Đủ không gian để chữ to hơn, sẽ phụ thuộc vào cài đặt in của trình duyệt */
             margin: 0 auto;
-            padding: 7mm;
-            font-size: 11px;
-            line-height: 1.25;
+            padding: 7mm; /* Giữ padding để nội dung không quá sát mép */
+            font-size: 11px; /* TĂNG FONT TỔNG THỂ */
+            line-height: 1.25; /* Tăng line-height để dễ đọc */
             overflow: hidden;
         }
         .header { display: flex; align-items: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
@@ -61,12 +61,12 @@
         .control-group { margin-bottom: 15px; }
         .control-group label { display: block; margin-bottom: 5px; font-weight: bold; }
         .control-group input, .control-group select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-        .tire-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px; }
-        .tire-input-group { border: 1px solid #ddd; padding: 10px; border-radius: 4px; background: white; }
+        .tire-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
+        .tire-input-group { border: 1px solid #ddd; padding: 5px; border-radius: 4px; background: white; }
         .tire-input-group h4 { margin-bottom: 10px; text-align: center; color: #4472C4; }
         .depth-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 10px; }
-        .depth-inputs input { padding: 2px; font-size: 12px; text-align: center; }
-        .pressure-input { width: 100%; padding: 2px; text-align: center; }
+        .depth-inputs input { width: 100px; padding: 4px; font-size: 12px; text-align: center; }
+        .pressure-input { width: 100%; width: 130px; padding: 4px; text-align: center; }
         .buttons { display: flex; gap: 10px; justify-content: center; }
         .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
         .btn-primary { background: #4472C4; color: white; }
@@ -75,42 +75,106 @@
 
         /* CSS cho chế độ in */
         @media print {
-            body, html {
-                height: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                background: white !important;
-                -webkit-print-color-adjust: exact !important;
-                color-adjust: exact !important;
-            }
-            .container {
-                box-shadow: none !important;
-                max-width: none !important;
-                height: 205mm !important;
-                max-height: 205mm !important;
-                page-break-after: avoid !important;
-            }
-            .form-section, .controls {
-                display: none !important;
-            }
+            body { margin: 0; padding: 0; background: white; -webkit-print-color-adjust: exact !important; color-adjust: exact !important; }
+            .container { box-shadow: none; max-width: none; }
+            .form-section, .controls { display: none; }
             .print-section {
-                width: 148mm !important;
-                height: 205mm !important;
-                margin: 0 auto !important;
-                padding: 7mm !important;
-                page-break-after: avoid !important;
-                page-break-inside: avoid !important;
-                overflow: hidden !important;
-                font-size: 11px !important;
+                width: 148mm;
+                height: 205mm; /* Đảm bảo chiều cao này để vừa 1 trang A5 (210mm - 5mm lề tổng cộng) */
+                margin: 0;
+                padding: 7mm; /* Giữ nguyên lề để nội dung không bị sát mép */
+                page-break-inside: avoid;
+                font-size: 11px; /* Áp dụng font size cho in */
+                line-height: 1.25;
             }
+            /* Đảm bảo các phần tử SVG được in đúng kích thước */
             .car-svg {
-                width: 190px !important;
+                width: 190px !important; 
                 height: 285px !important;
             }
+            .tire-measurements text {
+                font-size: 6.5px !important; 
+            }
+            .tire-measurements rect {
+                stroke-width: 0.6 !important; 
+            }
+            .tire-measurements g[transform*="translate"] rect {
+                width: 48px !important; 
+                height: 20px !important;
+            }
+            .tire-measurements g[transform*="translate"] text {
+                font-size: 6.5px !important; 
+            }
+            .tire-measurements g[transform*="translate"] rect[fill="#4472C4"] {
+                height: 16px !important; 
+            }
+            .tire-measurements g[transform*="translate"] text[fill="white"] {
+                font-size: 5.5px !important; 
+            }
+            #tire-size-box {
+                stroke-width: 1.1 !important;
+            }
+            #tire-size-text {
+                font-size: 8.5px !important;
+                font-weight: bold !important;
+            }
+            .logo {
+                width: 65px !important;
+                height: 65px !important;
+                font-size: 26px !important;
+            }
+            .qr-code {
+                width: 45px !important;
+                height: 45px !important;
+                font-size: 9px !important;
+            }
+            .company-name {
+                font-size: 17px !important;
+            }
+            .company-details {
+                font-size: 10.5px !important;
+            }
+            .title {
+                font-size: 15px !important;
+            }
+            .legend-title {
+                font-size: 12px !important;
+            }
+            .legend-item {
+                font-size: 11px !important;
+            }
+            .shape {
+                width: 16px !important;
+                height: 11px !important;
+            }
+            .yellow-triangle {
+                border-left: 9px solid transparent !important;
+                border-right: 9px solid transparent !important;
+                border-bottom: 13px solid #FFC000 !important;
+            }
+            .position {
+                font-size: 11px !important;
+            }
+            .rec-title {
+                font-size: 12px !important;
+            }
+            .rec-item {
+                font-size: 10.5px !important;
+            }
+            .checkbox {
+                width: 13px !important;
+                height: 13px !important;
+            }
+            .note-section {
+                font-size: 9.5px !important;
+            }
+            .info-section {
+                font-size: 10.5px !important;
+            }
+            /* Đảm bảo lề trang in được đặt tối thiểu */
             @page {
-                size: A5 portrait;
-                margin: 0;
-                padding: 0;
+                size: A5 portrait; /* Đảm bảo kích thước A5 và hướng dọc */
+                margin: 3mm; /* Lề đều 3mm cho tất cả các cạnh */
             }
         }
         .hidden { display: none; }
@@ -409,19 +473,32 @@
         // Đặt ngày hiện tại làm giá trị mặc định cho input ngày
         document.getElementById('inspectionDate').value = new Date().toISOString().split('T')[0];
 
+        /**
+         * Xác định hình dạng (màu sắc) dựa trên độ sâu gai lốp.
+         * @param {number} depth - Độ sâu gai lốp (mm).
+         * @returns {string} Tên lớp CSS tương ứng với hình dạng.
+         */
         function getDepthShape(depth) {
-            if (depth > 4) return 'green-square';
-            else if (depth >= 3) return 'yellow-triangle';
-            else if (depth >= 1.6) return 'red-circle';
-            else return 'red-circle';
+            if (depth > 4) return 'green-square'; // Lốp tốt
+            else if (depth >= 3) return 'yellow-triangle'; // Lốp cần chú ý
+            else if (depth >= 1.6) return 'red-circle'; // Lốp cần thay thế (1.6 - 3mm)
+            else return 'red-circle'; // Dưới 1.6mm cũng là đỏ
         }
 
+        /**
+         * Cập nhật các hình dạng hiển thị độ sâu gai lốp cho từng vị trí lốp.
+         * @param {string} position - Vị trí lốp (ví dụ: 'fl', 'fr', 'rl', 'rr').
+         * @param {number} innerDepth - Độ sâu gai lốp phía trong.
+         * @param {number} outerDepth - Độ sâu gai lốp phía ngoài.
+         */
         function updateTireShapes(position, innerDepth, outerDepth) {
             const shapesContainer = document.getElementById(position + '-shapes');
-            shapesContainer.innerHTML = '';
+            shapesContainer.innerHTML = ''; // Xóa các hình dạng cũ
 
+            // Tạo và thêm hình dạng cho độ sâu phía trong
             const innerShape = document.createElement('div');
             innerShape.className = 'shape ' + getDepthShape(innerDepth);
+            // Điều chỉnh kiểu dáng đặc biệt cho tam giác vàng để hiển thị đúng
             if (getDepthShape(innerDepth) === 'yellow-triangle') {
                 innerShape.style.width = '0';
                 innerShape.style.height = '0';
@@ -431,8 +508,10 @@
             }
             shapesContainer.appendChild(innerShape);
 
+            // Tạo và thêm hình dạng cho độ sâu phía ngoài
             const outerShape = document.createElement('div');
             outerShape.className = 'shape ' + getDepthShape(outerDepth);
+            // Điều chỉnh kiểu dáng đặc biệt cho tam giác vàng để hiển thị đúng
             if (getDepthShape(outerDepth) === 'yellow-triangle') {
                 outerShape.style.width = '0';
                 outerShape.style.height = '0';
@@ -443,7 +522,11 @@
             shapesContainer.appendChild(outerShape);
         }
 
+        /**
+         * Cập nhật các khuyến nghị dựa trên dữ liệu nhập và logic tự động.
+         */
         function updateRecommendations() {
+            // Ánh xạ ID khuyến nghị từ data-rec-id sang ID của checkbox hiển thị
             const recommendationsMap = {
                 'can-chinh-thuoc-lai': 'rec-1',
                 'can-bang-dong': 'rec-2',
@@ -451,114 +534,231 @@
                 'thay-the': 'rec-4'
             };
 
+            // Xóa tất cả các dấu tích khuyến nghị hiển thị (đặt lại màu nền về trắng)
             Object.values(recommendationsMap).forEach(id => {
                 document.getElementById(id).style.background = 'white';
             });
 
+            // Xử lý các khuyến nghị được chọn thủ công từ checkbox (cho lốp dự phòng)
             document.querySelectorAll('.recommendation-checkboxes input[type="checkbox"]').forEach(checkbox => {
                 if (checkbox.checked) {
                     const recId = checkbox.dataset.recId;
                     if (recommendationsMap[recId]) {
+                        // Đặt màu nền cho checkbox hiển thị nếu được chọn
                         document.getElementById(recommendationsMap[recId]).style.background = '#4472C4';
                     }
                 }
             });
 
+            // Logic tự động đưa ra khuyến nghị dựa trên độ sâu gai lốp
             const positions = ['fl', 'fr', 'rl', 'rr'];
-            let needsReplacement = false;
-            let needsRotation = false;
+            let needsReplacement = false; // Cờ cho khuyến nghị thay thế
+            let needsRotation = false;    // Cờ cho khuyến nghị đảo lốp
 
             positions.forEach(pos => {
                 const inner = parseFloat(document.getElementById(pos + '-inner').value) || 0;
                 const outer = parseFloat(document.getElementById(pos + '-outer').value) || 0;
                 
+                // Nếu độ sâu gai lốp nhỏ hơn 1.6mm (ngưỡng pháp lý), cần thay thế
                 if (inner < 1.6 || outer < 1.6) {
                     needsReplacement = true;
                 }
+                // Logic ví dụ cho đảo lốp: nếu sự chênh lệch giữa độ sâu trong và ngoài lớn hơn 1mm
                 if (Math.abs(inner - outer) > 1) { 
                     needsRotation = true;
                 }
             });
 
+            // Áp dụng khuyến nghị tự động
             if (needsReplacement) {
-                document.getElementById('rec-4').style.background = '#4472C4';
+                document.getElementById('rec-4').style.background = '#4472C4'; // Đánh dấu "Thay thế"
             }
             if (needsRotation) {
-                document.getElementById('rec-3').style.background = '#4472C4';
+                document.getElementById('rec-3').style.background = '#4472C4'; // Đánh dấu "Đảo lốp"
             }
         }
 
+        /**
+         * Cập nhật bản xem trước của phiếu in với dữ liệu hiện tại từ form.
+         */
         function updatePreview() {
+            // Cập nhật thông tin cơ bản
             document.getElementById('condition-display').textContent = document.getElementById('tireOverallCondition').value;
             document.getElementById('date-display').textContent = document.getElementById('inspectionDate').value;
             document.getElementById('plate-display').textContent = document.getElementById('licensePlate').value;
             document.getElementById('tech-display').textContent = document.getElementById('technician').value;
             document.getElementById('phone-display').textContent = document.getElementById('phoneNumber').value;
 
+            // Cập nhật Size lốp trên SVG
             document.getElementById('tire-size-text').textContent = document.getElementById('tireSizeInput').value || 'Size Lốp';
 
+            // Cập nhật các thông số đo lốp và hình dạng trên sơ đồ xe
             const positions = ['fl', 'fr', 'rl', 'rr'];
             positions.forEach(pos => {
                 const inner = parseFloat(document.getElementById(pos + '-inner').value) || 0;
                 const outer = parseFloat(document.getElementById(pos + '-outer').value) || 0;
-                document.getElementById(pos + '-display').textContent = inner.toFixed(1) + '/' + outer.toFixed(1);
+                // const pressure = parseFloat(document.getElementById(pos + '-pressure').value) || 0; // Áp suất hiện chưa được hiển thị trên SVG
+
+                // Cập nhật hiển thị độ sâu gai lốp (ví dụ: "3.5/3.2")
+                document.getElementById(pos + '-display').textContent = inner.toFixed(1) + '/' + outer.toFixed(1); // Format 1 chữ số thập phân
+                // Cập nhật các hình dạng màu sắc biểu thị độ sâu gai lốp
                 updateTireShapes(pos, inner, outer);
             });
 
+            // Cập nhật thông số lốp dự phòng
             const spareDepth = parseFloat(document.getElementById('spare-depth').value) || 0;
-            document.getElementById('spare-display').textContent = spareDepth.toFixed(1);
+            // const sparePressure = parseFloat(document.getElementById('spare-pressure').value) || 0; // Áp suất lốp dự phòng hiện chưa được hiển thị trên SVG
+            document.getElementById('spare-display').textContent = spareDepth.toFixed(1); // Format 1 chữ số thập phân
 
+            // Cập nhật các khuyến nghị (bao gồm cả logic checkbox mới)
             updateRecommendations();
         }
 
+        /**
+         * Kích hoạt chức năng in phiếu.
+         */
         function printForm() {
-            updatePreview();
-            
+            updatePreview(); // Đảm bảo dữ liệu xem trước được cập nhật trước khi in
+
+            // Tạo CSS tùy chỉnh cho việc in (đặc biệt là kích thước A5)
             const printCSS = `
                 @page {
-                    size: A5 portrait;
-                    margin: 0;
+                    size: A5 portrait; /* Đặt kích thước trang in là A5 và hướng dọc */
+                    margin: 3mm; /* Lề đều 3mm cho tất cả các cạnh */
                 }
-                body, html {
-                    height: 100% !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                }
-                .print-section {
-                    width: 148mm !important;
-                    height: 205mm !important;
-                    margin: 0 auto !important;
-                    padding: 7mm !important;
-                    page-break-after: avoid !important;
-                    page-break-inside: avoid !important;
-                    overflow: hidden !important;
-                }
-                .container {
-                    height: 205mm !important;
-                    max-height: 205mm !important;
-                }
-                .form-section, .controls {
-                    display: none !important;
+                @media print {
+                    body {
+                        margin: 0;
+                        padding: 0;
+                        background: white;
+                        -webkit-print-color-adjust: exact !important; 
+                        color-adjust: exact !important; 
+                    }
+                    .container {
+                        box-shadow: none;
+                        max-width: none;
+                    }
+                    .form-section, .controls {
+                        display: none; 
+                    }
+                    .print-section {
+                        width: 148mm;
+                        height: 205mm; /* Đảm bảo chiều cao vừa với A5 (210mm - 5mm lề tổng cộng) */
+                        margin: 0;
+                        padding: 7mm; /* Giữ nguyên lề để nội dung không bị sát mép */
+                        font-size: 11px; /* Áp dụng font size cho in */
+                        line-height: 1.25;
+                    }
+                    /* Đảm bảo các phần tử SVG được in đúng kích thước */
+                    .car-svg {
+                        width: 190px !important; 
+                        height: 285px !important;
+                    }
+                    .tire-measurements text {
+                        font-size: 6.5px !important; 
+                    }
+                    .tire-measurements rect {
+                        stroke-width: 0.6 !important; 
+                    }
+                    .tire-measurements g[transform*="translate"] rect {
+                        width: 48px !important; 
+                        height: 20px !important;
+                    }
+                    .tire-measurements g[transform*="translate"] text {
+                        font-size: 6.5px !important; 
+                    }
+                    .tire-measurements g[transform*="translate"] rect[fill="#4472C4"] {
+                        height: 16px !important; 
+                    }
+                    .tire-measurements g[transform*="translate"] text[fill="white"] {
+                        font-size: 5.5px !important; 
+                    }
+                    #tire-size-box {
+                        stroke-width: 1.1 !important;
+                    }
+                    #tire-size-text {
+                        font-size: 8.5px !important;
+                        font-weight: bold !important;
+                    }
+                    .logo {
+                        width: 65px !important;
+                        height: 65px !important;
+                        font-size: 26px !important;
+                    }
+                    .qr-code {
+                        width: 45px !important;
+                        height: 45px !important;
+                        font-size: 9px !important;
+                    }
+                    .company-name {
+                        font-size: 17px !important;
+                    }
+                    .company-details {
+                        font-size: 10.5px !important;
+                    }
+                    .title {
+                        font-size: 15px !important;
+                    }
+                    .legend-title {
+                        font-size: 12px !important;
+                    }
+                    .legend-item {
+                        font-size: 11px !important;
+                    }
+                    .shape {
+                        width: 16px !important;
+                        height: 11px !important;
+                    }
+                    .yellow-triangle {
+                        border-left: 9px solid transparent !important;
+                        border-right: 9px solid transparent !important;
+                        border-bottom: 13px solid #FFC000 !important;
+                    }
+                    .position {
+                        font-size: 11px !important;
+                    }
+                    .rec-title {
+                        font-size: 12px !important;
+                    }
+                    .rec-item {
+                        font-size: 10.5px !important;
+                    }
+                    .checkbox {
+                        width: 13px !important;
+                        height: 13px !important;
+                    }
+                    .note-section {
+                        font-size: 9.5px !important;
+                    }
+                    .info-section {
+                        font-size: 10.5px !important;
+                    }
                 }
             `;
             
+            // Thêm CSS này vào head của tài liệu để áp dụng khi in
             const style = document.createElement('style');
             style.textContent = printCSS;
             document.head.appendChild(style);
             
+            // Gọi lệnh in cơ bản
             window.print();
             
+            // Xóa CSS tùy chỉnh sau khi in để không ảnh hưởng đến hiển thị bình thường
             setTimeout(() => {
                 document.head.removeChild(style);
-            }, 1000);
+            }, 1000); 
         }
 
+        // Tự động cập nhật bản xem trước khi có bất kỳ thay đổi nào trong các trường input hoặc checkbox
         document.addEventListener('input', function(e) {
+            // Chỉ cập nhật nếu phần tử thay đổi là một input hoặc một checkbox trong nhóm khuyến nghị
             if (e.target.tagName === 'INPUT' || (e.target.tagName === 'INPUT' && e.target.type === 'checkbox' && e.target.closest('.recommendation-checkboxes'))) {
                 updatePreview();
             }
         });
 
+        // Khởi tạo bản xem trước khi trang được tải lần đầu
         updatePreview();
     </script>
 </body>
