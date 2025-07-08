@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phiếu Kiểm Tra Xe - PHI LONG AUTO</title>
     <style>
+        /* Reset và cấu hình cơ bản */
         * {
             margin: 0;
             padding: 0;
@@ -21,17 +22,17 @@
         }
 
         .container {
-            max-width: 210mm;
+            max-width: 210mm; /* Kích thước A4 theo chiều ngang */
             margin: 0 auto;
             background: white;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
         .form-content {
-            padding: 15mm;
+            padding: 15mm; /* Khoảng cách lề trong phiếu */
         }
 
-        /* Header */
+        /* Header Section */
         .header {
             display: flex;
             justify-content: space-between;
@@ -70,7 +71,7 @@
             text-align: center;
         }
 
-        /* Customer Info */
+        /* Customer Info Section */
         .customer-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -82,7 +83,7 @@
             margin-bottom: 8px;
             display: flex;
             align-items: center;
-            flex-wrap: wrap; /* Cho phép các mục xuống dòng nếu không đủ chỗ */
+            flex-wrap: wrap;
         }
 
         .info-group label {
@@ -97,37 +98,25 @@
             flex-grow: 1;
             padding: 0 5px;
             font-size: 12px;
-            min-width: 50px; /* Base min-width */
+            min-width: 50px;
         }
-        /* Chiều rộng tùy chỉnh cho các input cụ thể */
-        .info-group .info-input.name-input {
-            min-width: 150px; /* Họ tên */
-        }
-        .info-group .info-input.phone-email-input {
-            min-width: 90px; /* Điện thoại, E-mail */
-        }
-        .info-group .info-input.datetime-input {
-            min-width: 130px; /* Ngày giờ nhận/giao xe */
-        }
-        .info-group .info-input.car-type-input {
-            min-width: 150px; /* Loại & kiểu xe */
-        }
-        .info-group .info-input.license-km-input {
-            min-width: 90px; /* Biển số, Kilô-mét */
-        }
-        
+        .info-group .info-input.name-input { min-width: 150px; }
+        .info-group .info-input.phone-email-input { min-width: 90px; }
+        .info-group .info-input.datetime-input { min-width: 130px; }
+        .info-group .info-input.car-type-input { min-width: 150px; }
+        .info-group .info-input.license-km-input { min-width: 90px; }
+
         .info-group input[type="checkbox"] {
             width: 15px;
             height: 15px;
             margin-right: 5px;
             vertical-align: middle;
         }
-        /* Điều chỉnh cho các dòng có nhiều input hơn */
         .info-group.inline-fields {
-            align-items: flex-start; /* Để các label và input căn trên cùng dòng */
-            display: flex; /* Đảm bảo là flex để quản lý nội dung tốt hơn */
-            justify-content: space-between; /* Đẩy các nhóm label-input ra xa nhau */
-            width: 100%; /* Chiếm toàn bộ chiều rộng có thể */
+            align-items: flex-start;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
         }
         .info-group.inline-fields > div {
             display: flex;
@@ -137,72 +126,97 @@
             margin-right: 5px;
         }
         .info-group.inline-fields .info-input {
-            flex-shrink: 1; /* Cho phép input co lại nếu cần */
+            flex-shrink: 1;
         }
 
 
-        /* Main Content Grid */
+        /* Main Content Grid (Sơ đồ lốp và kiểm tra an toàn) */
         .main-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: 1fr 1fr; /* Chia 2 cột cho sơ đồ lốp và kiểm tra an toàn */
+            gap: 0px; /* Giảm khoảng cách giữa 2 cột để dịch chuyển sang phải tối đa */
             margin-bottom: 15px;
         }
 
         /* Tire Section */
         .tire-section {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-direction: column; /* Sắp xếp các mục theo cột (sơ đồ + info bên dưới) */
+            align-items: flex-start; /* Căn trái các mục */
             position: relative;
         }
 
-        .tire-diagram-container {
+        .tire-diagram-container { /* Thêm một wrapper để chứa sơ đồ và các ô input lốp */
             position: relative;
             width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            margin-bottom: 10px;
+            display: flex; /* Bố cục flex ngang cho sơ đồ và các ô lốp */
+            justify-content: flex-start; /* Căn trái sơ đồ */
+            align-items: flex-start; /* Căn top các mục */
+            height: 230px; /* Chiều cao cố định của vùng sơ đồ */
+            border-bottom: 1px dashed #ccc; /* Đường kẻ phân chia */
+            padding-bottom: 15px; /* Khoảng cách dưới đường kẻ */
+            margin-bottom: 15px; /* Khoảng cách với phần bên dưới (Size lốp, Lưu ý) */
+            margin-left: 55px; /* **Dịch chuyển toàn bộ sơ đồ sang phải thêm 5px** */
         }
 
         .tire-diagram {
             position: relative;
-            width: 200px;
-            height: 280px;
-            border: 2px solid #000;
-            border-radius: 20px;
-            background: #f9f9f9;
+            width: 160px; /* Chiều rộng ảnh sơ đồ */
+            height: 230px; /* Chiều cao ảnh sơ đồ */
+            border: none;
+            background: none;
             z-index: 0;
-            margin-right: 10px;
+            flex-shrink: 0; /* Ngăn không cho co lại */
         }
 
+        .tire-diagram img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            object-fit: contain;
+            object-position: center;
+        }
+
+        /* Khung nhập liệu cho từng lốp */
         .tire-position {
             position: absolute;
-            background: #333;
-            border-radius: 10px;
+            background: #000;
+            border-radius: 5px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             justify-content: center;
             font-size: 10px;
             color: white;
-            padding: 5px;
+            padding: 3px 5px;
             box-sizing: border-box;
             z-index: 1;
+            width: 80px; /* Chiều rộng cố định cho ô nhập */
+            height: auto;
+            line-height: 1.1;
+            border: 1px solid #000;
         }
 
-        /* Điều chỉnh vị trí các ô lốp */
-        .tire-front-left { top: 20px; left: -10px; }
-        .tire-front-right { top: 20px; right: -10px; }
-        .tire-rear-left { bottom: 20px; left: -10px; }
-        .tire-rear-right { bottom: 20px; right: -10px; }
-        .tire-spare { bottom: -25px; left: 50%; transform: translateX(-50%); }
+        /* Tinh chỉnh vị trí các ô nhập liệu Áp suất/Độ dày để khớp với hình ảnh */
+        /* Các giá trị này được điều chỉnh dựa trên link demo và ảnh bạn đã cắt */
+        /* Lốp trước bên trái */
+        .tire-front-left { top: 38px; left: -85px; } 
+        /* Lốp trước bên phải */
+        .tire-front-right { top: 38px; left: 165px; } 
+        /* Lốp sau bên trái */
+        .tire-rear-left { top: 165px; left: -85px; } 
+        /* Lốp sau bên phải */
+        .tire-rear-right { top: 165px; left: 165px; } 
+        /* Lốp dự phòng (nằm dưới cùng của sơ đồ, bên trong container) */
+        .tire-spare { bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; }
+
 
         .tire-input-group {
             display: flex;
             align-items: center;
-            margin-bottom: 3px;
+            margin-bottom: 1px;
             width: 100%;
             justify-content: space-between;
         }
@@ -211,33 +225,29 @@
         }
 
         .tire-input-group label {
-            font-size: 9px;
+            font-size: 8px;
             white-space: nowrap;
-            margin-right: 5px;
+            margin-right: 2px;
         }
 
         .pressure-input, .thickness-input {
             background: white;
             border: 1px solid #ccc;
-            width: 45px;
-            height: 15px;
+            width: 28px;
+            height: 13px;
             text-align: center;
-            font-size: 9px;
-            padding: 0 2px;
+            font-size: 7px;
+            padding: 0 1px;
         }
         .tire-position small {
-            font-size: 8px;
-            margin-left: 2px;
+            font-size: 6px;
+            margin-left: 1px;
         }
 
-        /* Vị trí mới cho Size lốp khuyến cáo */
+        /* Phần "Size lốp khuyến cáo" và "Lưu ý" được chuyển xuống dưới sơ đồ */
         .tire-size-recommendation {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            padding-top: 20px;
-            flex-grow: 1;
-            width: calc(100% - 200px - 10px);
+            width: 100%; /* Chiếm toàn bộ chiều rộng của cột tire-section */
+            margin-bottom: 10px; /* Khoảng cách giữa size và phần Lưu ý */
         }
 
         .tire-size-recommendation label {
@@ -245,21 +255,22 @@
             margin-bottom: 5px;
             white-space: nowrap;
         }
-
         .tire-size-recommendation input {
             border: none;
             border-bottom: 1px dotted #000;
             width: 100%;
             text-align: left;
+            min-width: 120px;
+            font-size: 11px;
         }
 
         .recommendation {
-            margin-top: 0;
             font-size: 11px;
-            width: 100%;
+            width: 100%; /* Chiếm toàn bộ chiều rộng của cột tire-section */
             display: flex;
             flex-direction: column;
             flex-grow: 1;
+            margin-top: 0; /* Đã có khoảng cách từ tire-size-recommendation */
         }
 
         .recommendation label {
@@ -296,7 +307,7 @@
 
         .safety-grid {
             display: grid;
-            grid-template-columns: 3fr 1fr 1fr 1fr; /* 3fr cho Hạng mục, 1fr cho Tốt, Lưu ý, Thay */
+            grid-template-columns: 3fr 1fr 1fr 1fr;
             gap: 5px;
             font-size: 11px;
             flex-grow: 1;
@@ -308,10 +319,9 @@
             padding: 3px;
             background: #f0f0f0;
         }
-        /* Căn chỉnh lại vị trí tiêu đề TỐT, LƯU Ý, THAY */
-        .safety-grid .safety-header:nth-child(2), /* TỐT */
-        .safety-grid .safety-header:nth-child(3), /* LƯU Ý */
-        .safety-grid .safety-header:nth-child(4) { /* THAY */
+        .safety-grid .safety-header:nth-child(2),
+        .safety-grid .safety-header:nth-child(3),
+        .safety-grid .safety-header:nth-child(4) {
             text-align: center;
             display: flex;
             align-items: center;
@@ -319,9 +329,8 @@
             padding: 3px 0;
         }
 
-
         .safety-item {
-            display: contents; /* Vẫn dùng contents để các div con nằm trực tiếp trong grid */
+            display: contents;
         }
 
         .item-name {
@@ -369,33 +378,13 @@
             font-weight: bold;
         }
 
-        .detailed-check .stt {
-            width: 30px;
-        }
+        .detailed-check .stt { width: 30px; }
+        .detailed-check .hang-muc { width: 120px; text-align: left; }
+        .detailed-check .dien-giai { width: 180px; }
+        .detailed-check .sl { width: 50px; }
+        .detailed-check .don-gia, .detailed-check .thanh-tien { width: 90px; }
+        .detailed-check .xac-nhan { width: 60px; }
 
-        .detailed-check .hang-muc {
-            width: 120px;
-            text-align: left;
-        }
-
-        .detailed-check .dien-giai {
-            width: 180px;
-        }
-
-        .detailed-check .sl {
-            width: 50px;
-        }
-
-        .detailed-check .don-gia,
-        .detailed-check .thanh-tien {
-            width: 90px;
-        }
-
-        .detailed-check .xac-nhan {
-            width: 60px;
-        }
-        
-        /* Style cho input và checkbox trong bảng */
         .detailed-check input[type="text"] {
             width: 100%;
             border: none;
@@ -405,9 +394,7 @@
             background: transparent;
         }
 
-        .detailed-check input[type="text"].hang-muc-input {
-            text-align: left;
-        }
+        .detailed-check input[type="text"].hang-muc-input { text-align: left; }
 
         .detailed-check input[type="checkbox"] {
             width: 15px;
@@ -430,23 +417,21 @@
             padding-top: 15px;
         }
 
-        .signature-box {
-            text-align: center;
-        }
+        .signature-box { text-align: center; }
 
         .signature-title {
             font-weight: bold;
             margin-bottom: 30px;
         }
 
-        .signature-input { /* Added style for the new input */
+        .signature-input {
             border: none;
             border-bottom: 1px dotted #000;
             width: 100%;
             text-align: center;
             padding: 2px 0;
             font-size: 12px;
-            margin-top: -20px; /* Adjust as needed to align with signature line */
+            margin-top: -20px;
         }
 
         .signature-line {
@@ -469,6 +454,7 @@
             padding-top: 10px;
         }
 
+        /* Buttons */
         .print-button {
             background: #007bff;
             color: white;
@@ -480,18 +466,17 @@
             font-size: 16px;
         }
 
-        .print-button:hover {
-            background: #0056b3;
-        }
+        .print-button:hover { background: #0056b3; }
+
         .button-group {
             display: flex;
             justify-content: center;
-            gap: 10px; /* Khoảng cách giữa các nút */
+            gap: 10px;
             margin-bottom: 20px;
         }
 
         .tire-form-button {
-            background: #28a745; /* Màu xanh lá cây cho nút mới */
+            background: #28a745;
             color: white;
             padding: 8px 5px;
             border: none;
@@ -499,19 +484,12 @@
             cursor: pointer;
             font-size: 16px;
         }
+        .tire-form-button:hover { background: #218838; }
 
-        .tire-form-button:hover {
-            background: #218838;
-        }
-
-        /* Thêm vào @media print để ẩn nút này khi in */
-        @media print {
-            .button-group {
-                display: none;
-            }
-        }
         /* Print Styles */
         @media print {
+            .button-group { display: none; } /* Ẩn nút khi in */
+
             body {
                 margin: 0;
                 padding: 0;
@@ -535,212 +513,94 @@
                 overflow: hidden;
             }
 
-            .print-button {
-                display: none;
+            .header { margin-bottom: 8px; padding-bottom: 5px; }
+            .header h1 { font-size: 18px; }
+            .form-number { font-size: 14px; }
+            .logo { width: 60px; height: 45px; font-size: 8px; }
+
+            .customer-info { margin-bottom: 8px; gap: 10px; }
+            .info-group { margin-bottom: 4px; font-size: 10px; }
+            .info-group .info-input { font-size: 10px; min-width: 40px; }
+            .info-group .info-input.name-input { min-width: 100px; }
+            .info-group .info-input.phone-email-input { min-width: 60px; }
+            .info-group .info-input.datetime-input { min-width: 90px; }
+            .info-group .info-input.car-type-input { min-width: 100px; }
+            .info-group .info-input.license-km-input { min-width: 60px; }
+            .info-group.inline-fields { justify-content: flex-start; }
+            .info-group.inline-fields > div { margin-right: 5px; }
+            .info-group.inline-fields label { margin-right: 2px; }
+
+            .main-content { 
+                gap: 0px; /* Giảm gap cho in ấn */
+                margin-bottom: 8px; 
             }
 
-            .header {
-                margin-bottom: 8px;
-                padding-bottom: 5px;
-            }
-
-            .header h1 {
-                font-size: 18px;
-            }
-
-            .form-number {
-                font-size: 14px;
-            }
-
-            .logo {
-                width: 60px;
-                height: 45px;
-                font-size: 8px;
-            }
-
-            .customer-info {
-                margin-bottom: 8px;
-                gap: 10px;
-            }
-
-            .info-group {
-                margin-bottom: 4px;
-                font-size: 10px;
-            }
-            .info-group .info-input {
-                font-size: 10px;
-                min-width: 40px; /* Nhỏ hơn khi in */
-            }
-            .info-group .info-input.name-input {
-                min-width: 100px;
-            }
-            .info-group .info-input.phone-email-input {
-                min-width: 60px;
-            }
-            .info-group .info-input.datetime-input {
-                min-width: 90px;
-            }
-            .info-group .info-input.car-type-input {
-                min-width: 100px;
-            }
-            .info-group .info-input.license-km-input {
-                min-width: 60px;
-            }
-            .info-group.inline-fields {
-                justify-content: flex-start; /* Không space-between khi in */
-            }
-            .info-group.inline-fields > div {
-                margin-right: 5px; /* Khoảng cách giữa các nhóm label-input */
-            }
-            .info-group.inline-fields label {
-                margin-right: 2px;
-            }
-
-
-            .main-content {
-                gap: 8px;
-                margin-bottom: 8px;
-            }
-
+            /* Điều chỉnh cho in ấn - quan trọng */
             .tire-diagram-container {
-                margin-bottom: 5px;
+                justify-content: flex-start;
+                height: 160px;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+                margin-left: 10px; /* Dịch chuyển sang phải một chút khi in */
             }
 
             .tire-diagram {
-                width: 150px;
-                height: 220px;
-                margin-right: 5px;
+                width: 100px;
+                height: 160px;
             }
 
             .tire-position {
                 font-size: 7px;
-                padding: 3px;
+                padding: 1px 2px;
+                width: 55px;
+                border-radius: 3px;
+                line-height: 1;
             }
 
-            .tire-input-group label {
-                font-size: 7px;
-            }
+            /* Vị trí ô nhập liệu khi in */
+            .tire-front-left { top: 25px; left: -60px; }
+            .tire-front-right { top: 25px; left: 105px; }
+            .tire-rear-left { top: 105px; left: -60px; }
+            .tire-rear-right { top: 105px; left: 105px; }
+            .tire-spare { bottom: 0px; left: 50%; transform: translateX(-50%); width: 55px; }
 
+            .tire-input-group label { font-size: 5px; margin-right: 1px; }
             .pressure-input, .thickness-input {
-                width: 30px;
-                height: 10px;
-                font-size: 7px;
+                width: 20px;
+                height: 8px;
+                font-size: 5px;
+                padding: 0;
             }
-            .tire-position small {
-                font-size: 6px;
-            }
+            .tire-position small { font-size: 4px; margin-left: 0; }
 
-            .tire-size-recommendation {
-                padding-top: 15px;
-                font-size: 9px;
+            .tire-section > .tire-size-recommendation {
+                margin-top: 10px;
             }
-            .tire-size-recommendation label {
-                margin-bottom: 2px;
-            }
-            .tire-size-recommendation input {
-                min-width: 80px;
-                font-size: 9px;
-            }
+            .tire-size-recommendation label { margin-bottom: 1px; font-size: 8px; }
+            .tire-size-recommendation input { min-width: 70px; font-size: 8px; }
 
-            .recommendation {
-                margin-top: 0;
-                font-size: 9px;
-                height: 100px;
-            }
-            .recommendation textarea {
-                min-height: 80px;
-                height: 80px;
-                font-size: 9px;
-            }
+            .recommendation { font-size: 8px; height: 60px; margin-top: 5px; }
+            .recommendation textarea { min-height: 50px; height: 50px; font-size: 8px; }
 
-            .safety-check {
-                padding: 5px;
-                height: auto; 
-                flex-grow: 0;
-            }
-            .safety-grid {
-                flex-grow: 0;
-                height: auto;
-            }
-            .safety-item {
-                page-break-inside: avoid;
-            }
+            .safety-check { padding: 5px; height: auto; flex-grow: 0; }
+            .safety-grid { flex-grow: 0; height: auto; font-size: 9px; gap: 2px; }
+            .safety-title { padding: 3px; font-size: 11px; margin: -5px -5px 5px -5px; }
+            .checkbox { width: 12px; height: 12px; }
+            .item-name { padding: 1px; font-size: 9px; }
 
+            .detailed-check { margin-top: 8px; font-size: 9px; }
+            .detailed-check th, .detailed-check td { padding: 2px; font-size: 9px; }
+            .detailed-check input[type="text"] { font-size: 9px; }
+            .detailed-check input[type="checkbox"] { width: 12px; height: 12px; }
 
-            .safety-title {
-                padding: 3px;
-                font-size: 11px;
-                margin: -5px -5px 5px -5px;
-            }
+            .footer { font-size: 8px; margin-top: 8px; padding-top: 5px; line-height: 1.1; }
 
-            .safety-grid {
-                font-size: 9px;
-                gap: 2px;
-            }
+            .signature-section { margin-top: 8px; padding-top: 5px; gap: 30px; }
+            .signature-title { margin-bottom: 15px; font-size: 10px; }
+            .signature-input { font-size: 10px; margin-top: -10px; }
+            .signature-subtitle { font-size: 8px; }
 
-            .checkbox {
-                width: 12px;
-                height: 12px;
-            }
-
-            .item-name {
-                padding: 1px;
-                font-size: 9px;
-            }
-
-            .detailed-check {
-                margin-top: 8px;
-                font-size: 9px;
-            }
-
-            .detailed-check th,
-            .detailed-check td {
-                padding: 2px;
-                font-size: 9px;
-            }
-
-            .detailed-check input[type="text"] {
-                font-size: 9px;
-            }
-
-            .detailed-check input[type="checkbox"] {
-                width: 12px;
-                height: 12px;
-            }
-
-            .footer {
-                font-size: 8px;
-                margin-top: 8px;
-                padding-top: 5px;
-                line-height: 1.1;
-            }
-
-            .signature-section {
-                margin-top: 8px;
-                padding-top: 5px;
-                gap: 30px;
-            }
-
-            .signature-title {
-                margin-bottom: 15px;
-                font-size: 10px;
-            }
-
-            .signature-input { /* Adjusted for print */
-                font-size: 10px;
-                margin-top: -10px;
-            }
-
-            .signature-subtitle {
-                font-size: 8px;
-            }
-
-            /* Đảm bảo tất cả nội dung vừa 1 trang */
-            .main-content,
-            .detailed-check,
-            .signature-section {
-                page-break-inside: avoid;
-            }
+            .main-content, .detailed-check, .signature-section { page-break-inside: avoid; }
         }
     </style>
 </head>
@@ -750,7 +610,7 @@
             <button class="print-button" onclick="handlePrint()">🖨️ In Phiếu Kiểm Tra</button>
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieu_kiem_tra_lop.html'">📄 Phiếu Kiểm Tra Lốp</button>
             <button class="tire-form-button" id="submitToSheet">📤 Gửi Thông Tin</button>
-        </div>    
+        </div>
         <div class="form-content">
             <div class="header">
                 <div class="header-left">
@@ -816,77 +676,78 @@
                 <div class="tire-section">
                     <div class="tire-diagram-container">
                         <div class="tire-diagram">
-                            <div class="tire-position tire-front-left">
-                                <div class="tire-input-group">
-                                    <label>Áp suất:</label>
-                                    <input type="text" class="pressure-input" name="tire_pressure_FL" placeholder="0">
-                                    <small>kg/cm²</small>
-                                </div>
-                                <div class="tire-input-group">
-                                    <label>Độ dày:</label>
-                                    <input type="text" class="thickness-input" name="tire_thickness_FL" placeholder="0">
-                                    <small>mm</small>
-                                </div>
+                            <img src="Untitled.png" alt="Sơ đồ ô tô" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                        </div>
+
+                        <div class="tire-position tire-front-left">
+                            <div class="tire-input-group">
+                                <label>Áp suất:</label>
+                                <input type="text" class="pressure-input" name="tire_pressure_FL" placeholder="0">
+                                <small>kg/cm²</small>
                             </div>
-                            <div class="tire-position tire-front-right">
-                                <div class="tire-input-group">
-                                    <label>Áp suất:</label>
-                                    <input type="text" class="pressure-input" name="tire_pressure_FR" placeholder="0">
-                                    <small>kg/cm²</small>
-                                </div>
-                                <div class="tire-input-group">
-                                    <label>Độ dày:</label>
-                                    <input type="text" class="thickness-input" name="tire_thickness_FR" placeholder="0">
-                                    <small>mm</small>
-                                </div>
-                            </div>
-                            <div class="tire-position tire-rear-left">
-                                <div class="tire-input-group">
-                                    <label>Áp suất:</label>
-                                    <input type="text" class="pressure-input" name="tire_pressure_RL" placeholder="0">
-                                    <small>kg/cm²</small>
-                                </div>
-                                <div class="tire-input-group">
-                                    <label>Độ dày:</label>
-                                    <input type="text" class="thickness-input" name="tire_thickness_RL" placeholder="0">
-                                    <small>mm</small>
-                                </div>
-                            </div>
-                            <div class="tire-position tire-rear-right">
-                                <div class="tire-input-group">
-                                    <label>Áp suất:</label>
-                                    <input type="text" class="pressure-input" name="tire_pressure_RR" placeholder="0">
-                                    <small>kg/cm²</small>
-                                </div>
-                                <div class="tire-input-group">
-                                    <label>Độ dày:</label>
-                                    <input type="text" class="thickness-input" name="tire_thickness_RR" placeholder="0">
-                                    <small>mm</small>
-                                </div>
-                            </div>
-                            <div class="tire-position tire-spare">
-                                <div class="tire-input-group">
-                                    <label>Áp suất:</label>
-                                    <input type="text" class="pressure-input" name="tire_pressure_Spare" placeholder="0">
-                                    <small>kg/cm²</small>
-                                </div>
-                                <div class="tire-input-group">
-                                    <label>Độ dày:</label>
-                                    <input type="text" class="thickness-input" name="tire_thickness_Spare" placeholder="0">
-                                    <small>mm</small>
-                                </div>
+                            <div class="tire-input-group">
+                                <label>Độ dày:</label>
+                                <input type="text" class="thickness-input" name="tire_thickness_FL" placeholder="0">
+                                <small>mm</small>
                             </div>
                         </div>
-                        
-                        <div class="tire-size-recommendation">
-                            <label for="tireSize">Size lốp khuyến cáo:</label>
-                            <input type="text" id="tireSize" name="sizeLopKhuyenCao" placeholder="Nhập size lốp">
+                        <div class="tire-position tire-front-right">
+                            <div class="tire-input-group">
+                                <label>Áp suất:</label>
+                                <input type="text" class="pressure-input" name="tire_pressure_FR" placeholder="0">
+                                <small>kg/cm²</small>
+                            </div>
+                            <div class="tire-input-group">
+                                <label>Độ dày:</label>
+                                <input type="text" class="thickness-input" name="tire_thickness_FR" placeholder="0">
+                                <small>mm</small>
+                            </div>
+                        </div>
+                        <div class="tire-position tire-rear-left">
+                            <div class="tire-input-group">
+                                <label>Áp suất:</label>
+                                <input type="text" class="pressure-input" name="tire_pressure_RL" placeholder="0">
+                                <small>kg/cm²</small>
+                            </div>
+                            <div class="tire-input-group">
+                                <label>Độ dày:</label>
+                                <input type="text" class="thickness-input" name="tire_thickness_RL" placeholder="0">
+                                <small>mm</small>
+                            </div>
+                        </div>
+                        <div class="tire-position tire-rear-right">
+                            <div class="tire-input-group">
+                                <label>Áp suất:</label>
+                                <input type="text" class="pressure-input" name="tire_pressure_RR" placeholder="0">
+                                <small>kg/cm²</small>
+                            </div>
+                            <div class="tire-input-group">
+                                <label>Độ dày:</label>
+                                <input type="text" class="thickness-input" name="tire_thickness_RR" placeholder="0">
+                                <small>mm</small>
+                            </div>
+                        </div>
+                        <div class="tire-position tire-spare">
+                            <div class="tire-input-group">
+                                <label>Áp suất:</label>
+                                <input type="text" class="pressure-input" name="tire_pressure_Spare" placeholder="0">
+                                <small>kg/cm²</small>
+                            </div>
+                            <div class="tire-input-group">
+                                <label>Độ dày:</label>
+                                <input type="text" class="thickness-input" name="tire_thickness_Spare" placeholder="0">
+                                <small>mm</small>
+                            </div>
                         </div>
                     </div>
-                    
+
+                    <div class="tire-size-recommendation">
+                        <label for="tireSize">Size lốp khuyến cáo:</label>
+                        <input type="text" id="tireSize" name="sizeLopKhuyenCao" placeholder="Nhập size lốp">
+                    </div>
                     <div class="recommendation">
                         <label for="notes">Lưu ý:</label>
-                        <textarea id="notes" name="ghiChuChung" placeholder="Ghi chú các lưu ý cần thiết" style="width: 100%; height: auto; flex-grow: 1; border: 1px dotted #000; padding: 5px; resize: vertical; font-size: 11px;"></textarea>
+                        <textarea id="notes" name="ghiChuChung" placeholder="Ghi chú các lưu ý cần thiết"></textarea>
                     </div>
                 </div>
 
@@ -899,91 +760,91 @@
                         <div class="safety-header">TỐT</div>
                         <div class="safety-header">LƯU Ý</div>
                         <div class="safety-header">THAY</div>
-                        
+
                         <div class="safety-item">
                             <div class="item-name">Lốp</div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_Lop_Tot"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_Lop_LuuY"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_Lop_Thay"></div>
                         </div>
-                        
+
                         <div class="safety-item">
                             <div class="item-name">Gạt mưa</div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_GatMua_Tot"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_GatMua_LuuY"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_GatMua_Thay"></div>
                         </div>
-                        
+
                         <div class="safety-item">
                             <div class="item-name">Nước rửa kính</div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocRuaKinh_Tot"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocRuaKinh_LuuY"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocRuaKinh_Thay"></div>
                         </div>
-                        
+
                         <div class="safety-item">
                             <div class="item-name">Má phanh</div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_MaPhanh_Tot"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_MaPhanh_LuuY"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_MaPhanh_Thay"></div>
                         </div>
-                        
+
                         <div class="safety-item">
                             <div class="item-name">Đĩa phanh</div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DiaPhanh_Tot"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DiaPhanh_LuuY"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DiaPhanh_Thay"></div>
                         </div>
-                        
+
                         <div class="safety-item">
                             <div class="item-name">Dầu phanh</div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauPhanh_Tot"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauPhanh_LuuY"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauPhanh_Thay"></div>
                         </div>
-                        
+
                         <div class="safety-item">
                             <div class="item-name">Dầu động cơ</div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauDongCo_Tot"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauDongCo_LuuY"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauDongCo_Thay"></div>
                         </div>
-                        
+
                         <div class="safety-item">
                             <div class="item-name">Lọc dầu động cơ</div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocDauDongCo_Tot"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocDauDongCo_LuuY"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocDauDongCo_Thay"></div>
                         </div>
-                        
+
                         <div class="safety-item">
                             <div class="item-name">Nước làm mát</div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocLamMat_Tot"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocLamMat_LuuY"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocLamMat_Thay"></div>
                         </div>
-                        
+
                         <div class="safety-item">
                             <div class="item-name">Ắc quy</div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_AcQuy_Tot"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_AcQuy_LuuY"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_AcQuy_Thay"></div>
                         </div>
-                        
+
                         <div class="safety-item">
                             <div class="item-name">Lọc gió động cơ</div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDongCo_Tot"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDongCo_LuuY"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDongCo_Thay"></div>
                         </div>
-                        
+
                         <div class="safety-item">
                             <div class="item-name">Lọc gió điều hòa</div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDieuHoa_Tot"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDieuHoa_LuuY"></div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDieuHoa_Thay"></div>
                         </div>
-                        
+
                         <div class="safety-item">
                             <div class="item-name">Thước lái</div>
                             <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_ThuocLai_Tot"></div>
@@ -1145,7 +1006,7 @@
                     <tr class="total-row">
                         <td colspan="5">TỔNG CỘNG</td>
                         <td><input type="text" id="grand-total" name="tongCong" readonly style="font-weight: bold;"></td>
-                        <td></td> 
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
@@ -1297,7 +1158,7 @@
         });
 
         // THAY THẾ BẰNG LINK WEB APP GOOGLE SCRIPT CỦA BẠN SAU KHI TRIỂN KHAI
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; 
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec';
 
         // Hàm thu thập dữ liệu vào một đối tượng JavaScript thuần túy và chuyển đổi thành chuỗi URL-encoded thủ công
         function collectFormData() {
@@ -1372,7 +1233,6 @@
 
             data.tongCongThanhToan = document.getElementById('grand-total')?.value || '';
 
-
             // 5. Chữ ký
             data.daiLyPhuTrach = document.querySelector('[name="daiLyPhuTrach"]')?.value || '';
             data.khachHangKyTen = document.querySelector('[name="khachHangKyTen"]')?.value || '';
@@ -1380,7 +1240,7 @@
             return data; // TRẢ VỀ ĐỐI TƯỢNG THUẦN TÚY
         }
 
-        // HÀM GỬI DỮ LIỆU ĐẾN APPS SCRIPT (ĐÂY LÀ PHẦN SỬA CHỮA CHÍNH)
+        // HÀM GỬI DỮ LIỆU ĐẾN APPS SCRIPT
         document.getElementById('submitToSheet')?.addEventListener('click', () => {
             const formData = collectFormData(); // Lấy đối tượng dữ liệu thuần túy
             const formDataObj = new FormData(); // Tạo FormData object
@@ -1416,7 +1276,7 @@
                     // Có thể reset form tại đây nếu muốn
                     // document.getElementById('yourFormId').reset(); 
                 } else {
-                    alert('❌ Có lỗi xảy ra khi gửi: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
+                    alert('❌ Không gửi được,Không biết hỏi ai: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
                     console.error('Lỗi từ Apps Script:', data.message);
                 }
             })
