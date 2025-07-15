@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Phiếu Kiểm Tra Gầm</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* ------------------------------------- */
+    /* Ghi chú: Phần Styling chung cho màn hình hiển thị */
+    /* ------------------------------------- */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f3f4f6; /* Màu nền xám nhạt */
+      padding: 1rem; /* Giảm padding tổng thể */
+      color: #212529; /* Màu chữ chính */
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    /* Màu nền cho tiêu đề bảng */
+    .table-header-bg {
+      background-color: #fde68a; /* Vàng */
+    }
+    /* Màu nền và chữ cho cột 'Thay' */
+    .checkbox-header-thay {
+      background-color: #ea580c; /* Cam */
+      color: white;
+    }
+    /* Màu nền và chữ cho cột 'Lưu Ý' */
+    .checkbox-header-luuy {
+      background-color: #e0e7ff; /* Xanh nhạt */
+      color: #1e3a8a;
+    }
+    /* Màu nền và chữ cho cột 'Tốt' */
+    .checkbox-header-tot {
+      background-color: #22c55e; /* Xanh lá */
+      color: white;
+    }
+    /* Kiểu dáng cho tiêu đề các phần form */
+    .form-section-title {
+      font-weight: 700; /* In đậm */
+      border-bottom: 1px solid #334155; /* Giảm độ dày viền */
+      padding-bottom: 0.1rem; /* Giảm padding dưới */
+      margin-bottom: 0.4rem; /* Giảm khoảng cách dưới */
+      font-size: 1.1rem; /* Giảm cỡ chữ */
+      color: #1e293b; /* Màu chữ */
+    }
+    /* Kiểu dáng chung cho tiêu đề và ô dữ liệu bảng */
+    th, td {
+      vertical-align: top; /* Căn trên cùng để nội dung textarea không bị lệch */
+      padding: 0.2rem 0.4rem; /* Giảm khoảng đệm */
+      border-bottom: 1px solid #94a3b8; /* Đường viền dưới */
+    }
+    /* Kiểu dáng cho nhãn của checkbox */
+    label.checkbox-label {
+      cursor: pointer; /* Biểu tượng con trỏ khi di chuột */
+      user-select: none; /* Không cho phép chọn văn bản */
+    }
+    /* Kiểu dáng cho ô nhập văn bản nhiều dòng (textarea) */
+    textarea {
+      resize: vertical; /* Chỉ cho phép thay đổi kích thước theo chiều dọc */
+      padding: 0.15rem 0.3rem; /* Giảm padding */
+      border: 1px solid #cbd5e1;
+      border-radius: 0.25rem;
+      font-family: inherit;
+      width: 100%;
+      min-height: 28px; /* Giảm min-height */
+      overflow-y: hidden; /* Ẩn thanh cuộn dọc mặc định trên màn hình, sẽ tự động resize */
+      box-sizing: border-box; /* Đảm bảo padding không làm tràn width */
+      white-space: pre-wrap; /* Quan trọng: Cho phép xuống dòng tự động và giữ khoảng trắng */
+      word-wrap: break-word; /* Ngắt từ dài để tránh tràn */
+    }
+    /* Kiểu dáng cho các ô nhập liệu dạng text, date, time, number */
+    input[type="text"], input[type="date"], input[type="time"], input[type="number"] {
+      border: 1px solid #cbd5e1;
+      border-radius: 0.25rem;
+      padding: 0.15rem 0.3rem; /* Giảm padding */
+      font-family: inherit;
+      box-sizing: border-box;
+      min-height: 24px; /* Giảm min-height */
+      width: 100%;
+    }
+    /* Kích thước container cho logo */
+    .logo-container {
+      width: 70px; /* Giảm kích thước logo */
+      height: 70px;
+    }
+    .logo-container img {
+      width: 70px;
+      height: 70px;
+    }
+    /* Điều chỉnh các cặp label-input trong phần thông tin */
+    .info-field-group {
+      display: flex;
+      align-items: center;
+      gap: 0.2rem; /* Khoảng cách nhỏ giữa label và input */
+    }
+    .info-field-group label {
+      flex-shrink: 0; /* Ngăn label bị co lại */
+      white-space: nowrap; /* Ngăn label xuống dòng */
+      font-weight: bold;
+      min-width: 40px; /* Đảm bảo label có độ rộng tối thiểu */
+    }
+    .info-field-group input,
+    .info-field-group textarea {
+      flex-grow: 1; /* Cho phép input/textarea mở rộng */
+      min-width: 0; /* Cho phép input/textarea co lại */
+    }
+
+    /* === ĐIỀU CHỈNH: Style cho textarea trong bảng (hiện trạng kiểm tra) === */
+    .table-textarea {
+      resize: none; /* Không cho phép resize bằng tay */
+      overflow-y: hidden; /* Ẩn thanh cuộn mặc định trên màn hình */
+      min-height: 22px; /* Chiều cao tối thiểu cho 1 dòng text */
+      line-height: 1.2; /* Tối ưu line-height cho nội dung */
+      padding: 0.1rem 0.2rem; /* Padding nhỏ hơn */
+      word-wrap: break-word; /* Đảm bảo từ dài tự động xuống dòng */
+      white-space: pre-wrap; /* Quan trọng: Giữ xuống dòng và khoảng trắng */
+      /* Đặt một width cụ thể hoặc max-width để điều khiển chiều rộng trên màn hình */
+      width: 95%; /* ĐIỀU CHỈNH: Chiều rộng trên màn hình để nó không chiếm 100% của TD */
+    }
+
+    /* === ĐIỀU CHỈNH: Style cho textarea "Yêu cầu ban đầu của khách hàng" trên màn hình === */
+    textarea[name="customerRequest"] {
+        width: 100%; /* Đảm bảo chiếm hết chiều rộng của div cha */
+        min-height: 50px; /* Tăng chiều cao tối thiểu để dễ nhập liệu */
+        resize: vertical; /* Cho phép resize dọc */
+        box-sizing: border-box;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+
+    /* ------------------------------------- */
+    /* Ghi chú: Phần Styling khi in ấn (@media print) */
+    /* ------------------------------------- */
+    @media print {
+      body {
+        background: white;
+        padding: 0 !important;
+        margin: 0 !important;
+        font-size: 7.5pt; /* Giảm cỡ chữ xuống 7.5pt để thu gọn tối đa */
+        line-height: 1.1 !important; /* Giảm khoảng cách dòng hơn nữa */
+      }
+      .no-print {
+        display: none !important;
+      }
+      table {
+        page-break-inside: avoid;
+        width: 100% !important;
+        margin: 0 !important;
+      }
+      /* === ĐIỀU CHỈNH CHUNG CHO INPUT/TEXTAREA KHI IN === */
+      textarea, input {
+        border: 1px solid black !important;
+        box-shadow: none !important;
+        padding: 0.03rem 0.08rem !important; /* Thu gọn padding tối đa khi in */
+        min-height: unset !important; /* Quan trọng: Bỏ min-height cứng nhắc */
+        height: auto !important; /* Quan trọng: Cho phép chiều cao tự động co dãn theo nội dung */
+        overflow: visible !important; /* Quan trọng: HIỂN THỊ nội dung tràn (không cắt, không scroll) */
+        width: auto !important;
+        flex-grow: 1 !important;
+        flex-shrink: 1 !important;
+        box-sizing: border-box !important;
+        white-space: pre-wrap !important; /* Đảm bảo xuống dòng khi in */
+        word-wrap: break-word !important; /* Ngắt từ dài khi in */
+      }
+      /* === ĐIỀU CHỈNH CHO "YÊU CẦU BAN ĐẦU CỦA KHÁCH HÀNG" KHI IN === */
+      textarea[name="customerRequest"] {
+          min-height: 40px !important; /* Chiều cao tối thiểu khi in, nhưng sẽ tự động tăng */
+          padding: 0.1rem 0.2rem !important; /* Giữ padding hợp lý */
+          width: 100% !important; /* Đảm bảo chiếm 100% chiều rộng của div chứa nó */
+          max-width: 100% !important;
+      }
+      /* === ĐIỀU CHỈNH CHO TEXTAREA TRONG BẢNG KHI IN (QUAN TRỌNG NHẤT) === */
+      .table-textarea {
+        min-height: 16px !important; /* ĐIỀU CHỈNH: Chiều cao tối thiểu cho 1 dòng khi in (giảm từ 18px) */
+        height: auto !important; /* Đảm bảo tự động co giãn theo nội dung */
+        overflow: visible !important; /* Hiển thị toàn bộ nội dung, không cắt */
+        line-height: 1 !important; /* ĐIỀU CHỈNH: Giảm line-height khi in (từ 1.1) */
+        padding: 0.02rem 0.05rem !important; /* ĐIỀU CHỈNH: Padding rất nhỏ (giảm từ 0.05rem 0.1rem) */
+        /* === ĐIỀU CHỈNH CHIỀU RỘNG CỦA TEXTAREA BÊN TRONG CỘT KHI IN === */
+        width: 100% !important; /* BẮT BUỘC TEXTAREA CHIẾM 100% CHIỀU RỘNG CỦA Ô TD */
+        max-width: 100% !important; /* Đảm bảo không bị giới hạn */
+      }
+      
+      section.grid {
+        gap-x: 0.3rem !important; /* Giảm khoảng cách giữa các cột tối đa */
+        gap-y: 0.05rem !important; /* Giảm khoảng cách giữa các hàng tối đa */
+        margin-bottom: 0.3rem !important; /* ĐIỀU CHỈNH: Giảm margin-bottom của section (từ 0.4rem) */
+      }
+      .info-field-group label {
+        min-width: 35px !important; /* Thu gọn min-width của label khi in */
+        margin-right: 0.1rem !important; /* Giảm khoảng cách */
+      }
+      header {
+        margin-bottom: 0.2rem !important;
+        padding-bottom: 0.2rem !important;
+      }
+      h1 {
+        font-size: 1.0rem !important; /* Giảm cỡ chữ tiêu đề chính hơn nữa */
+      }
+      .form-section-title {
+        font-size: 0.75rem !important; /* Giảm cỡ chữ tiêu đề section hơn nữa */
+        margin-bottom: 0.05rem !important;
+        padding-bottom: 0.03rem !important;
+        border-bottom-width: 1px !important;
+      }
+      .max-w-6xl {
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important; /* ĐIỀU CHỈNH: Đảm bảo padding của form là 0 */
+        margin: 0 !important;
+      }
+      .p-1, .p-2, .p-3, .p-4, .px-3, .py-1, .pl-3 {
+        padding: 0.03rem !important; /* Giảm padding chung cho các ô bảng tối đa */
+      }
+      .mb-6 {
+        margin-bottom: 0.2rem !important;
+      }
+      .mt-6 {
+        margin-top: 0.2rem !important;
+      }
+      .rounded, .rounded-lg {
+          border-radius: 0 !important;
+      }
+
+      table th, table td {
+          padding: 0.03rem 0.08rem !important; /* Padding siêu nhỏ cho ô bảng */
+          border: 1px solid black !important;
+          vertical-align: top !important; /* Quan trọng: Căn trên cùng khi in */
+      }
+      table th:nth-child(1),
+      table td:nth-child(1) {
+        width: 120px !important; /* Thu gọn chiều rộng cột đầu tiên */
+        min-width: 120px !important;
+      }
+      /* === ĐIỀU CHỈNH CHÍNH CHO CHIỀU RỘNG CỘT THỨ 2 (HIỆN TRẠNG KIỂM TRA) === */
+      table th:nth-child(2),
+      table td:nth-child(2) {
+        width: 400px !important; /* CHIỀU RỘNG TỔNG THỂ CỦA CỘT KHI IN (như khung bạn đã vẽ) */
+        min-width: 400px !important; 
+        /* Giá trị này sẽ định nghĩa "giới hạn table" mà bạn đã khoanh đỏ. */
+        /* Bạn có thể tăng hoặc giảm nó tùy theo ý muốn chính xác. */
+      }
+      /* === ĐIỀU CHỈNH CÁC CỘT CHECKBOX ĐỂ NHƯỜNG KHÔNG GIAN (Đẩy sát vào) === */
+      table th:nth-child(3),
+      table td:nth-child(3),
+      table th:nth-child(4),
+      table td:nth-child(4),
+      table th:nth-child(5),
+      table td:nth-child(5) {
+        width: 20px !important; /* GIẢM CHIỀU RỘNG TỐI ĐA CHO CÁC CHECKBOX */
+        min-width: 20px !important;
+        max-width: 20px !important;
+      }
+      .text-sm {
+          font-size: 0.7rem !important; /* Giảm cỡ chữ chung cho các phần nhỏ hơn nữa */
+      }
+      .text-slate-700, .text-slate-800, .text-slate-900 {
+          color: black !important;
+      }
+      strong {
+          font-weight: bold !important;
+      }
+      p {
+        margin: 0.05rem 0 !important; /* Giảm margin cho các đoạn văn */
+      }
+      /* === ĐIỀU CHỈNH: Phần chú thích khi in === */
+      section.note-section { /* Đổi tên class để dễ quản lý */
+          padding: 0.1rem 0.2rem !important; /* ĐIỀU CHỈNH: Giảm padding phần chú thích tối đa */
+          min-height: unset !important; /* Bỏ min-height để nó tự co lại */
+          height: auto !important; /* Quan trọng: Cho phép chiều cao tự động */
+          margin-top: 0.1rem !important; /* ĐIỀU CHỈNH: Giảm margin-top tối đa */
+          font-size: 0.65rem !important; /* ĐIỀU CHỈNH: Giảm cỡ chữ trong chú thích (từ 0.65rem xuống 0.6rem) */
+          line-height: 1 !important; /* ĐIỀU CHỈNH: Giảm line-height trong chú thích (từ 1.05) */
+          border: 1px solid #ffc107 !important; /* Giữ viền */
+          background-color: #fff3cd !important; /* Giữ màu nền */
+      }
+      section.note-section p {
+          margin: 0 !important; /* Bỏ margin của các đoạn văn trong chú thích */
+      }
+
+
+      /* Logo header khi in */
+      header .logo-container {
+        width: 50px !important; /* Thu nhỏ logo khi in */
+        height: 50px !important;
+      }
+      header .logo-container img {
+        width: 50px !important;
+        height: 50px !important;
+      }
+      header h1 {
+        font-size: 1.0rem !important;
+      }
+      header div[style="width: 80px;"] {
+        width: 50px !important;
+      }
+      .mb-2 { /* Điều chỉnh cho section "Khoảng cách mỗi lần bảo dưỡng" */
+          margin-bottom: 0.15rem !important; /* Giảm margin-bottom hơn nữa */
+      }
+      .mb-3 { /* Điều chỉnh cho section "Yêu cầu ban đầu của khách hàng" và info grid */
+          margin-bottom: 0.25rem !important; /* Giảm margin-bottom hơn nữa */
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="no-print bg-gray-800 text-white p-3 mb-6 flex justify-center space-x-4 rounded-lg shadow-md">
+    <a href="#" onclick="window.print(); return false;" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+      In Phiếu
+    </a>
+    <a href="#" id="submitGamFormBtn" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+      Gửi Thông Tin
+    </a>
+    <a href="#" onclick="alert('Đây là Phiếu kiểm tra an toàn xe!'); return false;" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+      Phiếu Kiểm Tra An Toàn Xe
+    </a>
+  </div>
+
+  
+  <form id="inspectionForm" action="https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec" method="POST" class="max-w-6xl mx-auto bg-white p-4 shadow-lg rounded-lg" autocomplete="off">
+    <input type="hidden" name="formType" value="PhieuKiemTraGam"> <header class="mb-4 border-b border-slate-300 pb-3 flex flex-wrap items-center justify-between">
+      <div class="logo-container mr-3 flex-shrink-0">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/81e5bc4f-abb6-43b3-9a14-42045cd3eb04.png"
+             alt="Logo công ty Phi Long Automobile màu xanh và trắng, thiết kế dạng biểu tượng hình khối hiện đại"
+             onerror="this.style.display='none'"
+             style="background-color:#e0f2fe; border-radius: 8px; object-fit: contain;" />
+      </div>
+      <h1 class="text-2xl font-extrabold text-slate-900 flex-grow text-center min-w-[250px]">
+        PHIẾU KIỂM TRA GẦM
+      </h1>
+      
+      <div style="width: 70px;"></div>
+    </header>
+
+    
+    <section class="grid grid-cols-6 gap-x-2 gap-y-1 mb-3 text-sm text-slate-800">
+      
+      <div class="col-span-3 info-field-group">
+        <label for="receiveDate">Ngày nhận xe:</label>
+        <input type="date" id="receiveDate" name="receiveDate" required />
+      </div>
+      <div class="col-span-3 info-field-group">
+        <label for="advisor">Cố vấn DV:</label>
+        <input type="text" id="advisor" name="advisor" placeholder="Họ tên cố vấn" />
+      </div>
+
+      
+      <div class="col-span-3 info-field-group">
+        <label for="deliverDate">Ngày giao xe:</label>
+        <input type="date" id="deliverDate" name="deliverDate" />
+      </div>
+      <div class="col-span-3 info-field-group">
+        <label for="ktv">KTV:</label>
+        <input type="text" id="ktv" name="ktv" placeholder="Tên KTV" />
+      </div>
+
+      
+      <div class="col-span-2 info-field-group">
+        <label for="customerName">Tên KH:</label>
+        <input type="text" id="customerName" name="customerName" placeholder="Tên khách hàng" />
+      </div>
+      <div class="col-span-2 info-field-group">
+        <label for="vehicleTypeYear">Loại xe/NSX:</label>
+        <input type="text" id="vehicleTypeYear" name="vehicleTypeYear" placeholder="Loại xe / Năm SX" />
+      </div>
+      <div class="col-span-2 info-field-group">
+        <label for="licensePlate">Biển số:</label>
+        <input type="text" id="licensePlate" name="licensePlate" placeholder="Biển số" />
+      </div>
+
+      
+      <div class="col-span-2 info-field-group">
+        <label for="km">Số km:</label>
+        <input type="number" id="km" name="km" placeholder="Km" min="0" />
+      </div>
+      <div class="col-span-4 info-field-group">
+        <label for="note">Ghi chú:</label>
+        <textarea id="note" name="note" placeholder="Ghi chú" rows="1"></textarea>
+      </div>
+
+      
+      <div class="col-span-6 info-field-group">
+        <label for="other">Khác:</label>
+        <input type="text" id="other" name="other" placeholder="Khác" />
+      </div>
+    </section>
+
+    
+    <section class="mb-3">
+      <div class="form-section-title">1. Yêu cầu ban đầu của khách hàng:</div>
+      <textarea name="customerRequest" placeholder="Nội dung yêu cầu ban đầu" rows="2" class="w-full border border-slate-400 rounded p-1 font-normal"></textarea>
+    </section>
+
+    
+    <section class="mb-2 text-white font-bold text-xs px-2 py-1 rounded" style="background-color: #003366;">
+      Khoảng cách mỗi lần bảo dưỡng: 5.000 hoặc 3 tháng tùy điều kiện nào tới trước.
+    </section>
+
+    
+    <section class="overflow-x-auto -mx-4 px-4">
+      <table class="min-w-full border border-slate-400 border-collapse text-sm">
+        <thead>
+          <tr>
+            <th class="border border-slate-400 bg-yellow-300 font-semibold p-2 text-left w-64" rowspan="2" style="min-width:180px;">Phần Gầm Trước</th>
+            <th class="border border-slate-400 bg-yellow-300 font-semibold p-2 text-left" rowspan="2" style="min-width:280px;">Hiện trạng kiểm tra - khuyến nghị!</th>
+            <th class="border border-slate-400 checkbox-header-thay font-semibold p-2 text-center" rowspan="2" style="width: 50px;">Thay</th>
+            <th class="border border-slate-400 checkbox-header-luuy font-semibold p-2 text-center" rowspan="2" style="width: 50px;">Lưu Ý</th>
+            <th class="border border-slate-400 checkbox-header-tot font-semibold p-2 text-center" rowspan="2" style="width: 50px;">Tốt</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn lái trong</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_lai_trong_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_trong_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_trong_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_trong_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn lái ngoài</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_lai_ngoai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_ngoai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_ngoai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_ngoai_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn trụ trên</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_tru_tren_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_tren_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_tren_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_tren_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn trụ dưới</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_tru_duoi_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_duoi_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_duoi_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_duoi_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn cân bằng ( giằng )</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_can_bang_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_can_bang_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_can_bang_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_can_bang_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn pass lái phụ</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_pass_lai_phu_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_pass_lai_phu_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_pass_lai_phu_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_pass_lai_phu_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Cao su chữ D</td><td class="border border-slate-400 p-1"><textarea name="front_cao_su_chu_d_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_d_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_d_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_d_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Cao su chữ A trên</td><td class="border border-slate-400 p-1"><textarea name="front_cao_su_chu_a_tren_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_tren_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_tren_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_tren_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Cao su chữ A dưới</td><td class="border border-slate-400 p-1"><textarea name="front_cao_su_chu_a_duoi_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_duoi_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_duoi_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_duoi_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Bố thắng trước</td><td class="border border-slate-400 p-1"><textarea name="front_bo_thang_truoc_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bo_thang_truoc_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bo_thang_truoc_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bo_thang_truoc_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Bạc đạn bánh trước trái - phải</td><td class="border border-slate-400 p-1"><textarea name="front_bac_dan_banh_truoc_trai_phai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bac_dan_banh_truoc_trai_phai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bac_dan_banh_truoc_trai_phai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bac_dan_banh_truoc_trai_phai_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Bát bèo phuộc trước</td><td class="border border-slate-400 p-1"><textarea name="front_bat_beo_phuoc_truoc_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bat_beo_phuoc_truoc_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bat_beo_phuoc_truoc_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bat_beo_phuoc_truoc_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Tăm bông phuộc trước</td><td class="border border-slate-400 p-1"><textarea name="front_tam_bong_phuoc_truoc_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_tam_bong_phuoc_truoc_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_tam_bong_phuoc_truoc_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_tam_bong_phuoc_truoc_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Phuộc trước trái - phải</td><td class="border border-slate-400 p-1"><textarea name="front_phuoc_truoc_trai_phai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_phuoc_truoc_trai_phai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_phuoc_truoc_trai_phai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_phuoc_truoc_trai_phai_tot" /></td></tr>
+
+          
+          <tr>
+            <td class="border border-slate-400 bg-yellow-300 font-bold text-left p-2" colspan="5">Phần Gầm Sau</td>
+          </tr>
+
+          
+          <tr><td class="border border-slate-400 p-1 pl-3">Bố thắng sau</td><td class="border border-slate-400 p-1"><textarea name="rear_bo_thang_sau_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bo_thang_sau_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bo_thang_sau_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bo_thang_sau_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Cao su chữ D</td><td class="border border-slate-400 p-1"><textarea name="rear_cao_su_chu_d_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_cao_su_chu_d_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_cao_su_chu_d_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_cao_su_chu_d_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn cân bằng sau</td><td class="border border-slate-400 p-1"><textarea name="rear_rotuyn_can_bang_sau_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_rotuyn_can_bang_sau_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_rotuyn_can_bang_sau_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_rotuyn_can_bang_sau_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Bạc đạn bánh sau trái - phải</td><td class="border border-slate-400 p-1"><textarea name="rear_bac_dan_banh_sau_trai_phai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bac_dan_banh_sau_trai_phai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bac_dan_banh_sau_trai_phai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bac_dan_banh_sau_trai_phai_tot" /></td></tr>
+          <tr><td class="border border-slate-400 p-1 pl-3">Phuộc sau trái - phải</td><td class="border border-slate-400 p-1"><textarea name="rear_phuoc_sau_trai_phai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_phuoc_sau_trai_phai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_phuoc_sau_trai_phai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_phuoc_sau_trai_phai_tot" /></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    
+    <section class="mt-3 bg-yellow-100 p-2 rounded border border-yellow-400 text-xs font-semibold text-slate-900 leading-tight whitespace-pre-line note-section">
+      <p><strong>Chú thích:</strong></p><p>* Hệ Thống Lái: Rotuyn lái trong, lái ngoài, rotuyn trụ. Độ rơ trước tay lái, cao su chụp bụi đầu thước lái. Độ rơ vô lăng, độ rơ bạc đạn bánh xe.</p>
+      <p>** Hệ Thống Treo: Các loại cao su, rotuyn càng A, càng i, thanh giằng tình trạng giảm sóc lò xo.Hệ thống treo trước và sau (Siết chặt).Các ống gầm và ốc lốp (Siết chặt)</p>
+    </section>
+  </form>
+
+  <script>
+    // Ghi chú: Script JavaScript để xử lý ngày giờ mặc định
+    document.addEventListener('DOMContentLoaded', function() {
+      const receiveDateInput = document.getElementById('receiveDate');
+      // const receiveTimeInput = document.getElementById('receiveTime'); // Đã xóa
+
+      const now = new Date();
+
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      // const hours = String(now.getHours()).padStart(2, '0'); // Đã xóa
+      // const minutes = String(now.getMinutes()).padStart(2, '0'); // Đã xóa
+
+      receiveDateInput.value = `${year}-${month}-${day}`;
+      // receiveTimeInput.value = `${hours}:${minutes}`; // Đã xóa
+    });
+
+    // THAY THẾ BẰNG LINK WEB APP GOOGLE SCRIPT CỦA BẠN SAU KHI TRIỂN KHAI
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; // Đặt URL Apps Script của bạn tại đây
+
+    // Hàm thu thập dữ liệu từ form và chuyển đổi thành chuỗi URL-encoded
+    function collectFormDataAsUrlEncoded(formElement) {
+        const formData = new FormData(formElement);
+        const params = new URLSearchParams();
+        
+        // Thêm các trường formType và các trường khác mà FormData không thu thập tự động nếu có
+        params.append('formType', formElement.querySelector('[name="formType"]').value);
+
+        for (const pair of formData.entries()) {
+            params.append(pair[0], pair[1]);
+        }
+        return params.toString();
+    }
+
+    // HÀM GỬI DỮ LIỆU ĐẾN APPS SCRIPT
+    document.getElementById('submitGamFormBtn')?.addEventListener('click', () => { // Lắng nghe click từ nút ID
+        const formElement = document.getElementById('inspectionForm'); // Lấy form element bằng ID của form gầm
+        const urlEncodedData = collectFormDataAsUrlEncoded(formElement); // Thu thập và chuyển đổi dữ liệu
+        
+        // Vô hiệu hóa nút gửi để tránh gửi nhiều lần
+        const submitButton = document.getElementById('submitGamFormBtn');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Đang gửi...';
+
+        fetch(scriptURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded' // Quan trọng: Đặt Content-Type này
+            },
+            body: urlEncodedData // Truyền dữ liệu đã mã hóa
+        })
+        .then(response => {
+            // Luôn cố gắng đọc phản hồi JSON, ngay cả khi có lỗi HTTP
+            return response.json().then(data => {
+                if (!response.ok) { // Nếu phản hồi không OK (ví dụ: status 4xx, 5xx)
+                    throw new Error(data.message || 'Lỗi từ máy chủ không xác định.');
+                }
+                return data;
+            });
+        })
+        .then(data => {
+            if (data.result === 'success') {
+                alert('✅ Gửi thông tin thành công!');
+                console.log('Dữ liệu đã gửi:', data.row);
+                // Có thể reset form tại đây nếu muốn
+                // formElement.reset(); 
+            } else {
+                alert('❌ Không gửi được, Không biết hỏi ai: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
+                console.error('Lỗi từ Apps Script:', data.message);
+            }
+        })
+        .catch(error => {
+            alert('❌ Có lỗi xảy ra khi gửi. Vui lòng kiểm tra console (F12) để biết chi tiết.');
+            console.error('Lỗi Fetch hoặc phản hồi không hợp lệ:', error);
+        })
+        .finally(() => {
+            // Kích hoạt lại nút gửi
+            submitButton.disabled = false;
+            submitButton.textContent = '📤 Gửi Thông Tin';
+        });
+    });
+</script>
+  </script>
+</body>
+</html>
