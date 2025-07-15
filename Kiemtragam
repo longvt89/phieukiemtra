@@ -317,7 +317,7 @@
     <a href="#" id="submitGamFormBtn" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
       Gửi Thông Tin
     </a>
-    <a href="#" onclick="alert('Đây là Phiếu kiểm tra an toàn xe!'); return false;" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+    <a href="https://longvt89.github.io/phieukiemtra/" onclick="alert('Đây là Phiếu kiểm tra an toàn xe!'); return false;" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
       Phiếu Kiểm Tra An Toàn Xe
     </a>
   </div>
