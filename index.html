@@ -1162,15 +1162,34 @@
         });
 
         // THAY THẾ BẰNG LINK WEB APP GOOGLE SCRIPT CỦA BẠN SAU KHI TRIỂN KHAI
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; // Đặt URL Apps Script của bạn tại đây
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; 
 
         // Hàm thu thập dữ liệu từ form và chuyển đổi thành chuỗi URL-encoded
         function collectFormDataAsUrlEncoded(formElement) {
             const formData = new FormData(formElement);
             const params = new URLSearchParams();
+            
+            // Thêm các trường formType và số phiếu/tháng từ span elements
+            params.append('formType', formElement.querySelector('[name="formType"]').value);
+            params.append('receiptNumber', document.getElementById('receiptNumber')?.textContent || '');
+            params.append('currentMonthYear', document.getElementById('currentMonth')?.textContent || '');
+
             for (const pair of formData.entries()) {
+                // Xử lý các checkbox: nếu không checked, FormData không gửi pair đó.
+                // Chúng ta sẽ kiểm tra lại ở Apps Script.
                 params.append(pair[0], pair[1]);
             }
+
+            // Xử lý các trường có thể bị bỏ qua bởi FormData (ví dụ: unchecked checkboxes)
+            // Tuy nhiên, Apps Script đã được thiết kế để xử lý chúng nếu vắng mặt.
+            // Nếu bạn có các nhóm radio button hoặc các input khác mà FormData không thu thập giá trị 'rỗng'
+            // thì bạn sẽ cần bổ sung logic tại đây hoặc trong Apps Script.
+
+            // Xử lý bảng chi tiết công việc/vật tư
+            // Google Apps Script xử lý từng hàng riêng biệt dựa trên tên trường như item_hangMuc_1, item_dienGiai_1
+            // nên không cần phải nối thành chuỗi phức tạp ở đây.
+            // Đảm bảo tên "name" trong HTML khớp với header trong Google Sheet.
+            
             return params.toString();
         }
 
