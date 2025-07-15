@@ -608,433 +608,436 @@
     <div class="container">
         <div class="button-group">
             <button class="print-button" onclick="handlePrint()">🖨️ In Phiếu Kiểm Tra</button>
-            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieu_kiem_tra_lop.html'">📄 Phiếu Kiểm Tra Lốp</button>
             <button class="tire-form-button" id="submitToSheet">📤 Gửi Thông Tin</button>
         </div>
         <div class="form-content">
-            <div class="header">
-                <div class="header-left">
-                    <h1>PHIẾU KIỂM TRA XE</h1>
-                    <div class="form-number">№ <span id="receiptNumber"></span> / <span id="currentMonth"></span></div>
-                </div>
-                <div class="header-right">
-                    <div class="logo">
-                        PHILONGAUTO<br>CAR SERVICE
+            <form id="inspectionFormXe" action="YOUR_APPS_SCRIPT_WEB_APP_URL_HERE" method="POST">
+                <input type="hidden" name="formType" value="PhieuKiemTraXe">
+
+                <div class="header">
+                    <div class="header-left">
+                        <h1>PHIẾU KIỂM TRA XE</h1>
+                        <div class="form-number">№ <span id="receiptNumber"></span> / <span id="currentMonth"></span></div>
+                    </div>
+                    <div class="header-right">
+                        <div class="logo">
+                            PHILONGAUTO<br>CAR SERVICE
+                        </div>
                     </div>
                 </div>
+
+                <div class="customer-info">
+                    <div class="customer-left">
+                        <div class="info-group">
+                            <label for="customerName">Họ tên:</label>
+                            <input type="text" id="customerName" name="hoten" class="info-input name-input">
+                        </div>
+                        <div class="info-group inline-fields">
+                            <div>
+                                <label for="customerPhone">Điện thoại:</label>
+                                <input type="tel" id="customerPhone" name="dienthoai" class="info-input phone-email-input">
+                            </div>
+                            <div>
+                                <label for="customerEmail">E-mail:</label>
+                                <input type="email" id="customerEmail" name="email" class="info-input phone-email-input">
+                            </div>
+                        </div>
+                        <div class="info-group">
+                            <label for="receivedDateTime">Ngày giờ nhận xe:</label>
+                            <input type="datetime-local" id="receivedDateTime" name="nhanxe" class="info-input datetime-input">
+                        </div>
+                        <div class="info-group">
+                            <label>Kiểm tra an toàn (Có/Không):</label>
+                            <label><input type="checkbox" name="kiemTraAnToan_Co" value="Có"> Có</label>
+                            <label><input type="checkbox" name="kiemTraAnToan_Khong" value="Không"> Không</label>
+                        </div>
+                    </div>
+                    <div class="customer-right">
+                        <div class="info-group">
+                            <label for="carType">Loại & kiểu xe:</label>
+                            <input type="text" id="carType" name="loaixe" class="info-input car-type-input">
+                        </div>
+                        <div class="info-group inline-fields">
+                            <div>
+                                <label for="licensePlate">Biển số:</label>
+                                <input type="text" id="licensePlate" name="bienso" class="info-input license-km-input">
+                            </div>
+                            <div>
+                                <label for="kilometer">Kilô-mét:</label>
+                                <input type="text" id="kilometer" name="sokm" class="info-input license-km-input">
+                            </div>
+                        </div>
+                        <div class="info-group">
+                            <label for="deliveryDateTime">Ngày gửi giao xe:</label>
+                            <input type="datetime-local" id="deliveryDateTime" name="giaoxe" class="info-input datetime-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main-content">
+                    <div class="tire-section">
+                        <div class="tire-diagram-container">
+                            <div class="tire-diagram">
+                                <img src="sodooto.png" alt="Sơ đồ ô tô" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                            </div>
+
+                            <div class="tire-position tire-front-left">
+                                <div class="tire-input-group">
+                                    <label>Áp suất:</label>
+                                    <input type="text" class="pressure-input" name="tire_pressure_FL" placeholder="0">
+                                    <small>kg/cm²</small>
+                                </div>
+                                <div class="tire-input-group">
+                                    <label>Độ dày:</label>
+                                    <input type="text" class="thickness-input" name="tire_thickness_FL" placeholder="0">
+                                    <small>mm</small>
+                                </div>
+                            </div>
+                            <div class="tire-position tire-front-right">
+                                <div class="tire-input-group">
+                                    <label>Áp suất:</label>
+                                    <input type="text" class="pressure-input" name="tire_pressure_FR" placeholder="0">
+                                    <small>kg/cm²</small>
+                                </div>
+                                <div class="tire-input-group">
+                                    <label>Độ dày:</label>
+                                    <input type="text" class="thickness-input" name="tire_thickness_FR" placeholder="0">
+                                    <small>mm</small>
+                                </div>
+                            </div>
+                            <div class="tire-position tire-rear-left">
+                                <div class="tire-input-group">
+                                    <label>Áp suất:</label>
+                                    <input type="text" class="pressure-input" name="tire_pressure_RL" placeholder="0">
+                                    <small>kg/cm²</small>
+                                </div>
+                                <div class="tire-input-group">
+                                    <label>Độ dày:</label>
+                                    <input type="text" class="thickness-input" name="tire_thickness_RL" placeholder="0">
+                                    <small>mm</small>
+                                </div>
+                            </div>
+                            <div class="tire-position tire-rear-right">
+                                <div class="tire-input-group">
+                                    <label>Áp suất:</label>
+                                    <input type="text" class="pressure-input" name="tire_pressure_RR" placeholder="0">
+                                    <small>kg/cm²</small>
+                                </div>
+                                <div class="tire-input-group">
+                                    <label>Độ dày:</label>
+                                    <input type="text" class="thickness-input" name="tire_thickness_RR" placeholder="0">
+                                    <small>mm</small>
+                                </div>
+                            </div>
+                            <div class="tire-position tire-spare">
+                                <div class="tire-input-group">
+                                    <label>Áp suất:</label>
+                                    <input type="text" class="pressure-input" name="tire_pressure_Spare" placeholder="0">
+                                    <small>kg/cm²</small>
+                                </div>
+                                <div class="tire-input-group">
+                                    <label>Độ dày:</label>
+                                    <input type="text" class="thickness-input" name="tire_thickness_Spare" placeholder="0">
+                                    <small>mm</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tire-size-recommendation">
+                            <label for="tireSize">Size lốp khuyến cáo:</label>
+                            <input type="text" id="tireSize" name="sizeLopKhuyenCao" placeholder="Nhập size lốp">
+                        </div>
+                        <div class="recommendation">
+                            <label for="notes">Lưu ý:</label>
+                            <textarea id="notes" name="ghiChuChung" placeholder="Ghi chú các lưu ý cần thiết"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="safety-check">
+                        <div class="safety-title">
+                            HẠNG MỤC KIỂM TRA AN TOÀN
+                        </div>
+                        <div class="safety-grid">
+                            <div class="safety-header">HẠNG MỤC</div>
+                            <div class="safety-header">TỐT</div>
+                            <div class="safety-header">LƯU Ý</div>
+                            <div class="safety-header">THAY</div>
+
+                            <div class="safety-item">
+                                <div class="item-name">Lốp</div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_Lop_Tot" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_Lop_LuuY" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_Lop_Thay" value="on"></div>
+                            </div>
+
+                            <div class="safety-item">
+                                <div class="item-name">Gạt mưa</div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_GatMua_Tot" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_GatMua_LuuY" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_GatMua_Thay" value="on"></div>
+                            </div>
+
+                            <div class="safety-item">
+                                <div class="item-name">Nước rửa kính</div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocRuaKinh_Tot" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocRuaKinh_LuuY" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocRuaKinh_Thay" value="on"></div>
+                            </div>
+
+                            <div class="safety-item">
+                                <div class="item-name">Má phanh</div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_MaPhanh_Tot" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_MaPhanh_LuuY" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_MaPhanh_Thay" value="on"></div>
+                            </div>
+
+                            <div class="safety-item">
+                                <div class="item-name">Đĩa phanh</div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DiaPhanh_Tot" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DiaPhanh_LuuY" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DiaPhanh_Thay" value="on"></div>
+                            </div>
+
+                            <div class="safety-item">
+                                <div class="item-name">Dầu phanh</div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauPhanh_Tot" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauPhanh_LuuY" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauPhanh_Thay" value="on"></div>
+                            </div>
+
+                            <div class="safety-item">
+                                <div class="item-name">Dầu động cơ</div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauDongCo_Tot" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauDongCo_LuuY" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauDongCo_Thay" value="on"></div>
+                            </div>
+
+                            <div class="safety-item">
+                                <div class="item-name">Lọc dầu động cơ</div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocDauDongCo_Tot" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocDauDongCo_LuuY" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocDauDongCo_Thay" value="on"></div>
+                            </div>
+
+                            <div class="safety-item">
+                                <div class="item-name">Nước làm mát</div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocLamMat_Tot" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocLamMat_LuuY" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocLamMat_Thay" value="on"></div>
+                            </div>
+
+                            <div class="safety-item">
+                                <div class="item-name">Ắc quy</div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_AcQuy_Tot" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_AcQuy_LuuY" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_AcQuy_Thay" value="on"></div>
+                            </div>
+
+                            <div class="safety-item">
+                                <div class="item-name">Lọc gió động cơ</div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDongCo_Tot" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDongCo_LuuY" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDongCo_Thay" value="on"></div>
+                            </div>
+
+                            <div class="safety-item">
+                                <div class="item-name">Lọc gió điều hòa</div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDieuHoa_Tot" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDieuHoa_LuuY" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDieuHoa_Thay" value="on"></div>
+                            </div>
+
+                            <div class="safety-item">
+                                <div class="item-name">Thước lái</div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_ThuocLai_Tot" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_ThuocLai_LuuY" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_ThuocLai_Thay" value="on"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="detailed-check">
+                    <thead>
+                        <tr>
+                            <th class="stt">STT</th>
+                            <th class="hang-muc">HẠNG MỤC</th>
+                            <th class="dien-giai">DIỄN GIẢI</th>
+                            <th class="sl">SL</th>
+                            <th class="don-gia">ĐƠN GIÁ</th>
+                            <th class="thanh-tien">THÀNH TIỀN</th>
+                            <th class="xac-nhan">XÁC NHẬN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>01</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_1" value="Lốp"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_1"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_1" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_1" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_1" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_1" value="on"></td>
+                        </tr>
+                        <tr>
+                            <td>02</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_2" value="Vận"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_2"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_2" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_2" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_2" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_2" value="on"></td>
+                        </tr>
+                        <tr>
+                            <td>03</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_3" value="Cân bằng động"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_3"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_3" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_3" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_3" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_3" value="on"></td>
+                        </tr>
+                        <tr>
+                            <td>04</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_4" value="Cân chỉnh thước lái"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_4"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_4" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_4" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_4" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_4" value="on"></td>
+                        </tr>
+                        <tr>
+                            <td>05</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_5" value="Phanh"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_5"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_5" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_5" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_5" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_5" value="on"></td>
+                        </tr>
+                        <tr>
+                            <td>06</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_6" value="Gạt mưa"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_6"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_6" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_6" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_6" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_6" value="on"></td>
+                        </tr>
+                        <tr>
+                            <td>07</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_7" value="Nước rửa kính"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_7"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_7" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_7" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_7" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_7" value="on"></td>
+                        </tr>
+                        <tr>
+                            <td>08</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_8" value="Dầu động cơ"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_8"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_8" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_8" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_8" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_8" value="on"></td>
+                        </tr>
+                        <tr>
+                            <td>09</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_9" value="Lọc dầu động cơ"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_9"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_9" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_9" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_9" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_9" value="on"></td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_10" value="Lọc gió động cơ"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_10"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_10" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_10" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_10" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_10" value="on"></td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_11" value="Lọc gió điều hòa"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_11"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_11" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_11" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_11" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_11" value="on"></td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_12"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_12"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_12" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_12" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_12" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_12" value="on"></td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_13"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_13"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_13" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_13" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_13" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_13" value="on"></td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_14"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_14"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_14" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_14" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_14" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_14" value="on"></td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_15"></td>
+                            <td><input type="text" class="dien-giai-input" name="item_dienGiai_15"></td>
+                            <td><input type="text" class="sl-input" name="item_soLuong_15" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="don-gia-input" name="item_donGia_15" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="text" class="thanh-tien-input" name="item_thanhTien_15" readonly></td>
+                            <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_15" value="on"></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="5">TỔNG CỘNG</td>
+                            <td><input type="text" id="grand-total" name="tongCong" readonly style="font-weight: bold;"></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="footer">
+                    <p><strong>Khuyến nghị:</strong></p>
+                    <p>□ "Tôi đồng ý đăng ký số liệu cá nhân năm được cung cấp theo mẫu này có thể được lưu trữ và sử dụng cho mục đích liên quan đến 02 năm PHI LONG AUTO (Công Ty), nhằm mục đích truyền thông sản phẩm và dịch vụ của chúng tôi và các đối tác kinh doanh liên quan. Tôi có thể rút lại sự đồng ý của mình bất cứ lúc nào bằng cách liên hệ với Công Ty và yêu cầu loại bỏ thông tin cá nhân của tôi khỏi cơ sở dữ liệu này."</p>
+                </div>
+
+                <div class="signature-section">
+                    <div class="signature-box">
+                        <div class="signature-title">Đại lý</div>
+                        <input type="text" list="nguoiPhuTrachList" class="signature-input" name="daiLyPhuTrach" placeholder="Chọn hoặc nhập tên">
+                        <datalist id="nguoiPhuTrachList">
+                            <option value="Cao Thanh Duy">
+                            <option value="Trần Ngọc Hào">
+                            <option value="Nguyễn Phước Hiếu">
+                            <option value="Nguyễn Trung Kiên">
+                        </datalist>
+                        <div class="signature-subtitle">(Ký tên)</div>
+                    </div>
+                    <div class="signature-box">
+                        <div class="signature-title">Khách hàng</div>
+                        <input type="text" class="signature-input" name="khachHangKyTen" placeholder="Ký tên">
+                        <div class="signature-subtitle">(Ký tên)</div>
+                    </div>
+                </div>
+            </form>
             </div>
-
-            <div class="customer-info">
-                <div class="customer-left">
-                    <div class="info-group">
-                        <label for="customerName">Họ tên:</label>
-                        <input type="text" id="customerName" name="hoten" class="info-input name-input">
-                    </div>
-                    <div class="info-group inline-fields">
-                        <div>
-                            <label for="customerPhone">Điện thoại:</label>
-                            <input type="tel" id="customerPhone" name="dienthoai" class="info-input phone-email-input">
-                        </div>
-                        <div>
-                            <label for="customerEmail">E-mail:</label>
-                            <input type="email" id="customerEmail" name="email" class="info-input phone-email-input">
-                        </div>
-                    </div>
-                    <div class="info-group">
-                        <label for="receivedDateTime">Ngày giờ nhận xe:</label>
-                        <input type="datetime-local" id="receivedDateTime" name="nhanxe" class="info-input datetime-input">
-                    </div>
-                    <div class="info-group">
-                        <label>Kiểm tra an toàn (Có/Không):</label>
-                        <label><input type="checkbox" name="kiemTraAnToan_Co"> Có</label>
-                        <label><input type="checkbox" name="kiemTraAnToan_Khong"> Không</label>
-                    </div>
-                </div>
-                <div class="customer-right">
-                    <div class="info-group">
-                        <label for="carType">Loại & kiểu xe:</label>
-                        <input type="text" id="carType" name="loaixe" class="info-input car-type-input">
-                    </div>
-                    <div class="info-group inline-fields">
-                        <div>
-                            <label for="licensePlate">Biển số:</label>
-                            <input type="text" id="licensePlate" name="bienso" class="info-input license-km-input">
-                        </div>
-                        <div>
-                            <label for="kilometer">Kilô-mét:</label>
-                            <input type="text" id="kilometer" name="sokm" class="info-input license-km-input">
-                        </div>
-                    </div>
-                    <div class="info-group">
-                        <label for="deliveryDateTime">Ngày gửi giao xe:</label>
-                        <input type="datetime-local" id="deliveryDateTime" name="giaoxe" class="info-input datetime-input">
-                    </div>
-                </div>
-            </div>
-
-            <div class="main-content">
-                <div class="tire-section">
-                    <div class="tire-diagram-container">
-                        <div class="tire-diagram">
-                            <img src="sodooto.png" alt="Sơ đồ ô tô" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                        </div>
-
-                        <div class="tire-position tire-front-left">
-                            <div class="tire-input-group">
-                                <label>Áp suất:</label>
-                                <input type="text" class="pressure-input" name="tire_pressure_FL" placeholder="0">
-                                <small>kg/cm²</small>
-                            </div>
-                            <div class="tire-input-group">
-                                <label>Độ dày:</label>
-                                <input type="text" class="thickness-input" name="tire_thickness_FL" placeholder="0">
-                                <small>mm</small>
-                            </div>
-                        </div>
-                        <div class="tire-position tire-front-right">
-                            <div class="tire-input-group">
-                                <label>Áp suất:</label>
-                                <input type="text" class="pressure-input" name="tire_pressure_FR" placeholder="0">
-                                <small>kg/cm²</small>
-                            </div>
-                            <div class="tire-input-group">
-                                <label>Độ dày:</label>
-                                <input type="text" class="thickness-input" name="tire_thickness_FR" placeholder="0">
-                                <small>mm</small>
-                            </div>
-                        </div>
-                        <div class="tire-position tire-rear-left">
-                            <div class="tire-input-group">
-                                <label>Áp suất:</label>
-                                <input type="text" class="pressure-input" name="tire_pressure_RL" placeholder="0">
-                                <small>kg/cm²</small>
-                            </div>
-                            <div class="tire-input-group">
-                                <label>Độ dày:</label>
-                                <input type="text" class="thickness-input" name="tire_thickness_RL" placeholder="0">
-                                <small>mm</small>
-                            </div>
-                        </div>
-                        <div class="tire-position tire-rear-right">
-                            <div class="tire-input-group">
-                                <label>Áp suất:</label>
-                                <input type="text" class="pressure-input" name="tire_pressure_RR" placeholder="0">
-                                <small>kg/cm²</small>
-                            </div>
-                            <div class="tire-input-group">
-                                <label>Độ dày:</label>
-                                <input type="text" class="thickness-input" name="tire_thickness_RR" placeholder="0">
-                                <small>mm</small>
-                            </div>
-                        </div>
-                        <div class="tire-position tire-spare">
-                            <div class="tire-input-group">
-                                <label>Áp suất:</label>
-                                <input type="text" class="pressure-input" name="tire_pressure_Spare" placeholder="0">
-                                <small>kg/cm²</small>
-                            </div>
-                            <div class="tire-input-group">
-                                <label>Độ dày:</label>
-                                <input type="text" class="thickness-input" name="tire_thickness_Spare" placeholder="0">
-                                <small>mm</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tire-size-recommendation">
-                        <label for="tireSize">Size lốp khuyến cáo:</label>
-                        <input type="text" id="tireSize" name="sizeLopKhuyenCao" placeholder="Nhập size lốp">
-                    </div>
-                    <div class="recommendation">
-                        <label for="notes">Lưu ý:</label>
-                        <textarea id="notes" name="ghiChuChung" placeholder="Ghi chú các lưu ý cần thiết"></textarea>
-                    </div>
-                </div>
-
-                <div class="safety-check">
-                    <div class="safety-title">
-                        HẠNG MỤC KIỂM TRA AN TOÀN
-                    </div>
-                    <div class="safety-grid">
-                        <div class="safety-header">HẠNG MỤC</div>
-                        <div class="safety-header">TỐT</div>
-                        <div class="safety-header">LƯU Ý</div>
-                        <div class="safety-header">THAY</div>
-
-                        <div class="safety-item">
-                            <div class="item-name">Lốp</div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_Lop_Tot"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_Lop_LuuY"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_Lop_Thay"></div>
-                        </div>
-
-                        <div class="safety-item">
-                            <div class="item-name">Gạt mưa</div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_GatMua_Tot"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_GatMua_LuuY"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_GatMua_Thay"></div>
-                        </div>
-
-                        <div class="safety-item">
-                            <div class="item-name">Nước rửa kính</div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocRuaKinh_Tot"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocRuaKinh_LuuY"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocRuaKinh_Thay"></div>
-                        </div>
-
-                        <div class="safety-item">
-                            <div class="item-name">Má phanh</div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_MaPhanh_Tot"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_MaPhanh_LuuY"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_MaPhanh_Thay"></div>
-                        </div>
-
-                        <div class="safety-item">
-                            <div class="item-name">Đĩa phanh</div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DiaPhanh_Tot"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DiaPhanh_LuuY"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DiaPhanh_Thay"></div>
-                        </div>
-
-                        <div class="safety-item">
-                            <div class="item-name">Dầu phanh</div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauPhanh_Tot"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauPhanh_LuuY"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauPhanh_Thay"></div>
-                        </div>
-
-                        <div class="safety-item">
-                            <div class="item-name">Dầu động cơ</div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauDongCo_Tot"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauDongCo_LuuY"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DauDongCo_Thay"></div>
-                        </div>
-
-                        <div class="safety-item">
-                            <div class="item-name">Lọc dầu động cơ</div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocDauDongCo_Tot"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocDauDongCo_LuuY"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocDauDongCo_Thay"></div>
-                        </div>
-
-                        <div class="safety-item">
-                            <div class="item-name">Nước làm mát</div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocLamMat_Tot"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocLamMat_LuuY"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_NuocLamMat_Thay"></div>
-                        </div>
-
-                        <div class="safety-item">
-                            <div class="item-name">Ắc quy</div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_AcQuy_Tot"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_AcQuy_LuuY"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_AcQuy_Thay"></div>
-                        </div>
-
-                        <div class="safety-item">
-                            <div class="item-name">Lọc gió động cơ</div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDongCo_Tot"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDongCo_LuuY"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDongCo_Thay"></div>
-                        </div>
-
-                        <div class="safety-item">
-                            <div class="item-name">Lọc gió điều hòa</div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDieuHoa_Tot"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDieuHoa_LuuY"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_LocGioDieuHoa_Thay"></div>
-                        </div>
-
-                        <div class="safety-item">
-                            <div class="item-name">Thước lái</div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_ThuocLai_Tot"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_ThuocLai_LuuY"></div>
-                            <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_ThuocLai_Thay"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <table class="detailed-check">
-                <thead>
-                    <tr>
-                        <th class="stt">STT</th>
-                        <th class="hang-muc">HẠNG MỤC</th>
-                        <th class="dien-giai">DIỄN GIẢI</th>
-                        <th class="sl">SL</th>
-                        <th class="don-gia">ĐƠN GIÁ</th>
-                        <th class="thanh-tien">THÀNH TIỀN</th>
-                        <th class="xac-nhan">XÁC NHẬN</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>01</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_1" value="Lốp"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_1"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_1" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_1" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_1" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_1"></td>
-                    </tr>
-                    <tr>
-                        <td>02</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_2" value="Vận"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_2"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_2" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_2" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_2" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_2"></td>
-                    </tr>
-                    <tr>
-                        <td>03</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_3" value="Cân bằng động"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_3"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_3" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_3" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_3" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_3"></td>
-                    </tr>
-                    <tr>
-                        <td>04</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_4" value="Cân chỉnh thước lái"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_4"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_4" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_4" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_4" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_4"></td>
-                    </tr>
-                    <tr>
-                        <td>05</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_5" value="Phanh"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_5"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_5" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_5" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_5" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_5"></td>
-                    </tr>
-                    <tr>
-                        <td>06</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_6" value="Gạt mưa"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_6"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_6" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_6" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_6" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_6"></td>
-                    </tr>
-                    <tr>
-                        <td>07</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_7" value="Nước rửa kính"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_7"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_7" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_7" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_7" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_7"></td>
-                    </tr>
-                    <tr>
-                        <td>08</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_8" value="Dầu động cơ"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_8"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_8" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_8" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_8" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_8"></td>
-                    </tr>
-                    <tr>
-                        <td>09</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_9" value="Lọc dầu động cơ"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_9"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_9" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_9" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_9" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_9"></td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_10" value="Lọc gió động cơ"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_10"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_10" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_10" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_10" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_10"></td>
-                    </tr>
-                    <tr>
-                        <td>11</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_11" value="Lọc gió điều hòa"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_11"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_11" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_11" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_11" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_11"></td>
-                    </tr>
-                    <tr>
-                        <td>12</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_12"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_12"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_12" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_12" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_12" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_12"></td>
-                    </tr>
-                    <tr>
-                        <td>13</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_13"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_13"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_13" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_13" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_13" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_13"></td>
-                    </tr>
-                    <tr>
-                        <td>14</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_14"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_14"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_14" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_14" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_14" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_14"></td>
-                    </tr>
-                    <tr>
-                        <td>15</td>
-                        <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_15"></td>
-                        <td><input type="text" class="dien-giai-input" name="item_dienGiai_15"></td>
-                        <td><input type="text" class="sl-input" name="item_soLuong_15" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="don-gia-input" name="item_donGia_15" oninput="calculateRowTotal(this)"></td>
-                        <td><input type="text" class="thanh-tien-input" name="item_thanhTien_15" readonly></td>
-                        <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_15"></td>
-                    </tr>
-                    <tr class="total-row">
-                        <td colspan="5">TỔNG CỘNG</td>
-                        <td><input type="text" id="grand-total" name="tongCong" readonly style="font-weight: bold;"></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="footer">
-                <p><strong>Khuyến nghị:</strong></p>
-                <p>□ "Tôi đồng ý đăng ký số liệu cá nhân năm được cung cấp theo mẫu này có thể được lưu trữ và sử dụng cho mục đích liên quan đến 02 năm PHI LONG AUTO (Công Ty), nhằm mục đích truyền thông sản phẩm và dịch vụ của chúng tôi và các đối tác kinh doanh liên quan. Tôi có thể rút lại sự đồng ý của mình bất cứ lúc nào bằng cách liên hệ với Công Ty và yêu cầu loại bỏ thông tin cá nhân của tôi khỏi cơ sở dữ liệu này."</p>
-            </div>
-
-            <div class="signature-section">
-                <div class="signature-box">
-                    <div class="signature-title">Đại lý</div>
-                    <input type="text" list="nguoiPhuTrachList" class="signature-input" name="daiLyPhuTrach" placeholder="Chọn hoặc nhập tên">
-                    <datalist id="nguoiPhuTrachList">
-                        <option value="Cao Thanh Duy">
-                        <option value="Trần Ngọc Hào">
-                        <option value="Nguyễn Phước Hiếu">
-                        <option value="Nguyễn Trung Kiên">
-                    </datalist>
-                    <div class="signature-subtitle">(Ký tên)</div>
-                </div>
-                <div class="signature-box">
-                    <div class="signature-title">Khách hàng</div>
-                    <input type="text" class="signature-input" name="khachHangKyTen" placeholder="Ký tên">
-                    <div class="signature-subtitle">(Ký tên)</div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -1158,92 +1161,33 @@
         });
 
         // THAY THẾ BẰNG LINK WEB APP GOOGLE SCRIPT CỦA BẠN SAU KHI TRIỂN KHAI
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec';
+        const scriptURL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE'; // Đặt URL Apps Script của bạn tại đây
 
-        // Hàm thu thập dữ liệu vào một đối tượng JavaScript thuần túy và chuyển đổi thành chuỗi URL-encoded thủ công
-        function collectFormData() {
+        // Hàm thu thập dữ liệu vào một đối tượng JavaScript thuần túy
+        function collectFormData(formElement) {
             const data = {};
-            
-            // 1. Thông tin chung phiếu và khách hàng/xe
+            const formData = new FormData(formElement); // Sử dụng FormData để thu thập tất cả các trường có name
+
+            for (const [key, value] of formData.entries()) {
+                // Xử lý checkbox: FormData chỉ gửi giá trị của checkbox được check.
+                // Nếu không được check, nó không xuất hiện trong FormData.
+                // Apps Script của chúng ta đã xử lý điều này bằng cách kiểm tra value === 'on'
+                data[key] = value;
+            }
+
+            // Xử lý các trường không có trong FormData nếu cần
             data.receiptNumber = document.getElementById('receiptNumber')?.textContent || '';
             data.currentMonthYear = document.getElementById('currentMonth')?.textContent || '';
-            data.hoten = document.getElementById('customerName')?.value || '';
-            data.dienThoai = document.getElementById('customerPhone')?.value || '';
-            data.email = document.getElementById('customerEmail')?.value || '';
-            data.nhanXe = document.getElementById('receivedDateTime')?.value || '';
-            data.giaoXe = document.getElementById('deliveryDateTime')?.value || '';
-            data.loaiXe = document.getElementById('carType')?.value || '';
-            data.bienSo = document.getElementById('licensePlate')?.value || '';
-            data.soKm = document.getElementById('kilometer')?.value || '';
             
-            const kiemTraAnToan_Co = document.querySelector('input[name="kiemTraAnToan_Co"]')?.checked;
-            const kiemTraAnToan_Khong = document.querySelector('input[name="kiemTraAnToan_Khong"]')?.checked;
-            data.kiemTraAnToanTongQuat = kiemTraAnToan_Co ? 'Có' : (kiemTraAnToan_Khong ? 'Không' : '');
-
-            // 2. Thông tin lốp và ghi chú chung
-            data.sizeLopKhuyenCao = document.getElementById('tireSize')?.value || '';
-            data.ghiChuChung = document.getElementById('notes')?.value || '';
-
-            const tirePositions = ['FL', 'FR', 'RL', 'RR', 'Spare'];
-            tirePositions.forEach(pos => {
-                const pressure = document.querySelector(`[name="tire_pressure_${pos}"]`)?.value || '';
-                const thickness = document.querySelector(`[name="tire_thickness_${pos}"]`)?.value || '';
-                data[`tire_pressure_${pos}`] = pressure;
-                data[`tire_thickness_${pos}`] = thickness;
-            });
-
-            // 3. Hạng mục kiểm tra an toàn chi tiết
-            const safetyChecks = {};
-            const safetyItems = [
-                'Lop', 'GatMua', 'NuocRuaKinh', 'MaPhanh', 'DiaPhanh', 'DauPhanh',
-                'DauDongCo', 'LocDauDongCo', 'NuocLamMat', 'AcQuy', 'LocGioDongCo',
-                'LocGioDieuHoa', 'ThuocLai'
-            ];
-            safetyItems.forEach(item => {
-                const good = document.querySelector(`input[name="safety_${item}_Tot"]`)?.checked;
-                const note = document.querySelector(`input[name="safety_${item}_LuuY"]`)?.checked;
-                const replace = document.querySelector(`input[name="safety_${item}_Thay"]`)?.checked;
-
-                let status = '';
-                if (good) status = 'Tốt';
-                else if (note) status = 'Lưu ý';
-                else if (replace) status = 'Thay';
-                
-                safetyChecks[item] = status;
-            });
-            data.chiTietKiemTraAnToan = JSON.stringify(safetyChecks); // Gửi dưới dạng JSON string
-
-            // 4. Bảng chi tiết công việc/vật tư
-            const detailedItems = [];
-            // Lấy tất cả các hàng trong bảng trừ hàng tổng cộng
-            document.querySelectorAll('.detailed-check tbody tr:not(.total-row)').forEach((row, index) => {
-                const stt = String(index + 1).padStart(2, '0');
-                const hangMuc = row.querySelector(`[name="item_hangMuc_${index+1}"]`)?.value || '';
-                const dienGiai = row.querySelector(`[name="item_dienGiai_${index+1}"]`)?.value || '';
-                const sl = row.querySelector(`[name="item_soLuong_${index+1}"]`)?.value || '';
-                const donGia = row.querySelector(`[name="item_donGia_${index+1}"]`)?.value || '';
-                const thanhTien = row.querySelector(`[name="item_thanhTien_${index+1}"]`)?.value || '';
-                const xacNhan = row.querySelector(`[name="item_xacNhan_${index+1}"]`)?.checked ? 'Xác nhận' : '';
-                
-                if (hangMuc || dienGiai || sl || donGia || thanhTien || xacNhan) { // Chỉ thêm hàng có dữ liệu
-                    detailedItems.push(`${stt}| ${hangMuc}| ${dienGiai}| ${sl}| ${donGia}| ${thanhTien}| ${xacNhan}`);
-                }
-            });
-            data.bangChiTietCongViec = detailedItems.join('\n'); // Nối các dòng bằng ký tự xuống dòng
-
-            data.tongCongThanhToan = document.getElementById('grand-total')?.value || '';
-
-            // 5. Chữ ký
-            data.daiLyPhuTrach = document.querySelector('[name="daiLyPhuTrach"]')?.value || '';
-            data.khachHangKyTen = document.querySelector('[name="khachHangKyTen"]')?.value || '';
-
-            return data; // TRẢ VỀ ĐỐI TƯỢNG THUẦN TÚY
+            return data; 
         }
 
         // HÀM GỬI DỮ LIỆU ĐẾN APPS SCRIPT
         document.getElementById('submitToSheet')?.addEventListener('click', () => {
-            const formData = collectFormData(); // Lấy đối tượng dữ liệu thuần túy
-            const formDataObj = new FormData(); // Tạo FormData object
+            const formElement = document.getElementById('inspectionFormXe'); // Lấy form element
+            const formData = collectFormData(formElement); // Lấy đối tượng dữ liệu thuần túy
+
+            const formDataObj = new FormData(); // Tạo FormData object để gửi qua fetch
             
             // Thêm tất cả dữ liệu từ plain object vào FormData
             for (const key in formData) {
@@ -1257,7 +1201,6 @@
 
             fetch(scriptURL, {
                 method: 'POST',
-                // Content-Type sẽ tự động được đặt là multipart/form-data khi dùng FormData
                 body: formDataObj // Truyền đối tượng FormData
             })
             .then(response => {
@@ -1274,9 +1217,9 @@
                     alert('✅ Gửi thông tin thành công!');
                     console.log('Dữ liệu đã gửi:', data.row);
                     // Có thể reset form tại đây nếu muốn
-                    // document.getElementById('yourFormId').reset(); 
+                    // formElement.reset(); // Nếu bạn muốn reset form sau khi gửi
                 } else {
-                    alert('❌ Không gửi được,Không biết hỏi ai: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
+                    alert('❌ Không gửi được, Không biết hỏi ai: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
                     console.error('Lỗi từ Apps Script:', data.message);
                 }
             })
