@@ -608,6 +608,7 @@
     <div class="container">
         <div class="button-group">
             <button class="print-button" onclick="handlePrint()">🖨️ In Phiếu Kiểm Tra</button>
+            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieu_kiem_tra_lop.html'">📄 Phiếu Kiểm Tra Lốp</button>
             <button class="tire-form-button" id="submitToSheet">📤 Gửi Thông Tin</button>
         </div>
         <div class="form-content">
@@ -1161,38 +1162,22 @@
         });
 
         // THAY THẾ BẰNG LINK WEB APP GOOGLE SCRIPT CỦA BẠN SAU KHI TRIỂN KHAI
-        const scriptURL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE'; // Đặt URL Apps Script của bạn tại đây
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; // Đặt URL Apps Script của bạn tại đây
 
-        // Hàm thu thập dữ liệu vào một đối tượng JavaScript thuần túy
-        function collectFormData(formElement) {
-            const data = {};
-            const formData = new FormData(formElement); // Sử dụng FormData để thu thập tất cả các trường có name
-
-            for (const [key, value] of formData.entries()) {
-                // Xử lý checkbox: FormData chỉ gửi giá trị của checkbox được check.
-                // Nếu không được check, nó không xuất hiện trong FormData.
-                // Apps Script của chúng ta đã xử lý điều này bằng cách kiểm tra value === 'on'
-                data[key] = value;
+        // Hàm thu thập dữ liệu từ form và chuyển đổi thành chuỗi URL-encoded
+        function collectFormDataAsUrlEncoded(formElement) {
+            const formData = new FormData(formElement);
+            const params = new URLSearchParams();
+            for (const pair of formData.entries()) {
+                params.append(pair[0], pair[1]);
             }
-
-            // Xử lý các trường không có trong FormData nếu cần
-            data.receiptNumber = document.getElementById('receiptNumber')?.textContent || '';
-            data.currentMonthYear = document.getElementById('currentMonth')?.textContent || '';
-            
-            return data; 
+            return params.toString();
         }
 
         // HÀM GỬI DỮ LIỆU ĐẾN APPS SCRIPT
         document.getElementById('submitToSheet')?.addEventListener('click', () => {
             const formElement = document.getElementById('inspectionFormXe'); // Lấy form element
-            const formData = collectFormData(formElement); // Lấy đối tượng dữ liệu thuần túy
-
-            const formDataObj = new FormData(); // Tạo FormData object để gửi qua fetch
-            
-            // Thêm tất cả dữ liệu từ plain object vào FormData
-            for (const key in formData) {
-                formDataObj.append(key, formData[key]);
-            }
+            const urlEncodedData = collectFormDataAsUrlEncoded(formElement); // Thu thập và chuyển đổi dữ liệu
             
             // Vô hiệu hóa nút gửi để tránh gửi nhiều lần
             const submitButton = document.getElementById('submitToSheet');
@@ -1201,7 +1186,10 @@
 
             fetch(scriptURL, {
                 method: 'POST',
-                body: formDataObj // Truyền đối tượng FormData
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded' // Quan trọng: Đặt Content-Type này
+                },
+                body: urlEncodedData // Truyền dữ liệu đã mã hóa
             })
             .then(response => {
                 // Luôn cố gắng đọc phản hồi JSON, ngay cả khi có lỗi HTTP
@@ -1217,7 +1205,7 @@
                     alert('✅ Gửi thông tin thành công!');
                     console.log('Dữ liệu đã gửi:', data.row);
                     // Có thể reset form tại đây nếu muốn
-                    // formElement.reset(); // Nếu bạn muốn reset form sau khi gửi
+                    // formElement.reset(); 
                 } else {
                     alert('❌ Không gửi được, Không biết hỏi ai: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
                     console.error('Lỗi từ Apps Script:', data.message);
