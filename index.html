@@ -1043,204 +1043,273 @@
     </div>
 
     <script>
-        // Các hàm tính toán tổng và ngày giờ
-        function calculateRowTotal(inputElement) {
-            const row = inputElement.closest('tr');
-            const quantity = parseFloat(row.querySelector('.sl-input').value) || 0;
-            const unitPrice = parseFloat(row.querySelector('.don-gia-input').value) || 0;
-            const total = quantity * unitPrice;
-            row.querySelector('.thanh-tien-input').value = total.toLocaleString('vi-VN');
+    // Constants for Local Storage keys
+    const RECEIPT_NUMBER_KEY = 'phieuKiemTraXe_receiptNumber';
+    const LAST_MONTH_KEY = 'phieuKiemTraXe_lastMonth';
+    const FORM_DATA_KEY = 'phieuKiemTraXe_formData'; // Key for saving form data
 
-            updateGrandTotal();
-        }
+    // --- Utility Functions ---
 
-        function updateGrandTotal() {
-            let grandTotal = 0;
-            document.querySelectorAll('.thanh-tien-input').forEach(input => {
-                const value = parseFloat(input.value.replace(/\./g, '').replace(/,/g, '.')) || 0;
-                grandTotal += value;
-            });
-            document.getElementById('grand-total').value = grandTotal.toLocaleString('vi-VN');
-        }
+    function calculateRowTotal(inputElement) {
+        const row = inputElement.closest('tr');
+        const quantity = parseFloat(row.querySelector('.sl-input').value) || 0;
+        const unitPrice = parseFloat(row.querySelector('.don-gia-input').value) || 0;
+        const total = quantity * unitPrice;
+        row.querySelector('.thanh-tien-input').value = total.toLocaleString('vi-VN');
+        updateGrandTotal();
+        saveFormData(); // Save data after calculation
+    }
 
-        function getCurrentDateTimeLocal() {
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            return now.toISOString().slice(0, 16);
-        }
+    function updateGrandTotal() {
+        let grandTotal = 0;
+        document.querySelectorAll('.thanh-tien-input').forEach(input => {
+            // Handle locale-specific number parsing for totals
+            const value = parseFloat(input.value.replace(/\./g, '').replace(/,/g, '.')) || 0;
+            grandTotal += value;
+        });
+        document.getElementById('grand-total').value = grandTotal.toLocaleString('vi-VN');
+    }
 
-        // --- Logic quản lý số phiếu ---
-        const RECEIPT_NUMBER_KEY = 'phieuKiemTraXe_receiptNumber';
-        const LAST_MONTH_KEY = 'phieuKiemTraXe_lastMonth';
+    function getCurrentDateTimeLocal() {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        return now.toISOString().slice(0, 16);
+    }
 
-        function initializeReceiptNumber() {
-            const now = new Date();
-            const currentMonth = now.getMonth(); // 0-11
-            const currentYear = now.getFullYear();
-            const storedMonthData = localStorage.getItem(LAST_MONTH_KEY);
-            let receiptNumber = parseInt(localStorage.getItem(RECEIPT_NUMBER_KEY)) || 0;
-            let lastStoredMonth = null;
+    // --- Receipt Number Management ---
 
-            if (storedMonthData) {
-                try {
-                    const parsedMonthData = JSON.parse(storedMonthData);
-                    lastStoredMonth = parsedMonthData.month;
-                    const lastStoredYear = parsedMonthData.year;
+    function initializeReceiptNumber() {
+        const now = new Date();
+        const currentMonth = now.getMonth(); // 0-11
+        const currentYear = now.getFullYear();
+        const storedMonthData = localStorage.getItem(LAST_MONTH_KEY);
+        let receiptNumber = parseInt(localStorage.getItem(RECEIPT_NUMBER_KEY)) || 0;
+        let lastStoredMonth = null;
+        let lastStoredYear = null;
 
-                    if (currentMonth !== lastStoredMonth || currentYear !== lastStoredYear) {
-                        // Tháng hoặc năm đã thay đổi, đặt lại số thứ tự
-                        receiptNumber = 1;
-                        localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
-                        localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
-                    } else {
-                        // Vẫn trong cùng tháng/năm, giữ nguyên số hiện có.
-                    }
-                } catch (e) {
-                    console.error("Lỗi khi đọc dữ liệu tháng từ localStorage:", e);
-                    receiptNumber = 1;
+        if (storedMonthData) {
+            try {
+                const parsedMonthData = JSON.parse(storedMonthData);
+                lastStoredMonth = parsedMonthData.month;
+                lastStoredYear = parsedMonthData.year;
+
+                if (currentMonth !== lastStoredMonth || currentYear !== lastStoredYear) {
+                    receiptNumber = 1; // Reset if month or year changed
                     localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
                     localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
                 }
-            } else {
-                // Lần đầu tiên, đặt số thứ tự là 1 và lưu tháng hiện tại
+                // else: Keep existing number if still in same month/year
+            } catch (e) {
+                console.error("Error reading month data from localStorage:", e);
+                // Fallback to reset if parse error
                 receiptNumber = 1;
                 localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
                 localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
             }
-            
-            // Hiển thị số phiếu và tháng
-            document.getElementById('receiptNumber').textContent = String(receiptNumber).padStart(6, '0');
-            document.getElementById('currentMonth').textContent = `${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
-        }
-
-        function incrementReceiptNumberOnPrint() {
-            const now = new Date();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-            let receiptNumber = parseInt(localStorage.getItem(RECEIPT_NUMBER_KEY)) || 0;
-            const storedMonthData = localStorage.getItem(LAST_MONTH_KEY);
-            let lastStoredMonth = null;
-            let lastStoredYear = null;
-
-            if (storedMonthData) {
-                try {
-                    const parsedMonthData = JSON.parse(storedMonthData);
-                    lastStoredMonth = parsedMonthData.month;
-                    lastStoredYear = parsedMonthData.year;
-                } catch (e) {
-                    console.error("Lỗi khi đọc dữ liệu tháng từ localStorage:", e);
-                }
-            }
-
-            if (currentMonth !== lastStoredMonth || currentYear !== lastStoredYear) {
-                receiptNumber = 1;
-            } else {
-                receiptNumber++;
-            }
-
+        } else {
+            receiptNumber = 1; // First time, set to 1
             localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
             localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
-            
-            document.getElementById('receiptNumber').textContent = String(receiptNumber).padStart(6, '0');
-            document.getElementById('currentMonth').textContent = `${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
         }
 
-        function handlePrint() {
-            incrementReceiptNumberOnPrint();
-            window.print();
-        }
+        document.getElementById('receiptNumber').textContent = String(receiptNumber).padStart(6, '0');
+        document.getElementById('currentMonth').textContent = `${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
+    }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeReceiptNumber();
-            const receivedDateTimeInput = document.getElementById('receivedDateTime');
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            receivedDateTimeInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
-        });
+    function incrementReceiptNumberOnPrint() {
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+        let receiptNumber = parseInt(localStorage.getItem(RECEIPT_NUMBER_KEY)) || 0;
+        const storedMonthData = localStorage.getItem(LAST_MONTH_KEY);
+        let lastStoredMonth = null;
+        let lastStoredYear = null;
 
-        // THAY THẾ BẰNG LINK WEB APP GOOGLE SCRIPT CỦA BẠN SAU KHI TRIỂN KHAI
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; 
-
-        // Hàm thu thập dữ liệu từ form và chuyển đổi thành chuỗi URL-encoded
-        function collectFormDataAsUrlEncoded(formElement) {
-            const formData = new FormData(formElement);
-            const params = new URLSearchParams();
-            
-            // Thêm các trường formType và số phiếu/tháng từ span elements
-            params.append('formType', formElement.querySelector('[name="formType"]').value);
-            params.append('receiptNumber', document.getElementById('receiptNumber')?.textContent || '');
-            params.append('currentMonthYear', document.getElementById('currentMonth')?.textContent || '');
-
-            for (const pair of formData.entries()) {
-                // Xử lý các checkbox: nếu không checked, FormData không gửi pair đó.
-                // Chúng ta sẽ kiểm tra lại ở Apps Script.
-                params.append(pair[0], pair[1]);
+        if (storedMonthData) {
+            try {
+                const parsedMonthData = JSON.parse(storedMonthData);
+                lastStoredMonth = parsedMonthData.month;
+                lastStoredYear = parsedMonthData.year;
+            } catch (e) {
+                console.error("Error reading month data from localStorage:", e);
             }
-
-            // Xử lý các trường có thể bị bỏ qua bởi FormData (ví dụ: unchecked checkboxes)
-            // Tuy nhiên, Apps Script đã được thiết kế để xử lý chúng nếu vắng mặt.
-            // Nếu bạn có các nhóm radio button hoặc các input khác mà FormData không thu thập giá trị 'rỗng'
-            // thì bạn sẽ cần bổ sung logic tại đây hoặc trong Apps Script.
-
-            // Xử lý bảng chi tiết công việc/vật tư
-            // Google Apps Script xử lý từng hàng riêng biệt dựa trên tên trường như item_hangMuc_1, item_dienGiai_1
-            // nên không cần phải nối thành chuỗi phức tạp ở đây.
-            // Đảm bảo tên "name" trong HTML khớp với header trong Google Sheet.
-            
-            return params.toString();
         }
 
-        // HÀM GỬI DỮ LIỆU ĐẾN APPS SCRIPT
-        document.getElementById('submitToSheet')?.addEventListener('click', () => {
-            const formElement = document.getElementById('inspectionFormXe'); // Lấy form element
-            const urlEncodedData = collectFormDataAsUrlEncoded(formElement); // Thu thập và chuyển đổi dữ liệu
-            
-            // Vô hiệu hóa nút gửi để tránh gửi nhiều lần
-            const submitButton = document.getElementById('submitToSheet');
-            submitButton.disabled = true;
-            submitButton.textContent = 'Đang gửi...';
+        if (currentMonth !== lastStoredMonth || currentYear !== lastStoredYear) {
+            receiptNumber = 1; // Reset if month/year changed before increment
+        } else {
+            receiptNumber++;
+        }
 
-            fetch(scriptURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded' // Quan trọng: Đặt Content-Type này
-                },
-                body: urlEncodedData // Truyền dữ liệu đã mã hóa
-            })
-            .then(response => {
-                // Luôn cố gắng đọc phản hồi JSON, ngay cả khi có lỗi HTTP
-                return response.json().then(data => {
-                    if (!response.ok) { // Nếu phản hồi không OK (ví dụ: status 4xx, 5xx)
+        localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
+        localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
+
+        document.getElementById('receiptNumber').textContent = String(receiptNumber).padStart(6, '0');
+        document.getElementById('currentMonth').textContent = `${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
+    }
+
+    function handlePrint() {
+        incrementReceiptNumberOnPrint(); // Increment before printing
+        window.print();
+    }
+
+    // --- Local Storage for Form Data ---
+
+    function saveFormData() {
+        const form = document.getElementById('inspectionFormXe');
+        if (!form) return;
+
+        const formData = {};
+        const inputs = form.querySelectorAll('input, textarea, select'); // Select all relevant form elements
+
+        inputs.forEach(input => {
+            if (input.name) { // Only process elements with a 'name' attribute
+                if (input.type === 'checkbox') {
+                    formData[input.name] = input.checked;
+                } else if (input.type === 'radio') {
+                    if (input.checked) {
+                        formData[input.name] = input.value;
+                    }
+                } else {
+                    formData[input.name] = input.value;
+                }
+            }
+        });
+        localStorage.setItem(FORM_DATA_KEY, JSON.stringify(formData));
+        // console.log('Form data saved to localStorage:', formData); // For debugging
+    }
+
+    function loadFormData() {
+        const savedData = localStorage.getItem(FORM_DATA_KEY);
+        if (!savedData) return;
+
+        const formData = JSON.parse(savedData);
+        const form = document.getElementById('inspectionFormXe');
+        if (!form) return;
+
+        for (const name in formData) {
+            const elements = form.querySelectorAll(`[name="${name}"]`);
+            if (elements.length > 0) {
+                elements.forEach(input => {
+                    if (input.type === 'checkbox') {
+                        input.checked = formData[name];
+                    } else if (input.type === 'radio') {
+                        if (input.value === formData[name]) {
+                            input.checked = true;
+                        }
+                    } else {
+                        input.value = formData[name];
+                    }
+                });
+            }
+        }
+        // console.log('Form data loaded from localStorage:', formData); // For debugging
+        updateGrandTotal(); // Recalculate total after loading data
+    }
+
+    // --- Event Listeners and Initial Setup ---
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeReceiptNumber(); // Set up receipt number (before loading form data to avoid overwrite)
+
+        // Set current date/time for receivedDateTime
+        const receivedDateTimeInput = document.getElementById('receivedDateTime');
+        receivedDateTimeInput.value = getCurrentDateTimeLocal();
+
+        loadFormData(); // Attempt to load saved data when page loads
+
+        const form = document.getElementById('inspectionFormXe');
+        if (form) {
+            // Attach event listeners to save data on input/change
+            form.addEventListener('input', saveFormData);
+            form.addEventListener('change', saveFormData); // For checkboxes, radio buttons
+        }
+
+        // Event listener for the "Send Information" button
+        const submitButton = document.getElementById('submitToSheet');
+        if (submitButton) {
+            submitButton.addEventListener('click', () => {
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec';
+
+                submitButton.disabled = true;
+                submitButton.textContent = 'Đang gửi...';
+
+                // Collect data including receipt number and month/year
+                const urlEncodedData = collectFormDataAsUrlEncoded(form);
+
+                fetch(scriptURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: urlEncodedData
+                })
+                .then(response => response.json().then(data => {
+                    if (!response.ok) {
                         throw new Error(data.message || 'Lỗi từ máy chủ không xác định.');
                     }
                     return data;
+                }))
+                .then(data => {
+                    if (data.result === 'success') {
+                        alert('✅ Gửi thông tin thành công!');
+                        console.log('Dữ liệu đã gửi:', data.row);
+                        // Clear saved data after successful submission
+                        localStorage.removeItem(FORM_DATA_KEY);
+                        form.reset(); // Clear the form after successful submission
+                        initializeReceiptNumber(); // Re-initialize receipt number for a new form
+                        receivedDateTimeInput.value = getCurrentDateTimeLocal(); // Reset date/time
+                        updateGrandTotal(); // Reset total
+                    } else {
+                        alert('❌ Không gửi được: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
+                        console.error('Lỗi từ Apps Script:', data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('❌ Có lỗi xảy ra khi gửi. Vui lòng kiểm tra console (F12) để biết chi tiết.');
+                    console.error('Lỗi Fetch hoặc phản hồi không hợp lệ:', error);
+                })
+                .finally(() => {
+                    submitButton.disabled = false;
+                    submitButton.textContent = '📤 Gửi Thông Tin';
                 });
-            })
-            .then(data => {
-                if (data.result === 'success') {
-                    alert('✅ Gửi thông tin thành công!');
-                    console.log('Dữ liệu đã gửi:', data.row);
-                    // Có thể reset form tại đây nếu muốn
-                    // formElement.reset(); 
-                } else {
-                    alert('❌ Không gửi được, Không biết hỏi ai: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
-                    console.error('Lỗi từ Apps Script:', data.message);
-                }
-            })
-            .catch(error => {
-                alert('❌ Có lỗi xảy ra khi gửi. Vui lòng kiểm tra console (F12) để biết chi tiết.');
-                console.error('Lỗi Fetch hoặc phản hồi không hợp lệ:', error);
-            })
-            .finally(() => {
-                // Kích hoạt lại nút gửi
-                submitButton.disabled = false;
-                submitButton.textContent = '📤 Gửi Thông Tin';
             });
+        }
+    });
+
+    // Helper function to collect form data for submission
+    function collectFormDataAsUrlEncoded(formElement) {
+        const formData = new FormData(formElement);
+        const params = new URLSearchParams();
+
+        // Add receipt number and month/year from span elements
+        params.append('receiptNumber', document.getElementById('receiptNumber')?.textContent || '');
+        params.append('currentMonthYear', document.getElementById('currentMonth')?.textContent || '');
+
+        for (const pair of formData.entries()) {
+            params.append(pair[0], pair[1]);
+        }
+
+        // Manually add unchecked checkboxes and radio buttons to ensure their absence is recorded
+        // This is important if your Apps Script expects ALL fields, even if blank/unchecked.
+        // For checkboxes, FormData only includes checked ones.
+        // For radio buttons, FormData only includes the selected one.
+        formElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            if (!checkbox.checked && !params.has(checkbox.name)) {
+                params.append(checkbox.name, ''); // Append empty string for unchecked checkbox
+            }
         });
-    </script>
+        formElement.querySelectorAll('input[type="radio"]').forEach(radio => {
+            // Check if any radio button in its group is checked, if not, append empty string
+            const radioGroupName = radio.name;
+            const checkedRadioInGroup = formElement.querySelector(`input[type="radio"][name="${radioGroupName}"]:checked`);
+            if (!checkedRadioInGroup && !params.has(radioGroupName)) {
+                params.append(radioGroupName, '');
+            }
+        });
+
+        return params.toString();
+    }
+</script>
 </body>
 </html>
