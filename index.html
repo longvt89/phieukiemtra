@@ -112,6 +112,12 @@
             margin-right: 5px;
             vertical-align: middle;
         }
+        .info-group input[type="radio"] { /* Added style for radio buttons */
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
         .info-group.inline-fields {
             align-items: flex-start;
             display: flex;
@@ -393,6 +399,15 @@
             font-size: 11px;
             background: transparent;
         }
+        /* Make numeric inputs for quantity/unit price use type="number" */
+        .detailed-check input[type="number"] {
+            width: 100%;
+            border: none;
+            text-align: center;
+            padding: 2px 0;
+            font-size: 11px;
+            background: transparent;
+        }
 
         .detailed-check input[type="text"].hang-muc-input { text-align: left; }
 
@@ -590,7 +605,7 @@
 
             .detailed-check { margin-top: 8px; font-size: 9px; }
             .detailed-check th, .detailed-check td { padding: 2px; font-size: 9px; }
-            .detailed-check input[type="text"] { font-size: 9px; }
+            .detailed-check input[type="text"], .detailed-check input[type="number"] { font-size: 9px; }
             .detailed-check input[type="checkbox"] { width: 12px; height: 12px; }
 
             .footer { font-size: 8px; margin-top: 8px; padding-top: 5px; line-height: 1.1; }
@@ -650,8 +665,8 @@
                         </div>
                         <div class="info-group">
                             <label>Kiểm tra an toàn (Có/Không):</label>
-                            <label><input type="checkbox" name="kiemTraAnToan_Co" value="Có"> Có</label>
-                            <label><input type="checkbox" name="kiemTraAnToan_Khong" value="Không"> Không</label>
+                            <label><input type="radio" name="kiemTraAnToan" value="Có"> Có</label>
+                            <label><input type="radio" name="kiemTraAnToan" value="Không"> Không</label>
                         </div>
                     </div>
                     <div class="customer-right">
@@ -686,60 +701,60 @@
                             <div class="tire-position tire-front-left">
                                 <div class="tire-input-group">
                                     <label>Áp suất:</label>
-                                    <input type="text" class="pressure-input" name="tire_pressure_FL" placeholder="0">
+                                    <input type="number" step="0.1" class="pressure-input" name="tire_pressure_FL" placeholder="0">
                                     <small>kg/cm²</small>
                                 </div>
                                 <div class="tire-input-group">
                                     <label>Độ dày:</label>
-                                    <input type="text" class="thickness-input" name="tire_thickness_FL" placeholder="0">
+                                    <input type="number" step="0.1" class="thickness-input" name="tire_thickness_FL" placeholder="0">
                                     <small>mm</small>
                                 </div>
                             </div>
                             <div class="tire-position tire-front-right">
                                 <div class="tire-input-group">
                                     <label>Áp suất:</label>
-                                    <input type="text" class="pressure-input" name="tire_pressure_FR" placeholder="0">
+                                    <input type="number" step="0.1" class="pressure-input" name="tire_pressure_FR" placeholder="0">
                                     <small>kg/cm²</small>
                                 </div>
                                 <div class="tire-input-group">
                                     <label>Độ dày:</label>
-                                    <input type="text" class="thickness-input" name="tire_thickness_FR" placeholder="0">
+                                    <input type="number" step="0.1" class="thickness-input" name="tire_thickness_FR" placeholder="0">
                                     <small>mm</small>
                                 </div>
                             </div>
                             <div class="tire-position tire-rear-left">
                                 <div class="tire-input-group">
                                     <label>Áp suất:</label>
-                                    <input type="text" class="pressure-input" name="tire_pressure_RL" placeholder="0">
+                                    <input type="number" step="0.1" class="pressure-input" name="tire_pressure_RL" placeholder="0">
                                     <small>kg/cm²</small>
                                 </div>
                                 <div class="tire-input-group">
                                     <label>Độ dày:</label>
-                                    <input type="text" class="thickness-input" name="tire_thickness_RL" placeholder="0">
+                                    <input type="number" step="0.1" class="thickness-input" name="tire_thickness_RL" placeholder="0">
                                     <small>mm</small>
                                 </div>
                             </div>
                             <div class="tire-position tire-rear-right">
                                 <div class="tire-input-group">
                                     <label>Áp suất:</label>
-                                    <input type="text" class="pressure-input" name="tire_pressure_RR" placeholder="0">
+                                    <input type="number" step="0.1" class="pressure-input" name="tire_pressure_RR" placeholder="0">
                                     <small>kg/cm²</small>
                                 </div>
                                 <div class="tire-input-group">
                                     <label>Độ dày:</label>
-                                    <input type="text" class="thickness-input" name="tire_thickness_RR" placeholder="0">
+                                    <input type="number" step="0.1" class="thickness-input" name="tire_thickness_RR" placeholder="0">
                                     <small>mm</small>
                                 </div>
                             </div>
                             <div class="tire-position tire-spare">
                                 <div class="tire-input-group">
                                     <label>Áp suất:</label>
-                                    <input type="text" class="pressure-input" name="tire_pressure_Spare" placeholder="0">
+                                    <input type="number" step="0.1" class="pressure-input" name="tire_pressure_Spare" placeholder="0">
                                     <small>kg/cm²</small>
                                 </div>
                                 <div class="tire-input-group">
                                     <label>Độ dày:</label>
-                                    <input type="text" class="thickness-input" name="tire_thickness_Spare" placeholder="0">
+                                    <input type="number" step="0.1" class="thickness-input" name="tire_thickness_Spare" placeholder="0">
                                     <small>mm</small>
                                 </div>
                             </div>
@@ -876,8 +891,8 @@
                             <td>01</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_1" value="Lốp"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_1"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_1" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_1" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_1" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_1" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_1" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_1" value="on"></td>
                         </tr>
@@ -885,8 +900,8 @@
                             <td>02</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_2" value="Vận"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_2"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_2" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_2" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_2" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_2" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_2" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_2" value="on"></td>
                         </tr>
@@ -894,8 +909,8 @@
                             <td>03</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_3" value="Cân bằng động"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_3"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_3" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_3" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_3" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_3" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_3" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_3" value="on"></td>
                         </tr>
@@ -903,8 +918,8 @@
                             <td>04</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_4" value="Cân chỉnh thước lái"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_4"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_4" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_4" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_4" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_4" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_4" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_4" value="on"></td>
                         </tr>
@@ -912,8 +927,8 @@
                             <td>05</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_5" value="Phanh"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_5"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_5" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_5" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_5" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_5" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_5" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_5" value="on"></td>
                         </tr>
@@ -921,8 +936,8 @@
                             <td>06</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_6" value="Gạt mưa"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_6"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_6" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_6" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_6" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_6" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_6" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_6" value="on"></td>
                         </tr>
@@ -930,8 +945,8 @@
                             <td>07</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_7" value="Nước rửa kính"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_7"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_7" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_7" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_7" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_7" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_7" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_7" value="on"></td>
                         </tr>
@@ -939,8 +954,8 @@
                             <td>08</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_8" value="Dầu động cơ"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_8"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_8" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_8" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_8" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_8" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_8" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_8" value="on"></td>
                         </tr>
@@ -948,8 +963,8 @@
                             <td>09</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_9" value="Lọc dầu động cơ"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_9"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_9" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_9" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_9" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_9" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_9" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_9" value="on"></td>
                         </tr>
@@ -957,8 +972,8 @@
                             <td>10</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_10" value="Lọc gió động cơ"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_10"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_10" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_10" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_10" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_10" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_10" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_10" value="on"></td>
                         </tr>
@@ -966,8 +981,8 @@
                             <td>11</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_11" value="Lọc gió điều hòa"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_11"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_11" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_11" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_11" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_11" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_11" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_11" value="on"></td>
                         </tr>
@@ -975,8 +990,8 @@
                             <td>12</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_12"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_12"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_12" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_12" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_12" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_12" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_12" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_12" value="on"></td>
                         </tr>
@@ -984,8 +999,8 @@
                             <td>13</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_13"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_13"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_13" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_13" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_13" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_13" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_13" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_13" value="on"></td>
                         </tr>
@@ -993,8 +1008,8 @@
                             <td>14</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_14"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_14"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_14" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_14" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_14" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_14" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_14" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_14" value="on"></td>
                         </tr>
@@ -1002,8 +1017,8 @@
                             <td>15</td>
                             <td class="hang-muc"><input type="text" class="hang-muc-input" name="item_hangMuc_15"></td>
                             <td><input type="text" class="dien-giai-input" name="item_dienGiai_15"></td>
-                            <td><input type="text" class="sl-input" name="item_soLuong_15" oninput="calculateRowTotal(this)"></td>
-                            <td><input type="text" class="don-gia-input" name="item_donGia_15" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="sl-input" name="item_soLuong_15" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" step="any" class="don-gia-input" name="item_donGia_15" oninput="calculateRowTotal(this)"></td>
                             <td><input type="text" class="thanh-tien-input" name="item_thanhTien_15" readonly></td>
                             <td class="xac-nhan"><input type="checkbox" name="item_xacNhan_15" value="on"></td>
                         </tr>
@@ -1042,6 +1057,284 @@
             </div>
     </div>
 
-    
+    <script>
+        // Constants for Local Storage keys
+        const RECEIPT_NUMBER_KEY = 'phieuKiemTraXe_receiptNumber';
+        const LAST_MONTH_KEY = 'phieuKiemTraXe_lastMonth';
+        const FORM_DATA_KEY = 'phieuKiemTraXe_formData'; // Key for saving form data
+
+        // --- Utility Functions ---
+
+        function calculateRowTotal(inputElement) {
+            const row = inputElement.closest('tr');
+            // Ensure inputs are treated as numbers, handle empty string as 0
+            const quantity = parseFloat(row.querySelector('.sl-input').value) || 0;
+            const unitPrice = parseFloat(row.querySelector('.don-gia-input').value) || 0;
+            const total = quantity * unitPrice;
+            row.querySelector('.thanh-tien-input').value = total.toLocaleString('vi-VN');
+            updateGrandTotal();
+            saveFormData(); // Save data after calculation
+        }
+
+        function updateGrandTotal() {
+            let grandTotal = 0;
+            document.querySelectorAll('.thanh-tien-input').forEach(input => {
+                // Parse locale-specific number (e.g., "1.000.000" -> 1000000)
+                const value = parseFloat(input.value.replace(/\./g, '').replace(/,/g, '.')) || 0;
+                grandTotal += value;
+            });
+            document.getElementById('grand-total').value = grandTotal.toLocaleString('vi-VN');
+        }
+
+        function getCurrentDateTimeLocal() {
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            return now.toISOString().slice(0, 16);
+        }
+
+        // --- Receipt Number Management ---
+
+        function initializeReceiptNumber() {
+            const now = new Date();
+            const currentMonth = now.getMonth(); // 0-11
+            const currentYear = now.getFullYear();
+            const storedMonthData = localStorage.getItem(LAST_MONTH_KEY);
+            let receiptNumber = parseInt(localStorage.getItem(RECEIPT_NUMBER_KEY)) || 0;
+            let lastStoredMonth = null;
+            let lastStoredYear = null;
+
+            if (storedMonthData) {
+                try {
+                    const parsedMonthData = JSON.parse(storedMonthData);
+                    lastStoredMonth = parsedMonthData.month;
+                    lastStoredYear = parsedMonthData.year;
+
+                    if (currentMonth !== lastStoredMonth || currentYear !== lastStoredYear) {
+                        receiptNumber = 1; // Reset if month or year changed
+                        localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
+                        localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
+                    }
+                    // else: Keep existing number if still in same month/year
+                } catch (e) {
+                    console.error("Lỗi khi đọc dữ liệu tháng từ localStorage:", e);
+                    // Fallback to reset if parse error
+                    receiptNumber = 1;
+                    localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
+                    localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
+                }
+            } else {
+                receiptNumber = 1; // First time, set to 1
+                localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
+                localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
+            }
+
+            document.getElementById('receiptNumber').textContent = String(receiptNumber).padStart(6, '0');
+            document.getElementById('currentMonth').textContent = `${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
+        }
+
+        function incrementReceiptNumberOnPrint() {
+            const now = new Date();
+            const currentMonth = now.getMonth();
+            const currentYear = now.getFullYear();
+            let receiptNumber = parseInt(localStorage.getItem(RECEIPT_NUMBER_KEY)) || 0;
+            const storedMonthData = localStorage.getItem(LAST_MONTH_KEY);
+            let lastStoredMonth = null;
+            let lastStoredYear = null;
+
+            if (storedMonthData) {
+                try {
+                    const parsedMonthData = JSON.parse(storedMonthData);
+                    lastStoredMonth = parsedMonthData.month;
+                    lastStoredYear = parsedMonthData.year;
+                } catch (e) {
+                    console.error("Lỗi khi đọc dữ liệu tháng từ localStorage:", e);
+                }
+            }
+
+            if (currentMonth !== lastStoredMonth || currentYear !== lastStoredYear) {
+                receiptNumber = 1; // Reset if month/year changed before increment
+            } else {
+                receiptNumber++;
+            }
+
+            localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
+            localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
+
+            document.getElementById('receiptNumber').textContent = String(receiptNumber).padStart(6, '0');
+            document.getElementById('currentMonth').textContent = `${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
+        }
+
+        function handlePrint() {
+            incrementReceiptNumberOnPrint(); // Increment before printing
+            window.print();
+        }
+
+        // --- Local Storage for Form Data ---
+
+        function saveFormData() {
+            const form = document.getElementById('inspectionFormXe');
+            if (!form) return;
+
+            const formData = {};
+            // Select all relevant form elements (inputs, textareas, selects).
+            // Exclude read-only inputs that are calculated or displayed (like receipt number, grand total)
+            const inputs = form.querySelectorAll('input:not([readonly]), textarea, select'); 
+
+            inputs.forEach(input => {
+                if (input.name) { // Only process elements with a 'name' attribute
+                    if (input.type === 'checkbox') {
+                        formData[input.name] = input.checked;
+                    } else if (input.type === 'radio') {
+                        if (input.checked) {
+                            formData[input.name] = input.value;
+                        }
+                    } else {
+                        formData[input.name] = input.value;
+                    }
+                }
+            });
+            localStorage.setItem(FORM_DATA_KEY, JSON.stringify(formData));
+            // console.log('Form data saved to localStorage:', formData); // For debugging
+        }
+
+        function loadFormData() {
+            const savedData = localStorage.getItem(FORM_DATA_KEY);
+            if (!savedData) return;
+
+            const formData = JSON.parse(savedData);
+            const form = document.getElementById('inspectionFormXe');
+            if (!form) return;
+
+            for (const name in formData) {
+                const elements = form.querySelectorAll(`[name="${name}"]`);
+                if (elements.length > 0) {
+                    elements.forEach(input => {
+                        if (input.type === 'checkbox') {
+                            input.checked = formData[name];
+                        } else if (input.type === 'radio') {
+                            if (input.value === formData[name]) {
+                                input.checked = true;
+                            }
+                        } else {
+                            input.value = formData[name];
+                        }
+                    });
+                }
+            }
+            // console.log('Form data loaded from localStorage:', formData); // For debugging
+            updateGrandTotal(); // Recalculate total after loading data
+        }
+
+        // --- Event Listeners and Initial Setup ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeReceiptNumber(); // Set up receipt number (before loading form data to avoid overwrite)
+
+            // Set current date/time for receivedDateTime
+            const receivedDateTimeInput = document.getElementById('receivedDateTime');
+            receivedDateTimeInput.value = getCurrentDateTimeLocal();
+
+            loadFormData(); // Attempt to load saved data when page loads
+
+            const form = document.getElementById('inspectionFormXe');
+            if (form) {
+                // Attach event listeners to save data on input/change
+                form.addEventListener('input', saveFormData);
+                form.addEventListener('change', saveFormData); // For checkboxes, radio buttons, select elements
+            }
+
+            // Event listener for the "Send Information" button
+            const submitButton = document.getElementById('submitToSheet');
+            if (submitButton) {
+                submitButton.addEventListener('click', () => {
+                    // THAY THẾ BẰNG LINK WEB APP GOOGLE SCRIPT CỦA BẠN SAU KHI TRIỂN KHAI
+                    const scriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec';
+
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Đang gửi...';
+
+                    // Collect data including receipt number and month/year
+                    const urlEncodedData = collectFormDataAsUrlEncoded(form);
+                    
+                    fetch(scriptURL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: urlEncodedData
+                    })
+                    .then(response => {
+                        // Always attempt to parse JSON response, even if HTTP error
+                        return response.json().then(data => {
+                            if (!response.ok) { // If response not OK (e.g., status 4xx, 5xx)
+                                throw new Error(data.message || 'Lỗi từ máy chủ không xác định.');
+                            }
+                            return data;
+                        });
+                    })
+                    .then(data => {
+                        if (data.result === 'success') {
+                            alert('✅ Gửi thông tin thành công!');
+                            console.log('Dữ liệu đã gửi:', data.row);
+                            // Clear saved data after successful submission
+                            localStorage.removeItem(FORM_DATA_KEY);
+                            form.reset(); // Clear the form after successful submission
+                            initializeReceiptNumber(); // Re-initialize receipt number for a new form
+                            receivedDateTimeInput.value = getCurrentDateTimeLocal(); // Reset date/time
+                            updateGrandTotal(); // Reset total
+                        } else {
+                            alert('❌ Không gửi được, Không biết hỏi ai: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
+                            console.error('Lỗi từ Apps Script:', data.message);
+                        }
+                    })
+                    .catch(error => {
+                        alert('❌ Có lỗi xảy ra khi gửi. Vui lòng kiểm tra console (F12) để biết chi tiết.');
+                        console.error('Lỗi Fetch hoặc phản hồi không hợp lệ:', error);
+                    })
+                    .finally(() => {
+                        submitButton.disabled = false;
+                        submitButton.textContent = '📤 Gửi Thông Tin';
+                    });
+                });
+            }
+        });
+
+        // Helper function to collect form data for submission
+        function collectFormDataAsUrlEncoded(formElement) {
+            const formData = new FormData(formElement);
+            const params = new URLSearchParams();
+
+            // Add receipt number and month/year from span elements
+            params.append('receiptNumber', document.getElementById('receiptNumber')?.textContent || '');
+            params.append('currentMonthYear', document.getElementById('currentMonth')?.textContent || '');
+
+            // Add all existing form data entries
+            for (const pair of formData.entries()) {
+                params.append(pair[0], pair[1]);
+            }
+
+            // Manually add unchecked checkboxes and unselected radio groups to ensure their absence is recorded
+            // This is important if your Apps Script expects ALL fields, even if blank/unchecked.
+            // For checkboxes, FormData only includes checked ones.
+            formElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                if (!checkbox.checked && !params.has(checkbox.name)) {
+                    params.append(checkbox.name, ''); // Append empty string for unchecked checkbox
+                }
+            });
+            // For radio buttons, FormData only includes the selected one.
+            // Iterate over each unique radio button name
+            const radioGroupNames = new Set();
+            formElement.querySelectorAll('input[type="radio"]').forEach(radio => radioGroupNames.add(radio.name));
+
+            radioGroupNames.forEach(groupName => {
+                const checkedRadioInGroup = formElement.querySelector(`input[type="radio"][name="${groupName}"]:checked`);
+                if (!checkedRadioInGroup && !params.has(groupName)) {
+                    params.append(groupName, ''); // Append empty string if no radio button in group is checked
+                }
+            });
+
+            return params.toString();
+        }
+    </script>
 </body>
 </html>
