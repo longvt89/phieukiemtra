@@ -84,7 +84,7 @@
                 width: 148mm;
                 height: 205mm; /* Đảm bảo chiều cao này để vừa 1 trang A5 (210mm - 5mm lề tổng cộng) */
                 margin: 0;
-                padding: 7mm; /* Giữ nguyên lề để nội dung không bị sát mép */
+                padding: 7mm; /* Giữ padding để nội dung không quá sát mép */
                 page-break-inside: avoid;
                 font-size: 11px; /* Áp dụng font size cho in */
                 line-height: 1.25;
@@ -196,97 +196,103 @@
         <div class="form-section">
             <h2 style="text-align: center; color: #4472C4; margin-bottom: 15px; font-size: 16px;">PHIẾU ĐÁNH GIÁ HIỆN TRẠNG LỐP</h2>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                <div class="control-group">
-                    <label>Hiện trạng lốp:</label>
-                    <input type="text" id="tireOverallCondition" placeholder="Nhập hiện trạng lốp">
-                </div>
-                <div class="control-group">
-                    <label>Ngày:</label>
-                    <input type="date" id="inspectionDate">
-                </div>
-            </div>
+            <form id="tireEvaluationForm" action="https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec" method="POST">
+                <input type="hidden" name="formType" value="PhieuDanhGiaLop">
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                <div class="control-group">
-                    <label>Biển số xe:</label>
-                    <input type="text" id="licensePlate" placeholder="Nhập biển số xe">
-                </div>
-                <div class="control-group">
-                    <label>Kỹ thuật viên:</label>
-                    <input type="text" id="technician" placeholder="Tên kỹ thuật viên">
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label>Số điện thoại:</label>
-                <input type="text" id="phoneNumber" placeholder="Số điện thoại liên hệ">
-            </div>
-
-            <h3 style="margin: 15px 0 10px 0; color: #4472C4; font-size: 12px;">Thông số lốp xe:</h3>
-            <div class="control-group" style="margin-bottom: 15px;">
-                <label>Size lốp:</label>
-                <input type="text" id="tireSizeInput" placeholder="Nhập size lốp (ví dụ: 205/55R16)">
-            </div>
-            <div class="tire-inputs">
-                <div class="tire-input-group">
-                    <h4>1: FL (Trước trái)</h4>
-                    <div class="depth-inputs">
-                        <input type="number" id="fl-inner" placeholder="Trong (mm)" step="0.1">
-                        <input type="number" id="fl-outer" placeholder="Ngoài (mm)" step="0.1">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div class="control-group">
+                        <label for="tireOverallConditionInput">Hiện trạng lốp:</label>
+                        <input type="text" id="tireOverallConditionInput" name="tireOverallCondition" placeholder="Nhập hiện trạng lốp">
                     </div>
-                    <input type="number" class="pressure-input" id="fl-pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
-                </div>
-
-                <div class="tire-input-group">
-                    <h4>2: FR (Trước phải)</h4>
-                    <div class="depth-inputs">
-                        <input type="number" id="fr-inner" placeholder="Trong (mm)" step="0.1">
-                        <input type="number" id="fr-outer" placeholder="Ngoài (mm)" step="0.1">
+                    <div class="control-group">
+                        <label for="inspectionDateInput">Ngày:</label>
+                        <input type="date" id="inspectionDateInput" name="inspectionDate" required>
                     </div>
-                    <input type="number" class="pressure-input" id="fr-pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
                 </div>
 
-                <div class="tire-input-group">
-                    <h4>3: RL (Sau trái)</h4>
-                    <div class="depth-inputs">
-                        <input type="number" id="rl-inner" placeholder="Trong (mm)" step="0.1">
-                        <input type="number" id="rl-outer" placeholder="Ngoài (mm)" step="0.1">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div class="control-group">
+                        <label for="licensePlateInput">Biển số xe:</label>
+                        <input type="text" id="licensePlateInput" name="licensePlate" placeholder="Nhập biển số xe">
                     </div>
-                    <input type="number" class="pressure-input" id="rl-pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
-                </div>
-
-                <div class="tire-input-group">
-                    <h4>4: RR (Sau phải)</h4>
-                    <div class="depth-inputs">
-                        <input type="number" id="rr-inner" placeholder="Trong (mm)" step="0.1">
-                        <input type="number" id="rr-outer" placeholder="Ngoài (mm)" step="0.1">
+                    <div class="control-group">
+                        <label for="technicianInput">Kỹ thuật viên:</label>
+                        <input type="text" id="technicianInput" name="technician" placeholder="Tên kỹ thuật viên">
                     </div>
-                    <input type="number" class="pressure-input" id="rr-pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
                 </div>
-            </div>
 
-            <div class="control-group">
-                <label>Lốp dự phòng:</label>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
-                    <input type="number" id="spare-depth" placeholder="Độ sâu (mm)" step="0.1">
-                    <input type="number" id="spare-pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
+                <div class="control-group">
+                    <label for="phoneNumberInput">Số điện thoại:</label>
+                    <input type="tel" id="phoneNumberInput" name="phoneNumber" placeholder="Số điện thoại liên hệ">
                 </div>
-                <label style="margin-top: 8px; display: block; font-size: 10px;">Khuyến cáo lốp dự phòng:</label>
-                <div class="recommendation-checkboxes" style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 9px;">
-                    <label><input type="checkbox" data-rec-id="can-chinh-thuoc-lai"> Cần chỉnh thước lái</label>
-                    <label><input type="checkbox" data-rec-id="can-bang-dong"> Cân bằng động</label>
-                    <label><input type="checkbox" data-rec-id="dao-lop"> Đảo lốp</label>
-                    <label><input type="checkbox" data-rec-id="thay-the"> Thay thế</label>
+
+                <h3 style="margin: 15px 0 10px 0; color: #4472C4; font-size: 12px;">Thông số lốp xe:</h3>
+                <div class="control-group" style="margin-bottom: 15px;">
+                    <label for="tireSizeInput">Size lốp:</label>
+                    <input type="text" id="tireSizeInput" name="tireSize" placeholder="Nhập size lốp (ví dụ: 205/55R16)">
                 </div>
-            </div>
+                <div class="tire-inputs">
+                    <div class="tire-input-group">
+                        <h4>1: FL (Trước trái)</h4>
+                        <div class="depth-inputs">
+                            <input type="number" id="fl-inner" name="fl_inner_depth" placeholder="Trong (mm)" step="0.1">
+                            <input type="number" id="fl-outer" name="fl_outer_depth" placeholder="Ngoài (mm)" step="0.1">
+                        </div>
+                        <input type="number" class="pressure-input" id="fl-pressure" name="fl_pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
+                    </div>
+
+                    <div class="tire-input-group">
+                        <h4>2: FR (Trước phải)</h4>
+                        <div class="depth-inputs">
+                            <input type="number" id="fr-inner" name="fr_inner_depth" placeholder="Trong (mm)" step="0.1">
+                            <input type="number" id="fr-outer" name="fr_outer_depth" placeholder="Ngoài (mm)" step="0.1">
+                        </div>
+                        <input type="number" class="pressure-input" id="fr-pressure" name="fr_pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
+                    </div>
+
+                    <div class="tire-input-group">
+                        <h4>3: RL (Sau trái)</h4>
+                        <div class="depth-inputs">
+                            <input type="number" id="rl-inner" name="rl_inner_depth" placeholder="Trong (mm)" step="0.1">
+                            <input type="number" id="rl-outer" name="rl_outer_depth" placeholder="Ngoài (mm)" step="0.1">
+                        </div>
+                        <input type="number" class="pressure-input" id="rl-pressure" name="rl_pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
+                    </div>
+
+                    <div class="tire-input-group">
+                        <h4>4: RR (Sau phải)</h4>
+                        <div class="depth-inputs">
+                            <input type="number" id="rr-inner" name="rr_inner_depth" placeholder="Trong (mm)" step="0.1">
+                            <input type="number" id="rr-outer" name="rr_outer_depth" placeholder="Ngoài (mm)" step="0.1">
+                        </div>
+                        <input type="number" class="pressure-input" id="rr-pressure" name="rr_pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Lốp dự phòng:</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                        <input type="number" id="spare-depth" name="spare_depth" placeholder="Độ sâu (mm)" step="0.1">
+                        <input type="number" id="spare-pressure" name="spare_pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
+                    </div>
+                    <label style="margin-top: 8px; display: block; font-size: 10px;">Khuyến cáo lốp dự phòng:</label>
+                    <div class="recommendation-checkboxes" style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 9px;">
+                        <label><input type="checkbox" name="rec_canchinhthuoclai" data-rec-id="can-chinh-thuoc-lai"> Cần chỉnh thước lái</label>
+                        <label><input type="checkbox" name="rec_canbangdong" data-rec-id="can-bang-dong"> Cân bằng động</label>
+                        <label><input type="checkbox" name="rec_daolop" data-rec-id="dao-lop"> Đảo lốp</label>
+                        <label><input type="checkbox" name="rec_thaythe" data-rec-id="thay-the"> Thay thế</label>
+                    </div>
+                </div>
+            </form>
         </div>
 
         <div class="controls">
             <div class="buttons">
                 <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra'">📄 Phiếu Kiểm Tra Xe</button>
-                <button class="btn btn-primary" onclick="updatePreview()">Cập nhật xem trước</button>
-                <button class="btn btn-success" onclick="printForm()">In phiếu (A5)</button>
+                <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/kiemtragam.html'">📄 Phiếu Kiểm Gầm</button>
+                <button class="btn btn-primary" id="updatePreviewBtn">Cập nhật xem trước</button>
+                <button class="btn btn-success" id="submitFormBtn">📤 Gửi Thông Tin</button>
+                <button class="btn btn-primary" id="printFormBtn">🖨️ In phiếu (A5)</button>
             </div>
         </div>
 
@@ -372,7 +378,8 @@
             </div>
 
             <div class="car-diagram">
-                <img src="sodooto.png" alt="Car Diagram"> <svg class="car-svg" viewBox="0 0 160 240">
+                <img src="sodooto.png" alt="Car Diagram">
+                <svg class="car-svg" viewBox="0 0 160 240">
                     <g id="tire-measurements">
                         <g transform="translate(-50,45)"> 
                             <rect width="50" height="30" fill="white" stroke="#4472C4"/>
@@ -435,7 +442,7 @@
 
             <div class="note-section">
                 <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 8px;">
-                    <div class="checkbox"></div>
+                    <div class="checkbox" id="note-checkbox-spare"></div>
                     <span style="font-weight: bold;">LƯU Ý: Kiểm tra & bơm lốp dự phòng</span>
                 </div>
                 
@@ -472,35 +479,41 @@
     </div>
 
     <script>
-        // Đặt ngày hiện tại làm giá trị mặc định cho input ngày
-        document.getElementById('inspectionDate').value = new Date().toISOString().split('T')[0];
+        // Constants for Local Storage keys
+        const FORM_DATA_TIRE_KEY = 'phieuDanhGiaLop_formData'; // Unique key for this form
+
+        // Global flag for submission status
+        let hasSubmitted = false;
+
+        // --- Utility Functions ---
 
         /**
-         * Xác định hình dạng (màu sắc) dựa trên độ sâu gai lốp.
-         * @param {number} depth - Độ sâu gai lốp (mm).
-         * @returns {string} Tên lớp CSS tương ứng với hình dạng.
+         * Determines the shape (color) based on tire tread depth.
+         * @param {number} depth - Tire tread depth (mm).
+         * @returns {string} Corresponding CSS class name for the shape.
          */
         function getDepthShape(depth) {
-            if (depth > 4) return 'green-square'; // Lốp tốt
-            else if (depth >= 3) return 'yellow-triangle'; // Lốp cần chú ý
-            else if (depth >= 1.6) return 'red-circle'; // Lốp cần thay thế (1.6 - 3mm)
-            else return 'red-circle'; // Dưới 1.6mm cũng là đỏ
+            if (depth > 4) return 'green-square'; // Good tire
+            else if (depth >= 3) return 'yellow-triangle'; // Caution tire
+            else if (depth >= 1.6) return 'red-circle'; // Replacement needed (1.6 - 3mm)
+            else return 'red-circle'; // Below 1.6mm is also red (critical)
         }
 
         /**
-         * Cập nhật các hình dạng hiển thị độ sâu gai lốp cho từng vị trí lốp.
-         * @param {string} position - Vị trí lốp (ví dụ: 'fl', 'fr', 'rl', 'rr').
-         * @param {number} innerDepth - Độ sâu gai lốp phía trong.
-         * @param {number} outerDepth - Độ sâu gai lốp phía ngoài.
+         * Updates the visual tire tread depth shapes for each tire position.
+         * @param {string} position - Tire position (e.g., 'fl', 'fr', 'rl', 'rr').
+         * @param {number} innerDepth - Inner tire tread depth.
+         * @param {number} outerDepth - Outer tire tread depth.
          */
         function updateTireShapes(position, innerDepth, outerDepth) {
             const shapesContainer = document.getElementById(position + '-shapes');
-            shapesContainer.innerHTML = ''; // Xóa các hình dạng cũ
+            if (!shapesContainer) return;
 
-            // Tạo và thêm hình dạng cho độ sâu phía trong
+            shapesContainer.innerHTML = ''; // Clear existing shapes
+
+            // Create and append shape for inner depth
             const innerShape = document.createElement('div');
             innerShape.className = 'shape ' + getDepthShape(innerDepth);
-            // Điều chỉnh kiểu dáng đặc biệt cho tam giác vàng để hiển thị đúng
             if (getDepthShape(innerDepth) === 'yellow-triangle') {
                 innerShape.style.width = '0';
                 innerShape.style.height = '0';
@@ -512,10 +525,9 @@
             }
             shapesContainer.appendChild(innerShape);
 
-            // Tạo và thêm hình dạng cho độ sâu phía ngoài
+            // Create and append shape for outer depth
             const outerShape = document.createElement('div');
             outerShape.className = 'shape ' + getDepthShape(outerDepth);
-            // Điều chỉnh kiểu dáng đặc biệt cho tam giác vàng để hiển thị đúng
             if (getDepthShape(outerDepth) === 'yellow-triangle') {
                 outerShape.style.width = '0';
                 outerShape.style.height = '0';
@@ -529,10 +541,9 @@
         }
 
         /**
-         * Cập nhật các khuyến nghị dựa trên dữ liệu nhập và logic tự động.
+         * Updates recommendations based on input data and automatic logic.
          */
         function updateRecommendations() {
-            // Ánh xạ ID khuyến nghị từ data-rec-id sang ID của checkbox hiển thị
             const recommendationsMap = {
                 'can-chinh-thuoc-lai': 'rec-1',
                 'can-bang-dong': 'rec-2',
@@ -540,231 +551,277 @@
                 'thay-the': 'rec-4'
             };
 
-            // Xóa tất cả các dấu tích khuyến nghị hiển thị (đặt lại màu nền về trắng)
+            // Reset all visual recommendation checkboxes
             Object.values(recommendationsMap).forEach(id => {
-                document.getElementById(id).style.background = 'white';
+                const recCheckbox = document.getElementById(id);
+                if (recCheckbox) recCheckbox.style.background = 'white';
             });
 
-            // Xử lý các khuyến nghị được chọn thủ công từ checkbox (cho lốp dự phòng)
+            // Process manually checked recommendations from control section
             document.querySelectorAll('.recommendation-checkboxes input[type="checkbox"]').forEach(checkbox => {
                 if (checkbox.checked) {
                     const recId = checkbox.dataset.recId;
-                    if (recommendationsMap[recId]) {
-                        // Đặt màu nền cho checkbox hiển thị nếu được chọn
-                        document.getElementById(recommendationsMap[recId]).style.background = '#4472C4';
-                    }
+                    const displayCheckbox = document.getElementById(recommendationsMap[recId]);
+                    if (displayCheckbox) displayCheckbox.style.background = '#4472C4';
                 }
             });
 
-            // Logic tự động đưa ra khuyến nghị dựa trên độ sâu gai lốp
+            // Automatic recommendation logic based on tire depths
             const positions = ['fl', 'fr', 'rl', 'rr'];
-            let needsReplacement = false; // Cờ cho khuyến nghị thay thế
-            let needsRotation = false;    // Cờ cho khuyến nghị đảo lốp
+            let needsReplacement = false;
+            let needsRotation = false;
 
             positions.forEach(pos => {
                 const inner = parseFloat(document.getElementById(pos + '-inner').value) || 0;
                 const outer = parseFloat(document.getElementById(pos + '-outer').value) || 0;
                 
-                // Nếu độ sâu gai lốp nhỏ hơn 1.6mm (ngưỡng pháp lý), cần thay thế
+                // If tread depth is below 1.6mm (legal limit), needs replacement
                 if (inner < 1.6 || outer < 1.6) {
                     needsReplacement = true;
                 }
-                // Logic ví dụ cho đảo lốp: nếu sự chênh lệch giữa độ sâu trong và ngoài lớn hơn 1mm
+                // Example logic for rotation: if difference between inner and outer is greater than 1mm
                 if (Math.abs(inner - outer) > 1) { 
                     needsRotation = true;
                 }
             });
 
-            // Áp dụng khuyến nghị tự động
+            // Apply automatic recommendations if not already manually checked
             if (needsReplacement) {
-                document.getElementById('rec-4').style.background = '#4472C4'; // Đánh dấu "Thay thế"
+                const rec4 = document.getElementById('rec-4');
+                if (rec4) rec4.style.background = '#4472C4'; // Mark "Thay thế"
             }
             if (needsRotation) {
-                document.getElementById('rec-3').style.background = '#4472C4'; // Đánh dấu "Đảo lốp"
+                const rec3 = document.getElementById('rec-3');
+                if (rec3) rec3.style.background = '#4472C4'; // Mark "Đảo lốp"
             }
         }
 
         /**
-         * Cập nhật bản xem trước của phiếu in với dữ liệu hiện tại từ form.
+         * Updates the print preview section with current data from the form.
          */
         function updatePreview() {
-            // Cập nhật thông tin cơ bản
-            document.getElementById('condition-display').textContent = document.getElementById('tireOverallCondition').value;
-            document.getElementById('date-display').textContent = document.getElementById('inspectionDate').value;
-            document.getElementById('plate-display').textContent = document.getElementById('licensePlate').value;
-            document.getElementById('tech-display').textContent = document.getElementById('technician').value;
-            document.getElementById('phone-display').textContent = document.getElementById('phoneNumber').value;
+            // Update basic info
+            document.getElementById('condition-display').textContent = document.getElementById('tireOverallConditionInput').value;
+            document.getElementById('date-display').textContent = document.getElementById('inspectionDateInput').value;
+            document.getElementById('plate-display').textContent = document.getElementById('licensePlateInput').value;
+            document.getElementById('tech-display').textContent = document.getElementById('technicianInput').value;
+            document.getElementById('phone-display').textContent = document.getElementById('phoneNumberInput').value;
 
-            // Cập nhật Size lốp trên SVG
+            // Update Tire Size on SVG
             document.getElementById('tire-size-text').textContent = document.getElementById('tireSizeInput').value || 'Size Lốp';
 
-            // Cập nhật các thông số đo lốp và hình dạng trên sơ đồ xe
+            // Update tire measurements and shapes on the car diagram
             const positions = ['fl', 'fr', 'rl', 'rr'];
             positions.forEach(pos => {
                 const inner = parseFloat(document.getElementById(pos + '-inner').value) || 0;
                 const outer = parseFloat(document.getElementById(pos + '-outer').value) || 0;
                 const pressure = parseFloat(document.getElementById(pos + '-pressure').value) || 0;
 
-                // Cập nhật hiển thị độ sâu gai lốp (ví dụ: "3.5/3.2")
+                // Update tread depth display (e.g., "3.5/3.2")
                 document.getElementById(pos + '-display').textContent = inner.toFixed(1) + '/' + outer.toFixed(1); 
-                // Cập nhật hiển thị áp suất lốp
+                // Update tire pressure display
                 document.getElementById(pos + '-pressure-display-text').textContent = pressure.toFixed(1);
-                // Cập nhật các hình dạng màu sắc biểu thị độ sâu gai lốp
+                // Update colored shapes indicating tread depth
                 updateTireShapes(pos, inner, outer);
             });
 
-            // Cập nhật thông số lốp dự phòng
+            // Update spare tire measurements
             const spareDepth = parseFloat(document.getElementById('spare-depth').value) || 0;
             const sparePressure = parseFloat(document.getElementById('spare-pressure').value) || 0;
             document.getElementById('spare-display').textContent = spareDepth.toFixed(1); 
             document.getElementById('spare-pressure-display-text').textContent = sparePressure.toFixed(1);
 
-            // Cập nhật các khuyến nghị (bao gồm cả logic checkbox mới)
+            // Update recommendations (including new checkbox logic)
             updateRecommendations();
         }
 
-        /**
-         * Kích hoạt chức năng in phiếu.
-         */
-        function printForm() {
-            updatePreview(); // Đảm bảo dữ liệu xem trước được cập nhật trước khi in
+        // --- Local Storage Functions ---
 
-            // Tạo CSS tùy chỉnh cho việc in (đặc biệt là kích thước A5)
-            const printCSS = `
-                @page {
-                    size: A5 portrait; /* Đặt kích thước trang in là A5 và hướng dọc */
-                    margin: 3mm; /* Lề đều 3mm cho tất cả các cạnh */
-                }
-                @media print {
-                    body {
-                        margin: 0;
-                        padding: 0;
-                        background: white;
-                        -webkit-print-color-adjust: exact !important; 
-                        color-adjust: exact !important; 
-                    }
-                    .container {
-                        box-shadow: none;
-                        max-width: none;
-                    }
-                    .form-section, .controls {
-                        display: none; 
-                    }
-                    .print-section {
-                        width: 148mm;
-                        height: 205mm; /* Đảm bảo chiều cao vừa với A5 (210mm - 5mm lề tổng cộng) */
-                        margin: 0;
-                        padding: 7mm; /* Giữ nguyên lề để nội dung không bị sát mép */
-                        font-size: 11px; /* Áp dụng font size cho in */
-                        line-height: 1.25;
-                    }
-                    /* Đảm bảo các font size được áp dụng khi in */
-                    .tire-measurements text {
-                        font-size: 8px !important;
-                    }
-                    .tire-measurements rect {
-                        stroke-width: 0.6 !important;
-                    }
-                    .tire-measurements g[transform*="translate"] rect {
-                        width: 48px !important;
-                        height: 20px !important;
-                    }
-                    .tire-measurements g[transform*="translate"] text {
-                        font-size: 8px !important;
-                    }
-                    .tire-measurements g[transform*="translate"] rect[fill="#4472C4"] {
-                        height: 16px !important;
-                    }
-                    .tire-measurements g[transform*="translate"] text[fill="white"] {
-                        font-size: 7px !important;
-                    }
-                    #tire-size-box {
-                        stroke-width: 1.1 !important;
-                    }
-                    #tire-size-text {
-                        font-size: 10px !important;
-                        font-weight: bold !important;
-                    }
-                    .logo {
-                        width: 65px !important;
-                        height: 65px !important;
-                        font-size: 26px !important;
-                    }
-                    .qr-code {
-                        width: 45px !important;
-                        height: 45px !important;
-                        font-size: 9px !important;
-                    }
-                    .company-name {
-                        font-size: 17px !important;
-                    }
-                    .company-details {
-                        font-size: 10.5px !important;
-                    }
-                    .title {
-                        font-size: 15px !important;
-                    }
-                    .legend-title {
-                        font-size: 12px !important;
-                    }
-                    .legend-item {
-                        font-size: 11px !important;
-                    }
-                    .shape {
-                        width: 16px !important;
-                        height: 11px !important;
-                    }
-                    .yellow-triangle {
-                        border-left: 9px solid transparent !important;
-                        border-right: 9px solid transparent !important;
-                        border-bottom: 13px solid #FFC000 !important;
-                    }
-                    .position {
-                        font-size: 11px !important;
-                    }
-                    .rec-title {
-                        font-size: 12px !important;
-                    }
-                    .rec-item {
-                        font-size: 10.5px !important;
-                    }
-                    .checkbox {
-                        width: 13px !important;
-                        height: 13px !important;
-                    }
-                    .note-section {
-                        font-size: 11px !important;
-                    }
-                    .info-section {
-                        font-size: 12px !important;
+        function saveFormDataToLocalStorage() {
+            const form = document.getElementById('tireEvaluationForm');
+            if (!form) return;
+
+            const formData = {};
+            const inputs = form.querySelectorAll('input:not([readonly]), textarea, select'); 
+
+            inputs.forEach(input => {
+                if (input.name) {
+                    if (input.type === 'checkbox') {
+                        formData[input.name] = input.checked;
+                    } else if (input.type === 'radio') {
+                        if (input.checked) {
+                            formData[input.name] = input.value;
+                        }
+                    } else {
+                        formData[input.name] = input.value;
                     }
                 }
-            `;
-            
-            // Thêm CSS này vào head của tài liệu để áp dụng khi in
-            const style = document.createElement('style');
-            style.textContent = printCSS;
-            document.head.appendChild(style);
-            
-            // Gọi lệnh in cơ bản
-            window.print();
-            
-            // Xóa CSS tùy chỉnh sau khi in để không ảnh hưởng đến hiển thị bình thường
-            setTimeout(() => {
-                document.head.removeChild(style);
-            }, 1000); 
+            });
+            localStorage.setItem(FORM_DATA_TIRE_KEY, JSON.stringify(formData));
+            // console.log('Form data saved to localStorage:', formData);
         }
 
-        // Tự động cập nhật bản xem trước khi có bất kỳ thay đổi nào trong các trường input hoặc checkbox
-        document.addEventListener('input', function(e) {
-            // Chỉ cập nhật nếu phần tử thay đổi là một input hoặc một checkbox trong nhóm khuyến nghị
-            if (e.target.tagName === 'INPUT' || (e.target.tagName === 'INPUT' && e.target.type === 'checkbox' && e.target.closest('.recommendation-checkboxes'))) {
-                updatePreview();
+        function loadFormDataFromLocalStorage() {
+            const savedData = localStorage.getItem(FORM_DATA_TIRE_KEY);
+            if (!savedData) return;
+
+            const formData = JSON.parse(savedData);
+            const form = document.getElementById('tireEvaluationForm');
+            if (!form) return;
+
+            for (const name in formData) {
+                const elements = form.querySelectorAll(`[name="${name}"]`);
+                if (elements.length > 0) {
+                    elements.forEach(input => {
+                        if (input.type === 'checkbox') {
+                            input.checked = formData[name];
+                        } else if (input.type === 'radio') {
+                            if (input.value === formData[name]) {
+                                input.checked = true;
+                            }
+                        } else {
+                            input.value = formData[name];
+                        }
+                    });
+                }
+            }
+            // console.log('Form data loaded from localStorage:', formData);
+            updatePreview(); // Update visual preview after loading data
+        }
+
+        // Helper function to collect form data for submission (enhanced for checkboxes/radios)
+        function collectFormDataAsUrlEncoded(formElement) {
+            const formData = new FormData(formElement);
+            const params = new URLSearchParams();
+
+            params.append('formType', formElement.querySelector('[name="formType"]').value);
+
+            // Append all form data entries
+            for (const pair of formData.entries()) {
+                params.append(pair[0], pair[1]);
+            }
+
+            // Manually add unchecked checkboxes and unselected radio groups to ensure their absence is recorded
+            formElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                if (!checkbox.checked && !params.has(checkbox.name)) {
+                    params.append(checkbox.name, ''); 
+                }
+            });
+            const radioGroupNames = new Set();
+            formElement.querySelectorAll('input[type="radio"]').forEach(radio => radioGroupNames.add(radio.name));
+
+            radioGroupNames.forEach(groupName => {
+                const checkedRadioInGroup = formElement.querySelector(`input[type="radio"][name="${groupName}"]:checked`);
+                if (!checkedRadioInGroup && !params.has(groupName)) {
+                    params.append(groupName, '');
+                }
+            });
+            
+            return params.toString();
+        }
+
+        // --- Event Listeners ---
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial date
+            document.getElementById('inspectionDateInput').value = new Date().toISOString().split('T')[0];
+
+            loadFormDataFromLocalStorage(); // Load saved data on page load
+            updatePreview(); // Initial update of the preview section
+
+            const form = document.getElementById('tireEvaluationForm');
+            if (form) {
+                // Save data to local storage on any input change
+                form.addEventListener('input', saveFormDataToLocalStorage);
+                form.addEventListener('change', saveFormDataToLocalStorage); // For checkboxes, radio buttons
+            }
+
+            // Submit button logic
+            const submitFormBtn = document.getElementById('submitFormBtn');
+            if (submitFormBtn) {
+                submitFormBtn.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent default form submission
+                    const formElement = document.getElementById('tireEvaluationForm');
+                    const scriptURL = formElement.action; // Get URL from form's action attribute
+
+                    if (!formElement.checkValidity()) {
+                        alert('Vui lòng điền đầy đủ các trường bắt buộc trước khi gửi!');
+                        formElement.reportValidity(); 
+                        return;
+                    }
+
+                    submitFormBtn.disabled = true;
+                    submitFormBtn.textContent = 'Đang gửi...';
+
+                    const urlEncodedData = collectFormDataAsUrlEncoded(formElement);
+
+                    fetch(scriptURL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: urlEncodedData
+                    })
+                    .then(response => response.json().then(data => {
+                        if (!response.ok) {
+                            throw new Error(data.message || 'Lỗi từ máy chủ không xác định.');
+                        }
+                        return data;
+                    }))
+                    .then(data => {
+                        if (data.result === 'success') {
+                            alert('✅ Gửi thông tin thành công! Bạn có thể in phiếu.');
+                            console.log('Dữ liệu đã gửi:', data.row);
+                            hasSubmitted = true; // Set flag to true
+                            // Data is NOT cleared here, so user can inspect and print
+                        } else {
+                            alert('❌ Không gửi được: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
+                            console.error('Lỗi từ Apps Script:', data.message);
+                        }
+                    })
+                    .catch(error => {
+                        alert('❌ Có lỗi xảy ra khi gửi. Vui lòng kiểm tra console (F12) để biết chi tiết.');
+                        console.error('Lỗi Fetch hoặc phản hồi không hợp lệ:', error);
+                    })
+                    .finally(() => {
+                        submitFormBtn.disabled = false;
+                        submitFormBtn.textContent = '📤 Gửi Thông Tin';
+                    });
+                });
+            }
+
+            // Print button logic
+            const printFormBtn = document.getElementById('printFormBtn');
+            if (printFormBtn) {
+                printFormBtn.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent default print behavior
+                    const formElement = document.getElementById('tireEvaluationForm');
+
+                    if (!hasSubmitted) {
+                        alert('Vui lòng nhấn "Gửi Thông Tin" trước khi in phiếu!');
+                    } else {
+                        // Re-fetch current data to ensure preview is fully up-to-date right before print
+                        updatePreview(); 
+                        
+                        // Call native print dialog
+                        window.print();
+                        
+                        // Clear data and reset form AFTER printing is initiated
+                        localStorage.removeItem(FORM_DATA_TIRE_KEY); 
+                        formElement.reset(); 
+                        document.getElementById('inspectionDateInput').value = new Date().toISOString().split('T')[0]; // Reset date
+                        updatePreview(); // Reset preview to blank state for new form
+                        hasSubmitted = false; // Reset flag for new submission
+                    }
+                });
+            }
+
+            // Update Preview button (optional, as input/change events also trigger updatePreview)
+            const updatePreviewBtn = document.getElementById('updatePreviewBtn');
+            if (updatePreviewBtn) {
+                updatePreviewBtn.addEventListener('click', updatePreview);
             }
         });
-
-        // Khởi tạo bản xem trước khi trang được tải lần đầu
-        updatePreview();
     </script>
 </body>
 </html>
