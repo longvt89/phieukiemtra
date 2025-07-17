@@ -622,13 +622,13 @@
 <body>
     <div class="container">
         <div class="button-group">
-            <button class="print-button" onclick="handlePrint()">🖨️ In Phiếu Kiểm Tra</button>
+            <button class="print-button" id="printButton">🖨️ In Phiếu Kiểm Tra</button>
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieu_kiem_tra_lop.html'">📄 Phiếu Kiểm Tra Lốp</button>
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/kiemtragam.html'">📄 Phiếu Kiểm Gầm</button>
             <button class="tire-form-button" id="submitToSheet">📤 Gửi Thông Tin</button>
         </div>
         <div class="form-content">
-            <form id="inspectionFormXe" action="YOUR_APPS_SCRIPT_WEB_APP_URL_HERE" method="POST">
+            <form id="inspectionFormXe" action="https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec" method="POST">
                 <input type="hidden" name="formType" value="PhieuKiemTraXe">
 
                 <div class="header">
@@ -1164,11 +1164,6 @@
             document.getElementById('currentMonth').textContent = `${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
         }
 
-        function handlePrint() {
-            incrementReceiptNumberOnPrint(); // Increment before printing
-            window.print();
-        }
-
         // --- Local Storage for Form Data ---
 
         function saveFormData() {
@@ -1225,12 +1220,12 @@
             updateGrandTotal(); // Recalculate total after loading data
         }
 
-        // --- Event Listeners and Initial Setup ---
+        // --- Form Submission & Print Logic ---
+        let hasSubmitted = false; // Flag to track if form has been submitted successfully
 
         document.addEventListener('DOMContentLoaded', () => {
             initializeReceiptNumber(); // Set up receipt number (before loading form data to avoid overwrite)
 
-            // Set current date/time for receivedDateTime
             const receivedDateTimeInput = document.getElementById('receivedDateTime');
             receivedDateTimeInput.value = getCurrentDateTimeLocal();
 
@@ -1247,13 +1242,18 @@
             const submitButton = document.getElementById('submitToSheet');
             if (submitButton) {
                 submitButton.addEventListener('click', () => {
-                    // THAY THẾ BẰNG LINK WEB APP GOOGLE SCRIPT CỦA BẠN SAU KHI TRIỂN KHAI
-                    const scriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec';
+                    const scriptURL = form.action; // Get URL from form's action attribute
+
+                    // Simple form validation: check if required fields are filled
+                    if (!form.checkValidity()) {
+                        alert('Vui lòng điền đầy đủ các trường bắt buộc trước khi gửi!');
+                        form.reportValidity(); 
+                        return;
+                    }
 
                     submitButton.disabled = true;
                     submitButton.textContent = 'Đang gửi...';
 
-                    // Collect data including receipt number and month/year
                     const urlEncodedData = collectFormDataAsUrlEncoded(form);
                     
                     fetch(scriptURL, {
@@ -1263,27 +1263,20 @@
                         },
                         body: urlEncodedData
                     })
-                    .then(response => {
-                        // Always attempt to parse JSON response, even if HTTP error
-                        return response.json().then(data => {
-                            if (!response.ok) { // If response not OK (e.g., status 4xx, 5xx)
-                                throw new Error(data.message || 'Lỗi từ máy chủ không xác định.');
-                            }
-                            return data;
-                        });
-                    })
+                    .then(response => response.json().then(data => {
+                        if (!response.ok) {
+                            throw new Error(data.message || 'Lỗi từ máy chủ không xác định.');
+                        }
+                        return data;
+                    }))
                     .then(data => {
                         if (data.result === 'success') {
-                            alert('✅ Gửi thông tin thành công!');
+                            alert('✅ Gửi thông tin thành công! Bạn có thể in phiếu.');
                             console.log('Dữ liệu đã gửi:', data.row);
-                            // Clear saved data after successful submission
-                            localStorage.removeItem(FORM_DATA_KEY);
-                            form.reset(); // Clear the form after successful submission
-                            initializeReceiptNumber(); // Re-initialize receipt number for a new form
-                            receivedDateTimeInput.value = getCurrentDateTimeLocal(); // Reset date/time
-                            updateGrandTotal(); // Reset total
+                            hasSubmitted = true; // Set flag to true
+                            // Dữ liệu KHÔNG bị xóa hoặc reset form sau khi gửi thành công
                         } else {
-                            alert('❌ Không gửi được, Không biết hỏi ai: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
+                            alert('❌ Không gửi được: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
                             console.error('Lỗi từ Apps Script:', data.message);
                         }
                     })
@@ -1297,6 +1290,30 @@
                     });
                 });
             }
+
+            // Event listener for the "Print" button
+            const printButton = document.getElementById('printButton');
+            if (printButton) {
+                printButton.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent default print behavior
+                    const formElement = document.getElementById('inspectionFormXe');
+                    if (!hasSubmitted) {
+                        alert('Vui lòng nhấn "Gửi Thông Tin" trước khi in phiếu!');
+                    } else {
+                        // Tăng số phiếu trước khi in (vì mỗi bản in là một phiếu mới)
+                        incrementReceiptNumberOnPrint(); 
+                        window.print();
+                        
+                        // Xóa dữ liệu và reset form SAU KHI ĐÃ IN xong
+                        localStorage.removeItem(FORM_DATA_KEY); 
+                        formElement.reset(); 
+                        initializeReceiptNumber(); // Đặt lại số phiếu cho lần tiếp theo
+                        receivedDateTimeInput.value = getCurrentDateTimeLocal(); // Đặt lại ngày giờ nhận xe
+                        updateGrandTotal(); // Cập nhật tổng cộng về 0
+                        hasSubmitted = false; // Reset cờ trạng thái đã gửi
+                    }
+                });
+            }
         });
 
         // Helper function to collect form data for submission
@@ -1304,35 +1321,31 @@
             const formData = new FormData(formElement);
             const params = new URLSearchParams();
 
-            // Add receipt number and month/year from span elements
+            // Add formType and receipt number/month from span elements
+            params.append('formType', formElement.querySelector('[name="formType"]').value);
             params.append('receiptNumber', document.getElementById('receiptNumber')?.textContent || '');
             params.append('currentMonthYear', document.getElementById('currentMonth')?.textContent || '');
 
-            // Add all existing form data entries
             for (const pair of formData.entries()) {
                 params.append(pair[0], pair[1]);
             }
 
             // Manually add unchecked checkboxes and unselected radio groups to ensure their absence is recorded
-            // This is important if your Apps Script expects ALL fields, even if blank/unchecked.
-            // For checkboxes, FormData only includes checked ones.
             formElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 if (!checkbox.checked && !params.has(checkbox.name)) {
-                    params.append(checkbox.name, ''); // Append empty string for unchecked checkbox
+                    params.append(checkbox.name, ''); 
                 }
             });
-            // For radio buttons, FormData only includes the selected one.
-            // Iterate over each unique radio button name
             const radioGroupNames = new Set();
             formElement.querySelectorAll('input[type="radio"]').forEach(radio => radioGroupNames.add(radio.name));
 
             radioGroupNames.forEach(groupName => {
                 const checkedRadioInGroup = formElement.querySelector(`input[type="radio"][name="${groupName}"]:checked`);
                 if (!checkedRadioInGroup && !params.has(groupName)) {
-                    params.append(groupName, ''); // Append empty string if no radio button in group is checked
+                    params.append(groupName, '');
                 }
             });
-
+            
             return params.toString();
         }
     </script>
