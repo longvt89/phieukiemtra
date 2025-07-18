@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra Cứu Thông Tin Xe</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top to prevent content overflow */
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 900px; /* Increased max-width for better display of results */
+        }
+        .input-group label {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #4b5563;
+        }
+        .search-button {
+            background-color: #4f46e5;
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            width: 100%;
+        }
+        .search-button:hover {
+            background-color: #4338ca;
+        }
+        .result-section {
+            margin-top: 32px;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 24px;
+        }
+        .result-item {
+            display: flex;
+            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+            margin-bottom: 12px;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .result-item strong {
+            flex: 0 0 180px; /* Fixed width for labels */
+            color: #1f2937;
+            font-weight: 600;
+        }
+        .result-item span {
+            flex: 1; /* Take remaining space */
+            color: #4b5563;
+        }
+        .no-results {
+            color: #ef4444;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4f46e5;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none; /* Hidden by default */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            .result-item strong {
+                flex: 1 0 100%; /* Labels take full width on small screens */
+                margin-bottom: 4px;
+            }
+            .result-item span {
+                flex: 1 0 100%; /* Values take full width on small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Tra Cứu Thông Tin Xe</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="input-group">
+                <label for="licensePlate" class="block text-sm">Biển số xe:</label>
+                <input type="text" id="licensePlate" placeholder="Nhập biển số xe" class="mt-1">
+            </div>
+            <div class="input-group">
+                <label for="phoneNumber" class="block text-sm">Số điện thoại:</label>
+                <input type="text" id="phoneNumber" placeholder="Nhập số điện thoại" class="mt-1">
+            </div>
+        </div>
+
+        <button id="searchButton" class="search-button">Tìm Kiếm</button>
+
+        <div id="loadingSpinner" class="loading-spinner"></div>
+
+        <div id="results" class="result-section hidden">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Mô tả hiện trạng xe</h2>
+            <div id="carDetails">
+                <!-- Car details will be displayed here -->
+            </div>
+            <div id="noResultsMessage" class="no-results hidden">
+                Không tìm thấy thông tin xe phù hợp.
+            </div>
+            <div id="errorMessage" class="no-results hidden text-red-600">
+                Đã xảy ra lỗi khi tra cứu dữ liệu. Vui lòng thử lại sau.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // !!! QUAN TRỌNG: Thay thế URL này bằng URL Web App đã triển khai từ Google Apps Script của bạn !!!
+        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; 
+
+        document.getElementById('searchButton').addEventListener('click', async function() {
+            const licensePlateInput = document.getElementById('licensePlate').value.trim().toUpperCase();
+            const phoneNumberInput = document.getElementById('phoneNumber').value.trim();
+            const carDetailsDiv = document.getElementById('carDetails');
+            const resultsSection = document.getElementById('results');
+            const noResultsMessage = document.getElementById('noResultsMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            // Clear previous results and hide messages
+            carDetailsDiv.innerHTML = ''; 
+            noResultsMessage.classList.add('hidden'); 
+            errorMessage.classList.add('hidden');
+            resultsSection.classList.add('hidden');
+
+            if (!licensePlateInput && !phoneNumberInput) {
+                errorMessage.textContent = 'Vui lòng nhập Biển số xe hoặc Số điện thoại để tìm kiếm.';
+                errorMessage.classList.remove('hidden');
+                resultsSection.classList.remove('hidden');
+                return;
+            }
+
+            loadingSpinner.style.display = 'block'; // Show loading spinner
+
+            try {
+                let queryParams = new URLSearchParams();
+                if (licensePlateInput) {
+                    queryParams.append('licensePlate', licensePlateInput);
+                } else if (phoneNumberInput) {
+                    queryParams.append('phoneNumber', phoneNumberInput);
+                }
+
+                const response = await fetch(`${GOOGLE_APPS_SCRIPT_WEB_APP_URL}?${queryParams.toString()}`);
+                const result = await response.json();
+
+                loadingSpinner.style.display = 'none'; // Hide loading spinner
+
+                if (result.result === 'success' && result.data) {
+                    resultsSection.classList.remove('hidden'); 
+                    const foundCar = result.data;
+                    carDetailsDiv.innerHTML = `
+                        <div class="result-item"><strong>Họ tên khách:</strong><span>${foundCar.customerName}</span></div>
+                        <div class="result-item"><strong>Số điện thoại:</strong><span>${foundCar.phoneNumber}</span></div>
+                        <div class="result-item"><strong>Biển số xe:</strong><span>${foundCar.licensePlate}</span></div>
+                        <div class="result-item"><strong>Số kilomet:</strong><span>${foundCar.odometer}</span></div>
+                        <div class="result-item"><strong>Ngày nhập liệu:</strong><span>${foundCar.entryDate}</span></div>
+                        <div class="result-item"><strong>Size lốp:</strong><span>${foundCar.tireSize}</span></div>
+                        <div class="result-item"><strong>Hiện trạng lốp:</strong><span>${foundCar.tireStatus || 'Không có thông tin'}</span></div>
+                        <div class="result-item"><strong>Lưu ý:</strong><span>${foundCar.notes}</span></div>
+                        <div class="result-item"><strong>Hạng mục chưa thay:</strong><span>${foundCar.unconfirmedItems || 'Không có'}</span></div>
+                        <div class="result-item"><strong>Hiện Trạng Khuyến nghị:</strong><span>${foundCar.recommendation || 'Không có'}</span></div>
+                    `;
+                } else if (result.result === 'not_found') {
+                    resultsSection.classList.remove('hidden');
+                    noResultsMessage.classList.remove('hidden');
+                } else {
+                    resultsSection.classList.remove('hidden');
+                    errorMessage.textContent = result.message || 'Đã xảy ra lỗi không xác định khi tra cứu dữ liệu.';
+                    errorMessage.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Lỗi khi tải dữ liệu:', error);
+                loadingSpinner.style.display = 'none'; // Hide loading spinner on error
+                resultsSection.classList.remove('hidden');
+                errorMessage.textContent = 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau.';
+                errorMessage.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
