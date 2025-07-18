@@ -39,7 +39,7 @@
             font-size: 16px;
             color: #4b5563;
         }
-        .search-button {
+        .search-button, .history-button {
             background-color: #4f46e5;
             color: #ffffff;
             padding: 12px 24px;
@@ -48,14 +48,39 @@
             cursor: pointer;
             transition: background-color 0.2s ease-in-out;
             width: 100%;
+            margin-top: 10px; /* Added margin for separation */
         }
-        .search-button:hover {
+        .search-button:hover, .history-button:hover {
             background-color: #4338ca;
+        }
+        .history-button {
+            background-color: #10b981; /* Green for history */
+        }
+        .history-button:hover {
+            background-color: #059669;
         }
         .result-section {
             margin-top: 32px;
             border-top: 1px solid #e5e7eb;
             padding-top: 24px;
+        }
+        .car-entry-block {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .car-entry-block:last-child {
+            margin-bottom: 0;
+        }
+        .car-entry-block h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #6366f1;
+            padding-bottom: 10px;
         }
         .result-item {
             display: flex;
@@ -115,7 +140,6 @@
 <body>
     <div class="container">
         <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Tra Cứu Thông Tin Xe</h1>
-        <h1 style="font-size: 12px;">Tra Cứu Thông Tin Xe chỉ nhập 1 trong 2 thông tin tra cứu Biển số hoặc số điện thoại</h1>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div class="input-group">
@@ -129,12 +153,13 @@
         </div>
 
         <button id="searchButton" class="search-button">Tìm Kiếm</button>
+        <button id="historyButton" class="history-button hidden">Xem Lịch Sử</button>
 
         <div id="loadingSpinner" class="loading-spinner"></div>
 
         <div id="results" class="result-section hidden">
             <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Mô tả hiện trạng xe</h2>
-            <div id="carDetails">
+            <div id="carDetailsContainer">
                 <!-- Car details will be displayed here -->
             </div>
             <div id="noResultsMessage" class="no-results hidden">
@@ -150,20 +175,88 @@
         // !!! QUAN TRỌNG: Thay thế URL này bằng URL Web App đã triển khai từ Google Apps Script của bạn !!!
         const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; 
 
-        document.getElementById('searchButton').addEventListener('click', async function() {
+        // Function to display car records
+        function displayCarRecords(records, isHistory = false) {
+            const carDetailsContainer = document.getElementById('carDetailsContainer');
+            carDetailsContainer.innerHTML = ''; // Clear previous results
+
+            if (records.length === 0) {
+                document.getElementById('noResultsMessage').classList.remove('hidden');
+                return;
+            }
+
+            document.getElementById('noResultsMessage').classList.add('hidden');
+
+            // Group records by license plate if searching by phone number and showing history
+            const groupedRecords = {};
+            // If searching by phone number AND NOT by license plate (meaning licensePlateInput is empty)
+            if (isHistory && document.getElementById('phoneNumber').value.trim() && !document.getElementById('licensePlate').value.trim()) {
+                records.forEach(record => {
+                    const lp = record.licensePlate || 'Không rõ biển số';
+                    if (!groupedRecords[lp]) {
+                        groupedRecords[lp] = [];
+                    }
+                    groupedRecords[lp].push(record);
+                });
+            } else {
+                // If searching by license plate, or showing latest, just use the records directly
+                // For 'latest', there will only be one record
+                // For history by license plate, all records are for that one license plate
+                groupedRecords[records[0].licensePlate || records[0].phoneNumber || 'Thông tin xe'] = records;
+            }
+
+            for (const licensePlate in groupedRecords) {
+                const recordsForThisCar = groupedRecords[licensePlate];
+                
+                const carBlock = document.createElement('div');
+                carBlock.className = 'car-entry-block';
+                carDetailsContainer.appendChild(carBlock);
+
+                const carTitle = document.createElement('h3');
+                // Display customer name and phone number only for the first entry in the block
+                carTitle.textContent = `Xe: ${licensePlate} (${recordsForThisCar[0].customerName} - ${recordsForThisCar[0].phoneNumber})`;
+                carBlock.appendChild(carTitle);
+
+                recordsForThisCar.forEach((foundCar, index) => {
+                    const entryTitle = document.createElement('h4');
+                    entryTitle.className = 'text-lg font-semibold text-gray-600 mb-3 mt-4';
+                    entryTitle.textContent = `Lần nhập liệu: ${foundCar.entryDate}`;
+                    carBlock.appendChild(entryTitle);
+
+                    const entryDetails = document.createElement('div');
+                    entryDetails.innerHTML = `
+                        <div class="result-item"><strong>Họ tên khách:</strong><span>${foundCar.customerName}</span></div>
+                        <div class="result-item"><strong>Số điện thoại:</strong><span>${foundCar.phoneNumber}</span></div>
+                        <div class="result-item"><strong>Biển số xe:</strong><span>${foundCar.licensePlate}</span></div>
+                        <div class="result-item"><strong>Số kilomet:</strong><span>${foundCar.odometer}</span></div>
+                        <div class="result-item"><strong>Ngày nhập liệu:</strong><span>${foundCar.entryDate}</span></div>
+                        <div class="result-item"><strong>Size lốp:</strong><span>${foundCar.tireSize}</span></div>
+                        <div class="result-item"><strong>Hiện trạng lốp:</strong><span>${foundCar.tireStatus || 'Không có thông tin'}</span></div>
+                        <div class="result-item"><strong>Lưu ý:</strong><span>${foundCar.notes}</span></div>
+                        <div class="result-item"><strong>Hạng mục chưa thay:</strong><span>${foundCar.unconfirmedItems || 'Không có'}</span></div>
+                        <div class="result-item"><strong>Hiện Trạng Khuyến nghị:</strong><span>${foundCar.recommendation || 'Không có'}</span></div>
+                    `;
+                    carBlock.appendChild(entryDetails);
+                });
+            }
+        }
+
+        // Main search function
+        async function performSearch(actionType) {
             const licensePlateInput = document.getElementById('licensePlate').value.trim().toUpperCase();
             const phoneNumberInput = document.getElementById('phoneNumber').value.trim();
-            const carDetailsDiv = document.getElementById('carDetails');
             const resultsSection = document.getElementById('results');
             const noResultsMessage = document.getElementById('noResultsMessage');
             const errorMessage = document.getElementById('errorMessage');
             const loadingSpinner = document.getElementById('loadingSpinner');
+            const historyButton = document.getElementById('historyButton');
 
             // Clear previous results and hide messages
-            carDetailsDiv.innerHTML = ''; 
+            document.getElementById('carDetailsContainer').innerHTML = ''; 
             noResultsMessage.classList.add('hidden'); 
             errorMessage.classList.add('hidden');
             resultsSection.classList.add('hidden');
+            historyButton.classList.add('hidden'); // Hide history button initially
 
             if (!licensePlateInput && !phoneNumberInput) {
                 errorMessage.textContent = 'Vui lòng nhập Biển số xe hoặc Số điện thoại để tìm kiếm.';
@@ -181,27 +274,32 @@
                 } else if (phoneNumberInput) {
                     queryParams.append('phoneNumber', phoneNumberInput);
                 }
+                queryParams.append('action', actionType); // 'latest' or 'history'
 
                 const response = await fetch(`${GOOGLE_APPS_SCRIPT_WEB_APP_URL}?${queryParams.toString()}`);
                 const result = await response.json();
 
                 loadingSpinner.style.display = 'none'; // Hide loading spinner
 
-                if (result.result === 'success' && result.data) {
+                if (result.result === 'success' && result.data && result.data.length > 0) {
                     resultsSection.classList.remove('hidden'); 
-                    const foundCar = result.data;
-                    carDetailsDiv.innerHTML = `
-                        <div class="result-item"><strong>Họ tên khách:</strong><span>${foundCar.customerName}</span></div>
-                        <div class="result-item"><strong>Số điện thoại:</strong><span>${foundCar.phoneNumber}</span></div>
-                        <div class="result-item"><strong>Biển số xe:</strong><span>${foundCar.licensePlate}</span></div>
-                        <div class="result-item"><strong>Số kilomet:</strong><span>${foundCar.odometer}</span></div>
-                        <div class="result-item"><strong>Ngày nhập liệu:</strong><span>${foundCar.entryDate}</span></div>
-                        <div class="result-item"><strong>Size lốp:</strong><span>${foundCar.tireSize}</span></div>
-                        <div class="result-item"><strong>Hiện trạng lốp:</strong><span>${foundCar.tireStatus || 'Không có thông tin'}</span></div>
-                        <div class="result-item"><strong>Lưu ý:</strong><span>${foundCar.notes}</span></div>
-                        <div class="result-item"><strong>Hạng mục chưa thay:</strong><span>${foundCar.unconfirmedItems || 'Không có'}</span></div>
-                        <div class="result-item"><strong>Hiện Trạng Khuyến nghị:</strong><span>${foundCar.recommendation || 'Không có'}</span></div>
-                    `;
+                    displayCarRecords(result.data, actionType === 'history');
+                    
+                    // Show history button only if a single car is found by license plate for 'latest' search
+                    // Or if a phone number search returns multiple cars
+                    if (actionType === 'latest' && (licensePlateInput || (phoneNumberInput && result.data.length > 1))) {
+                         // If searching by phone number and multiple cars are found, the history button should still appear
+                         // If searching by license plate, and a car is found, history button should appear
+                        historyButton.classList.remove('hidden');
+                    } else if (actionType === 'latest' && phoneNumberInput && result.data.length === 1) {
+                        // If phone number search returns only one car, still show history button for that car
+                        historyButton.classList.remove('hidden');
+                    } else if (actionType === 'history') {
+                        // If we are already viewing history, keep the button hidden or show a "Back to Latest" button if desired
+                        historyButton.classList.add('hidden'); // Hide history button when already showing history
+                    }
+
+
                 } else if (result.result === 'not_found') {
                     resultsSection.classList.remove('hidden');
                     noResultsMessage.classList.remove('hidden');
@@ -217,6 +315,15 @@
                 errorMessage.textContent = 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau.';
                 errorMessage.classList.remove('hidden');
             }
+        }
+
+        // Event listeners for buttons
+        document.getElementById('searchButton').addEventListener('click', function() {
+            performSearch('latest'); // Default to latest search
+        });
+
+        document.getElementById('historyButton').addEventListener('click', function() {
+            performSearch('history'); // Perform history search
         });
     </script>
 </body>
