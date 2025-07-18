@@ -17,6 +17,17 @@
             min-height: 100vh;
             padding: 20px;
         }
+        .tire-form-button {
+            background: #28a745;
+            color: white;
+            padding: 5px 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .tire-form-button:hover { background: #218838; 
+        }
         .container {
             background-color: #ffffff;
             padding: 32px;
@@ -138,6 +149,14 @@
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="button-group">
+            <button class="print-button" id="printButton">🖨️ In Phiếu Kiểm Tra</button>
+            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/index.html'">📄Tra cứu thông tin xe </button>
+            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieu_kiem_tra_lop.html'">📄 Phiếu Kiểm Tra Lốp</button>
+            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/kiemtragam.html'">📄 Phiếu Kiểm Gầm</button>
+            <button class="tire-form-button" id="submitToSheet">📤 Gửi Thông Tin</button>
+        </div>
     <div class="container">
         <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Tra Cứu Thông Tin Xe</h1>
 
