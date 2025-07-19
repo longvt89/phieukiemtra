@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phiếu Kiểm Tra Xe - PHI LONG AUTO</title>
     <style>
@@ -22,7 +22,7 @@
         }
 
         .container {
-            max-width: 210mm; /* Kích thước A4 theo chiều ngang */
+            max-width: 230mm; /* Đã tăng kích thước A4 theo chiều ngang để chứa đủ các nút */
             margin: 0 auto;
             background: white;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -481,15 +481,27 @@
         }
 
         /* Buttons */
-        .print-button {
-            background: #007bff;
-            color: white;
-            padding: 10px 20px;
+        .button-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+            gap: 10px; /* Điều chỉnh khoảng cách giữa các nút */
+            margin-bottom: 20px;
+        }
+
+        .tire-form-button, .print-button, .clear-button {
+            padding: 8px 12px; /* Giảm padding để nút nhỏ gọn hơn */
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin: 20px 10px; /* Adjusted margin */
-            font-size: 16px;
+            font-size: 14px; /* Giảm font size */
+            white-space: nowrap; /* Ngăn văn bản trong nút xuống dòng */
+            flex-shrink: 0; /* Đảm bảo nút không bị co lại quá mức */
+        }
+
+        .print-button {
+            background: #007bff;
+            color: white;
         }
 
         .print-button:hover { background: #0056b3; }
@@ -497,32 +509,12 @@
         .clear-button { /* New style for clear button */
             background: #dc3545;
             color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 20px 10px; /* Adjusted margin */
-            font-size: 16px;
         }
         .clear-button:hover { background: #c82333; }
-
-
-        .button-group {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
-            gap: 10px;
-            margin-bottom: 20px;
-        }
 
         .tire-form-button {
             background: #28a745;
             color: white;
-            padding: 5px 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
         }
         .tire-form-button:hover { background: #218838; }
 
@@ -610,19 +602,19 @@
             .tire-front-right { top: 25px !important; left: 150px !important; } /* Đã điều chỉnh */
             .tire-rear-left { top: 110px !important; left: -50px !important; } /* Đã điều chỉnh */
             .tire-rear-right { top: 110px !important; left: 150px !important; } /* Đã điều chỉnh */
-            .tire-spare { bottom: 0px !important; left: 50% !important; transform: translateX(-50%) !important; width: 60px !important; } /* Tăng width khi in */
+            .tire-spare { bottom: -30px !important; left: 50% !important; transform: translateX(-50%) !important; width: 60px !important; } /* Tăng width khi in - bootom thay đổi vị trí */
 
             .tire-input-group label {
                 font-size: 9px !important; /* TĂNG FONT LABEL KHI IN */
                 margin-right: 1px !important;
-				font-weight: bold !important;
-				font-family: Arial, Helvetica, sans-serif !important;
+                font-weight: bold !important;
+                font-family: Arial, Helvetica, sans-serif !important;
             }
             .pressure-input, .thickness-input {
-                width: 25px !important; /* TĂNG WIDTH INPUT KHI IN */
-                height: 12px !important; /* TĂNG HEIGHT INPUT KHI IN */
-                font-size: 7px !important; /* TĂNG FONT INPUT KHI IN */
-                padding: 0 1px !important;
+                width: 35px !important; /* TĂNG WIDTH INPUT KHI IN */
+                height: 16px !important; /* TĂNG HEIGHT INPUT KHI IN */
+                font-size: 14px !important; /* TĂNG FONT INPUT KHI IN */
+                padding: 2px 2px !important;
             }
             .tire-position small {
                 font-size: 9px !important; /* TĂNG FONT ĐƠN VỊ KHI IN */
@@ -630,13 +622,14 @@
             }
 
             .tire-section > .tire-size-recommendation {
-                margin-top: 5px !important;
+                margin-top: 7px !important;
             }
-            .tire-size-recommendation label { margin-bottom: 1px; font-size: 8px; }
-            .tire-size-recommendation input { min-width: 70px; font-size: 8px; }
+            .tire-size-recommendation label { margin-bottom: 1px; font-size: 14px; }
+            .tire-size-recommendation input { min-width: 70px; font-size: 12px; }
+			.tire-size-recommendation {position: absolute !important; top: 150px !important; left: 230px !important; }
 
-            .recommendation { font-size: 8px; height: 60px; margin-top: 5px; }
-            .recommendation textarea { min-height: 50px; height: 50px; font-size: 13px; width: 200%; padding: 4px; box-sizing: border-box; }
+            .recommendation { font-size: 14px; height: 60px; margin-top: 5px; }
+            .recommendation textarea { min-height: 90px; height: 90px; font-size: 13px; width: 200%; padding: 4px; box-sizing: border-box; }
 
             .safety-check { padding: 5px; height: auto; flex-grow: 0; }
             /* ĐIỀU CHỈNH: safety-grid để thu hẹp cột "Hạng Mục" và cố định các cột checkbox. */
@@ -702,12 +695,12 @@
 <body>
     <div class="container">
         <div class="button-group">
-            <button class="print-button" id="printButton">🖨️ In Phiếu Kiểm Tra</button>
-            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/tracuu.html'">📄Tra cứu thông tin xe </button>
+            <button class="tire-form-button print-button" id="printButton">🖨️ In Phiếu Kiểm Tra</button>
+            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/tracuu.html'">📄 Tra cứu thông tin xe </button>
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieu_kiem_tra_lop.html'">📄 Phiếu Kiểm Tra Lốp</button>
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/kiemtragam.html'">📄 Phiếu Kiểm Gầm</button>
             <button class="tire-form-button" id="submitToSheet">📤 Gửi Thông Tin</button>
-            <button class="clear-button" id="clearFormButton">🗑️ Xóa Form</button>
+            <button class="tire-form-button clear-button" id="clearFormButton">🗑️ Xóa Form</button>
         </div>
         <div class="form-content">
             <form id="inspectionFormXe" action="https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec" method="POST">
