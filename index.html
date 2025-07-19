@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phiếu Kiểm Tra Xe - PHI LONG AUTO</title>
     <style>
@@ -136,31 +136,36 @@
         }
 
 
-        /* Main Content Grid (Sơ đồ lốp và kiểm tra an toàn) */
+        /* Main Content Section */
+        /* ĐIỀU CHỈNH LẦN NÀY: Dùng flexbox để kiểm soát tốt hơn bố cục màn hình */
         .main-content {
-            display: grid;
-            /* Giảm kích thước cột đầu tiên (cho sơ đồ) để tạo khoảng trống */
-            grid-template-columns: 0.8fr 1.2fr; /* Điều chỉnh tỷ lệ cột */
-            gap: 15px; /* Tăng khoảng cách giữa 2 cột */
+            display: flex; /* Thay đổi từ grid sang flex */
+            justify-content: space-between; /* Đẩy hai cột sang hai bên */
+            align-items: flex-start; /* Căn chỉnh các mục từ trên xuống */
+            gap: 15px;
             margin-bottom: 15px;
+            flex-wrap: wrap; /* Cho phép các mục xuống dòng trên màn hình nhỏ */
         }
 
         /* Tire Section */
+        /* ĐIỀU CHỈNH LẦN NÀY: Giới hạn chiều rộng tối đa cho khối sơ đồ xe */
         .tire-section {
             display: flex;
             flex-direction: column;
-            align-items: center; /* Căn giữa sơ đồ trong cột của nó */
+            align-items: center;
             position: relative;
-            justify-content: flex-start; /* Căn top các mục bên trong */
+            justify-content: flex-start;
+            max-width: 280px; /* Giới hạn chiều rộng tối đa cho khối này */
+            flex-shrink: 0; /* Ngăn không cho khối này bị co lại quá mức nếu có quá nhiều nội dung */
         }
 
-        /* Điều chỉnh KÍCH THƯỚC VÀ VỊ TRÍ tổng thể của SƠ ĐỒ LỐP trên màn hình */
+        /* ĐIỀU CHỈNH LẦN NÀY: Thu nhỏ KÍCH THƯỚC tổng thể của SƠ ĐỒ LỐP trên màn hình */
         .tire-diagram-container {
             position: relative;
-            width: 160px; /* Chiều rộng ảnh sơ đồ */
-            height: 230px; /* Chiều cao ảnh sơ đồ */
+            width: 120px; /* Đã giảm từ 140px xuống 120px */
+            height: 170px; /* Đã giảm từ 200px xuống 170px */
             display: flex;
-            justify-content: center; /* Căn giữa sơ đồ */
+            justify-content: center;
             align-items: flex-start;
             border-bottom: 1px dashed #ccc;
             padding-bottom: 15px;
@@ -196,25 +201,24 @@
             flex-direction: column;
             align-items: flex-start;
             justify-content: center;
-            font-size: 11px; /* TĂNG FONT CỠ CHỮ CƠ BẢN */
+            font-size: 11px;
             color: white;
-            padding: 3px 5px; /* TĂNG PADDING */
+            padding: 3px 5px;
             box-sizing: border-box;
             z-index: 1;
-            width: 85px; /* TĂNG CHIỀU RỘNG CỐ ĐỊNH cho ô nhập */
+            width: 85px;
             height: auto;
             line-height: 1.1;
             border: 1px solid #000;
         }
 
-        /* Tinh chỉnh vị trí các ô nhập liệu Áp suất/Độ dày để khớp với hình ảnh */
-        /* Các giá trị này được điều chỉnh tương đối với .tire-diagram-container mới */
-        /* DI CHUYỂN CÁC Ô SÁT BÁNH XE HƠN, VÀ ĐIỀU CHỈNH LẠI DO THAY ĐỔI KÍCH THƯỚC Ô */
-        .tire-front-left { top: 30px; left: -85px; }
-        .tire-front-right { top: 30px; left: 160px; }
-        .tire-rear-left { top: 155px; left: -85px; }
-        .tire-rear-right { top: 155px; left: 160px; }
-        .tire-spare { bottom: -10px; left: 50%; transform: translateX(-50%); width: 85px; } /* Giữ nguyên logic giữa nhưng tăng width */
+        /* ĐIỀU CHỈNH LẦN NÀY: Tinh chỉnh vị trí các ô nhập liệu Áp suất/Độ dày để khớp với hình ảnh đã thu nhỏ */
+        .tire-front-left { top: 20px; left: -85px; } /* Điều chỉnh vị trí */
+        .tire-front-right { top: 20px; left: 120px; } /* Điều chỉnh vị trí */
+        .tire-rear-left { top: 115px; left: -85px; } /* Điều chỉnh vị trí */
+        .tire-rear-right { top: 115px; left: 120px; } /* Điều chỉnh vị trí */
+        .tire-spare { bottom: -10px; left: 50%; transform: translateX(-50%); width: 85px; }
+
 
         .tire-input-group {
             display: flex;
@@ -228,7 +232,7 @@
         }
 
         .tire-input-group label {
-            font-size: 9px; /* TĂNG FONT LABEL */
+            font-size: 9px;
             white-space: nowrap;
             margin-right: 2px;
         }
@@ -236,14 +240,14 @@
         .pressure-input, .thickness-input {
             background: white;
             border: 1px solid #ccc;
-            width: 35px; /* TĂNG WIDTH INPUT */
-            height: 15px; /* TĂNG HEIGHT INPUT */
+            width: 35px;
+            height: 15px;
             text-align: center;
-            font-size: 8px; /* TĂNG FONT INPUT */
+            font-size: 8px;
             padding: 0 1px;
         }
         .tire-position small {
-            font-size: 7px; /* TĂNG FONT ĐƠN VỊ */
+            font-size: 7px;
             margin-left: 1px;
         }
 
@@ -297,6 +301,7 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            flex-grow: 1; /* Cho phép khối này giãn nở để chiếm không gian còn lại */
         }
 
         .safety-title {
@@ -310,7 +315,7 @@
 
         .safety-grid {
             display: grid;
-            /* ĐIỀU CHỈNH: Thu hẹp cột "HẠNG MỤC" từ 3fr xuống 2.5fr (đã có từ lần trước) */
+            /* Cột này chỉ ảnh hưởng đến màn hình hiển thị, không ảnh hưởng bản in */
             grid-template-columns: 2.5fr 1fr 1fr 1fr;
             gap: 5px;
             font-size: 11px;
@@ -341,7 +346,6 @@
             padding: 3px;
             border-bottom: 1px dotted #ccc;
             text-align: left;
-            /* ĐIỀU CHỈNH: In đậm chữ trong cột "Hạng Mục" của bảng kiểm tra an toàn (đã có từ lần trước) */
             font-weight: bold;
         }
 
@@ -388,7 +392,6 @@
         .detailed-check .hang-muc {
             width: 120px;
             text-align: left;
-            /* ĐIỀU CHỈNH: In đậm chữ trong cột "Hạng Mục" của bảng chi tiết (đã có từ lần trước) */
             font-weight: bold;
         }
         .detailed-check .dien-giai { width: 180px; }
@@ -416,7 +419,6 @@
 
         .detailed-check input[type="text"].hang-muc-input {
             text-align: left;
-            /* ĐIỀU CHỈNH: In đậm chữ trong ô input của cột "Hạng Mục" (đã có từ lần trước) */
             font-weight: bold;
         }
 
@@ -568,9 +570,9 @@
             .info-group.inline-fields > div { margin-right: 5px; }
             .info-group.inline-fields label { margin-right: 2px; }
 
-            /* ĐIỀU CHỈNH LẦN NÀY: main-content để cân bằng hơn giữa 2 cột, giảm không gian cho bảng kiểm tra an toàn */
+            /* Điều chỉnh: main-content để cân bằng hơn giữa 2 cột, giảm không gian cho bảng kiểm tra an toàn */
             .main-content {
-                grid-template-columns: 1fr 1fr; /* Thay đổi từ 0.7fr 1.3fr thành 1fr 1fr để cân bằng */
+                grid-template-columns: 1fr 1fr; /* Đã đổi từ 0.7fr 1.3fr thành 1fr 1fr để cân bằng */
                 gap: 5px;
                 margin-bottom: 8px;
             }
@@ -635,7 +637,7 @@
             .recommendation textarea { min-height: 50px; height: 50px; font-size: 8px; }
 
             .safety-check { padding: 5px; height: auto; flex-grow: 0; }
-            /* ĐIỀU CHỈNH LẦN NÀY: safety-grid để thu hẹp cột "Hạng Mục" và cố định các cột checkbox. */
+            /* ĐIỀU CHỈNH: safety-grid để thu hẹp cột "Hạng Mục" và cố định các cột checkbox. */
             .safety-grid {
                 flex-grow: 0;
                 height: auto;
@@ -681,7 +683,6 @@
             .form-content input:not([readonly]),
             .form-content textarea {
                 font-weight: bold !important;
-				font-size: 14px;
             }
             /* Đảm bảo các ô tính toán tổng và các lựa chọn radio đã chọn cũng in đậm */
             .detailed-check .thanh-tien-input, /* Đây là input readonly nhưng cần in đậm */
