@@ -148,33 +148,33 @@
         /* Tire Section */
         .tire-section {
             display: flex;
-            flex-direction: column; 
+            flex-direction: column;
             align-items: center; /* Căn giữa sơ đồ trong cột của nó */
             position: relative;
             justify-content: flex-start; /* Căn top các mục bên trong */
         }
 
         /* Điều chỉnh KÍCH THƯỚC VÀ VỊ TRÍ tổng thể của SƠ ĐỒ LỐP trên màn hình */
-        .tire-diagram-container { 
+        .tire-diagram-container {
             position: relative;
             width: 160px; /* Chiều rộng ảnh sơ đồ */
             height: 230px; /* Chiều cao ảnh sơ đồ */
-            display: flex; 
+            display: flex;
             justify-content: center; /* Căn giữa sơ đồ */
-            align-items: flex-start; 
-            border-bottom: 1px dashed #ccc; 
-            padding-bottom: 15px; 
-            margin-bottom: 15px; 
+            align-items: flex-start;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
         }
 
         .tire-diagram {
             position: relative;
-            width: 100%; 
+            width: 100%;
             height: 100%;
             border: none;
             background: none;
             z-index: 0;
-            flex-shrink: 0; 
+            flex-shrink: 0;
         }
 
         .tire-diagram img {
@@ -210,10 +210,10 @@
         /* Tinh chỉnh vị trí các ô nhập liệu Áp suất/Độ dày để khớp với hình ảnh */
         /* Các giá trị này được điều chỉnh tương đối với .tire-diagram-container mới */
         /* DI CHUYỂN CÁC Ô SÁT BÁNH XE HƠN, VÀ ĐIỀU CHỈNH LẠI DO THAY ĐỔI KÍCH THƯỚC Ô */
-        .tire-front-left { top: 30px; left: -85px; } 
-        .tire-front-right { top: 30px; left: 160px; } 
-        .tire-rear-left { top: 155px; left: -85px; } 
-        .tire-rear-right { top: 155px; left: 160px; } 
+        .tire-front-left { top: 30px; left: -85px; }
+        .tire-front-right { top: 30px; left: 160px; }
+        .tire-rear-left { top: 155px; left: -85px; }
+        .tire-rear-right { top: 155px; left: 160px; }
         .tire-spare { bottom: -10px; left: 50%; transform: translateX(-50%); width: 85px; } /* Giữ nguyên logic giữa nhưng tăng width */
 
         .tire-input-group {
@@ -230,7 +230,7 @@
         .tire-input-group label {
             font-size: 9px; /* TĂNG FONT LABEL */
             white-space: nowrap;
-            margin-right: 2px; 
+            margin-right: 2px;
         }
 
         .pressure-input, .thickness-input {
@@ -244,13 +244,13 @@
         }
         .tire-position small {
             font-size: 7px; /* TĂNG FONT ĐƠN VỊ */
-            margin-left: 1px; 
+            margin-left: 1px;
         }
 
         /* Phần "Size lốp khuyến cáo" và "Lưu ý" */
         .tire-size-recommendation {
-            width: 100%; 
-            margin-bottom: 10px; 
+            width: 100%;
+            margin-bottom: 10px;
         }
 
         .tire-size-recommendation label {
@@ -269,11 +269,11 @@
 
         .recommendation {
             font-size: 11px;
-            width: 100%; 
+            width: 100%;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
-            margin-top: 0; 
+            margin-top: 0;
         }
 
         .recommendation label {
@@ -543,11 +543,11 @@
             .info-group.inline-fields label { margin-right: 2px; }
 
             /* Điều chỉnh cho in ấn - QUAN TRỌNG: Sơ đồ lốp và kiểm tra an toàn */
-            .main-content { 
+            .main-content {
                 /* Điều chỉnh tỷ lệ cột khi in để tạo khoảng trống phù hợp */
                 grid-template-columns: 0.7fr 1.3fr; /* Hàng đầu tiên nhỏ hơn một chút */
                 gap: 5px; /* Giảm gap cho in ấn */
-                margin-bottom: 8px; 
+                margin-bottom: 8px;
             }
 
             /* Điều chỉnh KÍCH THƯỚC VÀ VỊ TRÍ tổng thể của SƠ ĐỒ LỐP khi in */
@@ -585,9 +585,9 @@
             .tire-rear-right { top: 110px !important; left: 130px !important; } /* Đã điều chỉnh */
             .tire-spare { bottom: 0px !important; left: 50% !important; transform: translateX(-50%) !important; width: 60px !important; } /* Tăng width khi in */
 
-            .tire-input-group label { 
+            .tire-input-group label {
                 font-size: 7px !important; /* TĂNG FONT LABEL KHI IN */
-                margin-right: 1px !important; 
+                margin-right: 1px !important;
             }
             .pressure-input, .thickness-input {
                 width: 25px !important; /* TĂNG WIDTH INPUT KHI IN */
@@ -595,9 +595,9 @@
                 font-size: 7px !important; /* TĂNG FONT INPUT KHI IN */
                 padding: 0 1px !important;
             }
-            .tire-position small { 
+            .tire-position small {
                 font-size: 6px !important; /* TĂNG FONT ĐƠN VỊ KHI IN */
-                margin-left: 1px !important; 
+                margin-left: 1px !important;
             }
 
             .tire-section > .tire-size-recommendation {
@@ -660,21 +660,20 @@
                     <div class="customer-left">
                         <div class="info-group">
                             <label for="customerName">Họ tên:</label>
-                            <input type="text" id="customerName" name="hoten" class="info-input name-input">
+                            <input type="text" id="customerName" name="hoten" class="info-input name-input" required>
                         </div>
                         <div class="info-group inline-fields">
                             <div>
                                 <label for="customerPhone">Điện thoại:</label>
-                                <input type="tel" id="customerPhone" name="dienthoai" class="info-input phone-email-input">
+                                <input type="tel" id="customerPhone" name="dienthoai" class="info-input phone-email-input" required>
                             </div>
                             <div>
                                 <label for="customerEmail">E-mail:</label>
-                                <input type="email" id="customerEmail" name="email" class="info-input phone-email-input" placeholder="Điền 123@123">
-                            </div>
+                                <input type="email" id="customerEmail" name="email" class="info-input phone-email-input"> </div>
                         </div>
                         <div class="info-group">
                             <label for="receivedDateTime">Ngày giờ nhận xe:</label>
-                            <input type="datetime-local" id="receivedDateTime" name="nhanxe" class="info-input datetime-input">
+                            <input type="datetime-local" id="receivedDateTime" name="nhanxe" class="info-input datetime-input" required>
                         </div>
                         <div class="info-group">
                             <label>Kiểm tra an toàn (Có/Không):</label>
@@ -685,16 +684,16 @@
                     <div class="customer-right">
                         <div class="info-group">
                             <label for="carType">Loại & kiểu xe:</label>
-                            <input type="text" id="carType" name="loaixe" class="info-input car-type-input">
+                            <input type="text" id="carType" name="loaixe" class="info-input car-type-input" required>
                         </div>
                         <div class="info-group inline-fields">
                             <div>
                                 <label for="licensePlate">Biển số:</label>
-                                <input type="text" id="licensePlate" name="bienso" class="info-input license-km-input">
+                                <input type="text" id="licensePlate" name="bienso" class="info-input license-km-input" required>
                             </div>
                             <div>
                                 <label for="kilometer">Kilô-mét:</label>
-                                <input type="text" id="kilometer" name="sokm" class="info-input license-km-input">
+                                <input type="text" id="kilometer" name="sokm" class="info-input license-km-input" required>
                             </div>
                         </div>
                         <div class="info-group">
@@ -1186,7 +1185,7 @@
             const formData = {};
             // Select all relevant form elements (inputs, textareas, selects).
             // Exclude read-only inputs that are calculated or displayed (like receipt number, grand total)
-            const inputs = form.querySelectorAll('input:not([readonly]), textarea, select'); 
+            const inputs = form.querySelectorAll('input:not([readonly]), textarea, select');
 
             inputs.forEach(input => {
                 if (input.name) { // Only process elements with a 'name' attribute
@@ -1259,9 +1258,11 @@
                     const scriptURL = form.action; // Get URL from form's action attribute
 
                     // Simple form validation: check if required fields are filled
+                    // Thêm thuộc tính 'required' vào các trường bạn muốn bắt buộc trong HTML
+                    // Ví dụ: <input type="text" id="customerName" name="hoten" class="info-input name-input" required>
                     if (!form.checkValidity()) {
                         alert('Vui lòng điền đầy đủ các trường bắt buộc trước khi gửi!');
-                        form.reportValidity(); 
+                        form.reportValidity(); // Hiển thị các lỗi validation của trình duyệt
                         return;
                     }
 
@@ -1269,7 +1270,7 @@
                     submitButton.textContent = 'Đang gửi...';
 
                     const urlEncodedData = collectFormDataAsUrlEncoded(form);
-                    
+
                     fetch(scriptURL, {
                         method: 'POST',
                         headers: {
@@ -1315,19 +1316,25 @@
                         alert('Vui lòng nhấn "Gửi Thông Tin" trước khi in phiếu!');
                     } else {
                         // Tăng số phiếu trước khi in (vì mỗi bản in là một phiếu mới)
-                        incrementReceiptNumberOnPrint(); 
+                        incrementReceiptNumberOnPrint();
                         window.print();
-                        
-                        // Xóa dữ liệu và reset form SAU KHI ĐÃ IN xong
-                        localStorage.removeItem(FORM_DATA_KEY); 
-                        formElement.reset(); 
-                        initializeReceiptNumber(); // Đặt lại số phiếu cho lần tiếp theo
-                        receivedDateTimeInput.value = getCurrentDateTimeLocal(); // Đặt lại ngày giờ nhận xe
-                        updateGrandTotal(); // Cập nhật tổng cộng về 0
-                        hasSubmitted = false; // Reset cờ trạng thái đã gửi
+                        // Dữ liệu sẽ được xóa và form reset SAU KHI hộp thoại in đóng lại
                     }
                 });
             }
+
+            // MỚI: Xử lý reset form SAU KHI quá trình in hoàn tất
+            window.onafterprint = () => {
+                const formElement = document.getElementById('inspectionFormXe');
+                const receivedDateTimeInput = document.getElementById('receivedDateTime');
+
+                localStorage.removeItem(FORM_DATA_KEY); // Xóa dữ liệu đã lưu
+                formElement.reset(); // Reset tất cả các trường trong form
+                initializeReceiptNumber(); // Đặt lại số phiếu cho lần nhập tiếp theo
+                receivedDateTimeInput.value = getCurrentDateTimeLocal(); // Đặt lại ngày giờ nhận xe
+                updateGrandTotal(); // Cập nhật tổng cộng về 0
+                hasSubmitted = false; // Reset cờ trạng thái đã gửi
+            };
         });
 
         // Helper function to collect form data for submission
@@ -1347,7 +1354,7 @@
             // Manually add unchecked checkboxes and unselected radio groups to ensure their absence is recorded
             formElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 if (!checkbox.checked && !params.has(checkbox.name)) {
-                    params.append(checkbox.name, ''); 
+                    params.append(checkbox.name, '');
                 }
             });
             const radioGroupNames = new Set();
@@ -1359,7 +1366,7 @@
                     params.append(groupName, '');
                 }
             });
-            
+
             return params.toString();
         }
     </script>
