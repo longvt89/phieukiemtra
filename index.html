@@ -310,7 +310,7 @@
 
         .safety-grid {
             display: grid;
-            /* ĐIỀU CHỈNH: Thu hẹp cột "HẠNG MỤC" từ 3fr xuống 2.5fr */
+            /* ĐIỀU CHỈNH: Thu hẹp cột "HẠNG MỤC" từ 3fr xuống 2.5fr (đã có từ lần trước) */
             grid-template-columns: 2.5fr 1fr 1fr 1fr;
             gap: 5px;
             font-size: 11px;
@@ -341,7 +341,7 @@
             padding: 3px;
             border-bottom: 1px dotted #ccc;
             text-align: left;
-            /* ĐIỀU CHỈNH: In đậm chữ trong cột "Hạng Mục" của bảng kiểm tra an toàn */
+            /* ĐIỀU CHỈNH: In đậm chữ trong cột "Hạng Mục" của bảng kiểm tra an toàn (đã có từ lần trước) */
             font-weight: bold;
         }
 
@@ -388,7 +388,7 @@
         .detailed-check .hang-muc {
             width: 120px;
             text-align: left;
-            /* ĐIỀU CHỈNH: In đậm chữ trong cột "Hạng Mục" của bảng chi tiết */
+            /* ĐIỀU CHỈNH: In đậm chữ trong cột "Hạng Mục" của bảng chi tiết (đã có từ lần trước) */
             font-weight: bold;
         }
         .detailed-check .dien-giai { width: 180px; }
@@ -416,7 +416,7 @@
 
         .detailed-check input[type="text"].hang-muc-input {
             text-align: left;
-            /* ĐIỀU CHỈNH: In đậm chữ trong ô input của cột "Hạng Mục" */
+            /* ĐIỀU CHỈNH: In đậm chữ trong ô input của cột "Hạng Mục" (đã có từ lần trước) */
             font-weight: bold;
         }
 
@@ -568,11 +568,10 @@
             .info-group.inline-fields > div { margin-right: 5px; }
             .info-group.inline-fields label { margin-right: 2px; }
 
-            /* Điều chỉnh cho in ấn - QUAN TRỌNG: Sơ đồ lốp và kiểm tra an toàn */
+            /* ĐIỀU CHỈNH LẦN NÀY: main-content để cân bằng hơn giữa 2 cột, giảm không gian cho bảng kiểm tra an toàn */
             .main-content {
-                /* Điều chỉnh tỷ lệ cột khi in để tạo khoảng trống phù hợp */
-                grid-template-columns: 0.7fr 1.3fr; /* Hàng đầu tiên nhỏ hơn một chút */
-                gap: 5px; /* Giảm gap cho in ấn */
+                grid-template-columns: 1fr 1fr; /* Thay đổi từ 0.7fr 1.3fr thành 1fr 1fr để cân bằng */
+                gap: 5px;
                 margin-bottom: 8px;
             }
 
@@ -636,7 +635,15 @@
             .recommendation textarea { min-height: 50px; height: 50px; font-size: 8px; }
 
             .safety-check { padding: 5px; height: auto; flex-grow: 0; }
-            .safety-grid { flex-grow: 0; height: auto; font-size: 9px; gap: 2px; }
+            /* ĐIỀU CHỈNH LẦN NÀY: safety-grid để thu hẹp cột "Hạng Mục" và cố định các cột checkbox. */
+            .safety-grid {
+                flex-grow: 0;
+                height: auto;
+                font-size: 9px;
+                gap: 2px;
+                /* Cột Hạng Mục (1fr) sẽ chiếm phần còn lại, 3 cột checkbox có chiều rộng cố định */
+                grid-template-columns: 1fr 12mm 12mm 12mm;
+            }
             .safety-title { padding: 3px; font-size: 11px; margin: -5px -5px 5px -5px; }
             .checkbox { width: 12px; height: 12px; }
             .item-name {
@@ -660,7 +667,6 @@
                 font-weight: bold;
             }
 
-
             .footer { font-size: 8px; margin-top: 8px; padding-top: 5px; line-height: 1.1; }
 
             .signature-section { margin-top: 8px; padding-top: 5px; gap: 30px; }
@@ -669,6 +675,20 @@
             .signature-subtitle { font-size: 8px; }
 
             .main-content, .detailed-check, .signature-section { page-break-inside: avoid; }
+
+            /* BỔ SUNG: In đậm TẤT CẢ dữ liệu nhập liệu của người dùng khi in */
+            /* Bao gồm tất cả các loại input trừ readonly và textarea */
+            .form-content input:not([readonly]),
+            .form-content textarea {
+                font-weight: bold !important;
+				font-size: 14px;
+            }
+            /* Đảm bảo các ô tính toán tổng và các lựa chọn radio đã chọn cũng in đậm */
+            .detailed-check .thanh-tien-input, /* Đây là input readonly nhưng cần in đậm */
+            #grand-total, /* Đây là input readonly nhưng cần in đậm */
+            .info-group input[type="radio"]:checked + label { /* In đậm label của radio đã chọn */
+                font-weight: bold !important;
+            }
         }
     </style>
 </head>
@@ -680,7 +700,8 @@
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieu_kiem_tra_lop.html'">📄 Phiếu Kiểm Tra Lốp</button>
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/kiemtragam.html'">📄 Phiếu Kiểm Gầm</button>
             <button class="tire-form-button" id="submitToSheet">📤 Gửi Thông Tin</button>
-            <button class="clear-button" id="clearFormButton">🗑️ Xóa Form</button> </div>
+            <button class="clear-button" id="clearFormButton">🗑️ Xóa Form</button>
+        </div>
         <div class="form-content">
             <form id="inspectionFormXe" action="https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec" method="POST">
                 <input type="hidden" name="formType" value="PhieuKiemTraXe">
@@ -710,7 +731,8 @@
                             </div>
                             <div>
                                 <label for="customerEmail">E-mail:</label>
-                                <input type="email" id="customerEmail" name="email" class="info-input phone-email-input"> </div>
+                                <input type="email" id="customerEmail" name="email" class="info-input phone-email-input">
+                            </div>
                         </div>
                         <div class="info-group">
                             <label for="receivedDateTime">Ngày giờ nhận xe:</label>
