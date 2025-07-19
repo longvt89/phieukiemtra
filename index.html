@@ -474,15 +474,29 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin: 20px;
+            margin: 20px 10px; /* Adjusted margin */
             font-size: 16px;
         }
 
         .print-button:hover { background: #0056b3; }
 
+        .clear-button { /* New style for clear button */
+            background: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 10px; /* Adjusted margin */
+            font-size: 16px;
+        }
+        .clear-button:hover { background: #c82333; }
+
+
         .button-group {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
             gap: 10px;
             margin-bottom: 20px;
         }
@@ -639,7 +653,7 @@
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieu_kiem_tra_lop.html'">📄 Phiếu Kiểm Tra Lốp</button>
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/kiemtragam.html'">📄 Phiếu Kiểm Gầm</button>
             <button class="tire-form-button" id="submitToSheet">📤 Gửi Thông Tin</button>
-        </div>
+            <button class="clear-button" id="clearFormButton">🗑️ Xóa Form</button> </div>
         <div class="form-content">
             <form id="inspectionFormXe" action="https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec" method="POST">
                 <input type="hidden" name="formType" value="PhieuKiemTraXe">
@@ -824,7 +838,7 @@
                                 <div class="item-name">Đĩa phanh</div>
                                 <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DiaPhanh_Tot" value="on"></div>
                                 <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DiaPhanh_LuuY" value="on"></div>
-                                <div class="checkbox-cell"><input type="checkbox" class="checkbox" name="safety_DiaPhanh_Thay" value="on"></div>
+                                <div class="checkbox-cell"><input type="checkbox" name="safety_DiaPhanh_Thay" value="on"></div>
                             </div>
 
                             <div class="safety-item">
@@ -1104,6 +1118,19 @@
             return now.toISOString().slice(0, 16);
         }
 
+        function resetFormAndLocalStorage() {
+            const formElement = document.getElementById('inspectionFormXe');
+            const receivedDateTimeInput = document.getElementById('receivedDateTime');
+
+            localStorage.removeItem(FORM_DATA_KEY); // Clear saved data
+            formElement.reset(); // Reset all form fields
+            initializeReceiptNumber(); // Re-initialize receipt number for the next form
+            receivedDateTimeInput.value = getCurrentDateTimeLocal(); // Set current time for next form
+            updateGrandTotal(); // Update total to 0
+            hasSubmitted = false; // Reset submission flag
+            alert('Form đã được xóa và reset thành công!');
+        }
+
         // --- Receipt Number Management ---
 
         function initializeReceiptNumber() {
@@ -1258,8 +1285,6 @@
                     const scriptURL = form.action; // Get URL from form's action attribute
 
                     // Simple form validation: check if required fields are filled
-                    // Thêm thuộc tính 'required' vào các trường bạn muốn bắt buộc trong HTML
-                    // Ví dụ: <input type="text" id="customerName" name="hoten" class="info-input name-input" required>
                     if (!form.checkValidity()) {
                         alert('Vui lòng điền đầy đủ các trường bắt buộc trước khi gửi!');
                         form.reportValidity(); // Hiển thị các lỗi validation của trình duyệt
@@ -1289,7 +1314,7 @@
                             alert('✅ Gửi thông tin thành công! Bạn có thể in phiếu.');
                             console.log('Dữ liệu đã gửi:', data.row);
                             hasSubmitted = true; // Set flag to true
-                            // Dữ liệu KHÔNG bị xóa hoặc reset form sau khi gửi thành công
+                            // Data is NOT cleared/reset here anymore. User will explicitly clear.
                         } else {
                             alert('❌ Không gửi được: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
                             console.error('Lỗi từ Apps Script:', data.message);
@@ -1311,30 +1336,32 @@
             if (printButton) {
                 printButton.addEventListener('click', (event) => {
                     event.preventDefault(); // Prevent default print behavior
-                    const formElement = document.getElementById('inspectionFormXe');
                     if (!hasSubmitted) {
                         alert('Vui lòng nhấn "Gửi Thông Tin" trước khi in phiếu!');
-                    } else {
-                        // Tăng số phiếu trước khi in (vì mỗi bản in là một phiếu mới)
-                        incrementReceiptNumberOnPrint();
-                        window.print();
-                        // Dữ liệu sẽ được xóa và form reset SAU KHI hộp thoại in đóng lại
+                        return; // Stop execution if not submitted
+                    }
+
+                    // Tăng số phiếu trước khi in (vì mỗi bản in là một phiếu mới)
+                    incrementReceiptNumberOnPrint();
+                    window.print(); // Trigger print dialog
+                    // We DO NOT reset/clear here automatically anymore.
+                    // The user will confirm print and then clear manually.
+                });
+            }
+
+            // NEW: Event listener for the "Clear Form" button
+            const clearFormButton = document.getElementById('clearFormButton');
+            if (clearFormButton) {
+                clearFormButton.addEventListener('click', () => {
+                    // Ask for user confirmation before clearing the form
+                    if (confirm('Bạn có chắc chắn muốn xóa toàn bộ thông tin trên form không? (Chỉ xóa sau khi đã in thành công)')) {
+                        resetFormAndLocalStorage(); // Call the dedicated reset function
                     }
                 });
             }
 
-            // MỚI: Xử lý reset form SAU KHI quá trình in hoàn tất
-            window.onafterprint = () => {
-                const formElement = document.getElementById('inspectionFormXe');
-                const receivedDateTimeInput = document.getElementById('receivedDateTime');
-
-                localStorage.removeItem(FORM_DATA_KEY); // Xóa dữ liệu đã lưu
-                formElement.reset(); // Reset tất cả các trường trong form
-                initializeReceiptNumber(); // Đặt lại số phiếu cho lần nhập tiếp theo
-                receivedDateTimeInput.value = getCurrentDateTimeLocal(); // Đặt lại ngày giờ nhận xe
-                updateGrandTotal(); // Cập nhật tổng cộng về 0
-                hasSubmitted = false; // Reset cờ trạng thái đã gửi
-            };
+            // IMPORTANT: Removed window.onafterprint automatic reset.
+            // This is replaced by the manual "Clear Form" button for reliability across devices.
         });
 
         // Helper function to collect form data for submission
