@@ -579,8 +579,8 @@
 
             /* Điều chỉnh KÍCH THƯỚC VÀ VỊ TRÍ tổng thể của SƠ ĐỒ LỐP khi in */
             .tire-diagram-container {
-                width: 120px !important; /* Thu nhỏ chiều rộng ảnh sơ đồ khi in */
-                height: 180px !important; /* Thu nhỏ chiều cao ảnh sơ đồ khi in */
+                width: 180px !important; /* Thu nhỏ chiều rộng ảnh sơ đồ khi in */
+                height: 210px !important; /* Thu nhỏ chiều cao ảnh sơ đồ khi in */
                 margin-left: auto !important; /* Căn giữa trong khoảng không gian cột */
                 margin-right: auto !important; /* Căn giữa trong khoảng không gian cột */
                 transform: none !important; /* Reset transform scale */
@@ -596,11 +596,11 @@
             /* Khung nhập liệu cho từng lốp - điều chỉnh kích thước và font khi in */
             .tire-position {
                 font-size: 10px !important; /* TĂNG FONT CỠ CHỮ CƠ BẢN KHI IN */
-                padding: 3px 4px !important; /* TĂNG PADDING KHI IN */
-                width: 60px !important; /* TĂNG CHIỀU RỘNG CỐ ĐỊNH CHO Ô NHẬP KHI IN */
+                padding: 5px 6px !important; /* TĂNG PADDING KHI IN */
+                width: 80px !important; /* TĂNG CHIỀU RỘNG CỐ ĐỊNH CHO Ô NHẬP KHI IN */
                 height: auto !important;
                 line-height: 1 !important; /* TĂNG LINE-HEIGHT KHI IN */
-                border-radius: 4px !important;
+                border-radius: 6px !important;
             }
 
             /* Vị trí ô nhập liệu khi in (tương đối với sơ đồ đã thu nhỏ và căn giữa) */
@@ -613,7 +613,7 @@
             .tire-spare { bottom: 0px !important; left: 50% !important; transform: translateX(-50%) !important; width: 60px !important; } /* Tăng width khi in */
 
             .tire-input-group label {
-                font-size: 7px !important; /* TĂNG FONT LABEL KHI IN */
+                font-size: 9px !important; /* TĂNG FONT LABEL KHI IN */
                 margin-right: 1px !important;
             }
             .pressure-input, .thickness-input {
@@ -623,7 +623,7 @@
                 padding: 0 1px !important;
             }
             .tire-position small {
-                font-size: 7px !important; /* TĂNG FONT ĐƠN VỊ KHI IN */
+                font-size: 9px !important; /* TĂNG FONT ĐƠN VỊ KHI IN */
                 margin-left: 1px !important;
             }
 
@@ -692,6 +692,7 @@
             #grand-total, /* Đây là input readonly nhưng cần in đậm */
             .info-group input[type="radio"]:checked + label { /* In đậm label của radio đã chọn */
                 font-weight: bold !important;
+                font-size: 14px;
             }
         }
     </style>
