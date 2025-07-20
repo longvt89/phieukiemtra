@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tra Cứu Thông Tin Xe</title>
-    <!-- Tailwind CSS CDN -->
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -26,8 +26,7 @@
             cursor: pointer;
             font-size: 16px;
         }
-        .tire-form-button:hover { background: #218838; 
-        }
+        .tire-form-button:hover { background: #218838; }
         .container {
             background-color: #ffffff;
             padding: 32px;
@@ -111,6 +110,8 @@
         .result-item span {
             flex: 1; /* Take remaining space */
             color: #4b5563;
+            /* Để hiển thị xuống dòng từ \n */
+            white-space: pre-wrap; /* Giúp các ký tự xuống dòng (\n) được hiển thị */
         }
         .no-results {
             color: #ef4444;
@@ -146,12 +147,38 @@
                 flex: 1 0 100%; /* Values take full width on small screens */
             }
         }
+        /* Styles for parsed service items table */
+        .parsed-service-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        .parsed-service-table th,
+        .parsed-service-table td {
+            border: 1px solid #e5e7eb;
+            padding: 8px;
+            text-align: left;
+        }
+        .parsed-service-table th {
+            background-color: #eef2ff; /* Light blue header */
+            font-weight: 600;
+            color: #374151;
+        }
+        .parsed-service-table tr:nth-child(even) {
+            background-color: #f6f8ff; /* Lightest blue for even rows */
+        }
+        .parsed-service-table td.qty-col,
+        .parsed-service-table td.total-col {
+            text-align: right;
+            white-space: nowrap; /* Keep numbers on one line */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="button-group">
-            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/index.html'">📄Tra cứu thông tin xe </button>
+            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieu_nhan_dich_vu.html'">📄 Phiếu Nhận Dịch Vụ </button>
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieu_kiem_tra_lop.html'">📄 Phiếu Kiểm Tra Lốp</button>
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/kiemtragam.html'">📄 Phiếu Kiểm Gầm</button>
         </div>
@@ -178,8 +205,7 @@
         <div id="results" class="result-section hidden">
             <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Mô tả hiện trạng xe</h2>
             <div id="carDetailsContainer">
-                <!-- Car details will be displayed here -->
-            </div>
+                </div>
             <div id="noResultsMessage" class="no-results hidden">
                 Không tìm thấy thông tin xe phù hợp.
             </div>
@@ -191,7 +217,7 @@
 
     <script>
         // !!! QUAN TRỌNG: Thay thế URL này bằng URL Web App đã triển khai từ Google Apps Script của bạn !!!
-        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; 
+        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; // Cập nhật URL này nếu bạn triển khai lại Apps Script
 
         // Function to display car records
         function displayCarRecords(records, isHistory = false) {
@@ -205,9 +231,8 @@
 
             document.getElementById('noResultsMessage').classList.add('hidden');
 
-            // Group records by license plate if searching by phone number and showing history
             const groupedRecords = {};
-            // If searching by phone number AND NOT by license plate (meaning licensePlateInput is empty)
+            // Group records by license plate if searching by phone number and showing history
             if (isHistory && document.getElementById('phoneNumber').value.trim() && !document.getElementById('licensePlate').value.trim()) {
                 records.forEach(record => {
                     const lp = record.licensePlate || 'Không rõ biển số';
@@ -220,40 +245,89 @@
                 // If searching by license plate, or showing latest, just use the records directly
                 // For 'latest', there will only be one record
                 // For history by license plate, all records are for that one license plate
-                groupedRecords[records[0].licensePlate || records[0].phoneNumber || 'Thông tin xe'] = records;
+                // Sử dụng foundCar.licensePlate hoặc foundCar.phoneNumber để làm key nếu cần
+                records.forEach(record => {
+                    const key = record.licensePlate || record.phoneNumber || 'Thông tin xe';
+                    if (!groupedRecords[key]) {
+                        groupedRecords[key] = [];
+                    }
+                    groupedRecords[key].push(record);
+                });
             }
 
-            for (const licensePlate in groupedRecords) {
-                const recordsForThisCar = groupedRecords[licensePlate];
+            for (const key in groupedRecords) { // Đổi licensePlate thành key
+                const recordsForThisCar = groupedRecords[key];
                 
                 const carBlock = document.createElement('div');
                 carBlock.className = 'car-entry-block';
                 carDetailsContainer.appendChild(carBlock);
 
                 const carTitle = document.createElement('h3');
-                // Display customer name and phone number only for the first entry in the block
-                carTitle.textContent = `Xe: ${licensePlate} (${recordsForThisCar[0].customerName} - ${recordsForThisCar[0].phoneNumber})`;
+                carTitle.textContent = `Xe: ${key} (${recordsForThisCar[0].customerName || 'N/A'} - ${recordsForThisCar[0].phoneNumber || 'N/A'})`; // Sử dụng key
                 carBlock.appendChild(carTitle);
 
                 recordsForThisCar.forEach((foundCar, index) => {
                     const entryTitle = document.createElement('h4');
                     entryTitle.className = 'text-lg font-semibold text-gray-600 mb-3 mt-4';
-                    entryTitle.textContent = `Lần nhập liệu: ${foundCar.entryDate}`;
+                    entryTitle.textContent = `Lần nhập liệu: ${foundCar.entryDate} - Loại phiếu: ${foundCar.formType}`;
                     carBlock.appendChild(entryTitle);
 
                     const entryDetails = document.createElement('div');
-                    entryDetails.innerHTML = `
-                        <div class="result-item"><strong>Họ tên khách:</strong><span>${foundCar.customerName}</span></div>
-                        <div class="result-item"><strong>Số điện thoại:</strong><span>${foundCar.phoneNumber}</span></div>
-                        <div class="result-item"><strong>Biển số xe:</strong><span>${foundCar.licensePlate}</span></div>
-                        <div class="result-item"><strong>Số kilomet:</strong><span>${foundCar.odometer}</span></div>
-                        <div class="result-item"><strong>Ngày nhập liệu:</strong><span>${foundCar.entryDate}</span></div>
-                        <div class="result-item"><strong>Size lốp:</strong><span>${foundCar.tireSize}</span></div>
-                        <div class="result-item"><strong>Hiện trạng lốp:</strong><span>${foundCar.tireStatus || 'Không có thông tin'}</span></div>
-                        <div class="result-item"><strong>Lưu ý:</strong><span>${foundCar.notes}</span></div>
-                        <div class="result-item"><strong>Hạng mục chưa thay:</strong><span>${foundCar.unconfirmedItems || 'Không có'}</span></div>
-                        <div class="result-item"><strong>Hiện Trạng Khuyến nghị:</strong><span>${foundCar.recommendation || 'Không có'}</span></div>
+                    let detailsHtml = `
+                        <div class="result-item"><strong>Họ tên khách:</strong><span>${foundCar.customerName || 'N/A'}</span></div>
+                        <div class="result-item"><strong>Số điện thoại:</strong><span>${foundCar.phoneNumber || 'N/A'}</span></div>
+                        <div class="result-item"><strong>Biển số xe:</strong><span>${foundCar.licensePlate || 'N/A'}</span></div>
+                        <div class="result-item"><strong>Hãng/Đời xe:</strong><span>${foundCar.carModel || 'N/A'}</span></div>
+                        <div class="result-item"><strong>Số kilomet:</strong><span>${foundCar.odometer || 'N/A'}</span></div>
+                        <div class="result-item"><strong>Ngày nhập liệu:</strong><span>${foundCar.entryDate || 'N/A'}</span></div>
                     `;
+
+                    if (foundCar.formType === 'Phiếu Kiểm Tra Lốp') {
+                        detailsHtml += `
+                            <div class="result-item"><strong>Size lốp:</strong><span>${foundCar.tireSize || 'N/A'}</span></div>
+                            <div class="result-item"><strong>Hiện trạng lốp:</strong><span>${foundCar.tireStatus || 'Không có thông tin'}</span></div>
+                            <div class="result-item"><strong>Hạng mục chưa thay:</strong><span>${foundCar.unconfirmedItems || 'Không có'}</span></div>
+                            <div class="result-item"><strong>Hiện Trạng Khuyến nghị:</strong><span>${foundCar.recommendation || 'Không có'}</span></div>
+                        `;
+                    } else if (foundCar.formType === 'Phiếu Kiểm Tra Gầm') {
+                        detailsHtml += `
+                            <div class="result-item"><strong>Hạng mục chưa thay:</strong><span>${foundCar.unconfirmedItems || 'Không có'}</span></div>
+                            <div class="result-item"><strong>Hiện Trạng Khuyến nghị:</strong><span>${foundCar.recommendation || 'Không có'}</span></div>
+                        `;
+                    } else if (foundCar.formType === 'Phiếu Nhận Dịch Vụ') {
+                        detailsHtml += `
+                            <div class="result-item"><strong>Yêu cầu khách hàng:</strong><span>${foundCar.yeuCauKhachHang || 'Không có'}</span></div>
+                            <div class="result-item"><strong>Chẩn đoán ban đầu:</strong><span>${foundCar.chanDoanBanDau || 'Không có'}</span></div>
+                            <div class="result-item">
+                                <strong>Thông tin dịch vụ chi tiết (đã xác nhận):</strong>
+                                ${foundCar.thongTinDichVuChiTietParsed && foundCar.thongTinDichVuChiTietParsed.length > 0 ? 
+                                    `<table class="parsed-service-table">
+                                        <thead>
+                                            <tr><th>STT</th><th>Hạng mục</th><th class="qty-col">SL</th><th class="total-col">Thành tiền</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            ${foundCar.thongTinDichVuChiTietParsed.map(item => `
+                                                <tr>
+                                                    <td>${item.stt}</td>
+                                                    <td>${item.hangMuc || 'N/A'}</td>
+                                                    <td class="qty-col">${item.soLuong || 'N/A'}</td>
+                                                    <td class="total-col">${item.thanhTien ? parseFloat(item.thanhTien.replace(/\./g, '').replace(/,/g, '.')).toLocaleString('vi-VN') : '0'}</td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>`
+                                    : `<span>Không có</span>`
+                                }
+                            </div>
+                            <div class="result-item"><strong>Tổng cộng:</strong><span>${foundCar.tongCong ? foundCar.tongCong.toLocaleString('vi-VN') + ' VNĐ' : '0 VNĐ'}</span></div>
+                        `;
+                    }
+                    
+                    detailsHtml += `
+                        <div class="result-item"><strong>Ghi chú chung:</strong><span>${foundCar.notes || 'Không có'}</span></div>
+                    `;
+
+                    entryDetails.innerHTML = detailsHtml;
                     carBlock.appendChild(entryDetails);
                 });
             }
@@ -270,8 +344,8 @@
             const historyButton = document.getElementById('historyButton');
 
             // Clear previous results and hide messages
-            document.getElementById('carDetailsContainer').innerHTML = ''; 
-            noResultsMessage.classList.add('hidden'); 
+            document.getElementById('carDetailsContainer').innerHTML = '';
+            noResultsMessage.classList.add('hidden');
             errorMessage.classList.add('hidden');
             resultsSection.classList.add('hidden');
             historyButton.classList.add('hidden'); // Hide history button initially
@@ -300,14 +374,14 @@
                 loadingSpinner.style.display = 'none'; // Hide loading spinner
 
                 if (result.result === 'success' && result.data && result.data.length > 0) {
-                    resultsSection.classList.remove('hidden'); 
+                    resultsSection.classList.remove('hidden');
                     displayCarRecords(result.data, actionType === 'history');
                     
                     // Show history button only if a single car is found by license plate for 'latest' search
                     // Or if a phone number search returns multiple cars
                     if (actionType === 'latest' && (licensePlateInput || (phoneNumberInput && result.data.length > 1))) {
-                         // If searching by phone number and multiple cars are found, the history button should still appear
-                         // If searching by license plate, and a car is found, history button should appear
+                            // If searching by phone number and multiple cars are found, the history button should still appear
+                            // If searching by license plate, and a car is found, history button should appear
                         historyButton.classList.remove('hidden');
                     } else if (actionType === 'latest' && phoneNumberInput && result.data.length === 1) {
                         // If phone number search returns only one car, still show history button for that car
