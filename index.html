@@ -7,6 +7,17 @@
     <style>
 	    .logo {text-align: right;}
 		.logo img {height: 90px; object-fit: contain; }
+	    .logo img {
+    		height: 90px;
+    		margin-top: 10px;   /* đẩy logo xuống */
+    			/* hoặc margin-bottom: 10px; để đẩy lên */
+	    }
+	    .header-right {
+   		display: flex;
+    		align-items: center;  /* canh giữa chiều dọc */
+   		justify-content: flex-end;  /* đẩy logo sát phải */ 
+	    }
+
         /* Reset và cấu hình cơ bản */
         * {
             margin: 0;
