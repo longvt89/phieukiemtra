@@ -5,20 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phiếu Kiểm Tra Xe - PHI LONG AUTO</title>
     <style>
-	    .logo {text-align: right;}
-		.logo img {height: 90px; object-fit: contain; }
-	    .logo img {
-    		height: 90px;
-    		margin-top: 10px;   /* đẩy logo xuống */
-    			/* hoặc margin-bottom: 10px; để đẩy lên */
-	    }
-	    .header-right {
-   		display: flex;
-    		align-items: center;  /* canh giữa chiều dọc */
-   		justify-content: flex-end;  /* đẩy logo sát phải */ 
-	    }
-
-        /* Reset và cấu hình cơ bản */
+	    /* Reset và cấu hình cơ bản */
         * {
             margin: 0;
             padding: 0;
@@ -70,19 +57,23 @@
         .header-right {
             text-align: right;
         }
+/* Logo  */
+        .header-right {
+    	 display: flex;
+   	 align-items: center; /* Canh giữa theo chiều dọc */
+    	 justify-content: flex-end; /* Đẩy sát phải */
+   	 padding-right: 20px;
+	}
 
-        .logo {
-            width: 80px;
-            height: 60px;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 10px;
-            text-align: center;
-        }
+	.logo {
+   	 text-align: right;
+	}
+
+	.logo img {
+  	  height: 80px;
+   	  object-fit: contain;
+   	  margin-top: 0px; /* Điều chỉnh nếu muốn dời lên hoặc xuống */
+	}
 
         /* Customer Info Section */
         .customer-info {
