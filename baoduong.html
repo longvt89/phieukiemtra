@@ -324,7 +324,7 @@
 
             const selectedItems = Array.from(document.querySelectorAll('input[name="maintenanceItem"]:checked'))
                                                .map(checkbox => checkbox.value);
-            data['Hạng mục bảo dưỡng đã làm'] = selectedItems.join('; ');
+            data['Hạng mục bảo dưỡng đã làm'] = selectedItems.join('\n');
 
             const now = new Date();
             data['Ngày giờ ghi nhận'] = now.toISOString();
