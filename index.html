@@ -297,6 +297,19 @@
             font-size: 11px;
             min-height: 50px;
         }
+        .recommendation1 textarea {
+   	 width: 100%;
+   	 padding: 8px;
+   	 font-size: 14px;
+  	  border: 1px solid #ccc;
+   	 border-radius: 6px;
+   	 resize: vertical;
+	}
+	.recommendation1 label {
+    	display: block;
+   	 margin-bottom: 6px;
+   	 font-weight: bold;
+	}
 
         /* Safety Check Section */
         .safety-check {
@@ -635,6 +648,8 @@
 
             .recommendation { font-size: 14px; height: 60px; margin-top: 5px; }
             .recommendation textarea { min-height: 90px; height: 90px; font-size: 13px; width: 200%; padding: 4px; box-sizing: border-box; }
+		.recommendation1 textarea {width: 100%; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 6px;resize: vertical;}
+		.recommendation1 label {display: block;margin-bottom: 6px;font-weight: bold;}
 
             .safety-check { padding: 5px; height: auto; flex-grow: 0; }
             /* ĐIỀU CHỈNH: safety-grid để thu hẹp cột "Hạng Mục" và cố định các cột checkbox. */
@@ -1111,11 +1126,11 @@
                     </tbody>
                 </table>
 
-                <div class="footer">
-                    <p><strong>Khuyến nghị:</strong></p>
-                    <p>□ "Tôi đồng ý đăng ký số liệu cá nhân năm được cung cấp theo mẫu này có thể được lưu trữ và sử dụng cho mục đích liên quan đến 02 năm PHI LONG AUTO (Công Ty), nhằm mục đích truyền thông sản phẩm và dịch vụ của chúng tôi và các đối tác kinh doanh liên quan. Tôi có thể rút lại sự đồng ý của mình bất cứ lúc nào bằng cách liên hệ với Công Ty và yêu cầu loại bỏ thông tin cá nhân của tôi khỏi cơ sở dữ liệu này."</p>
-                </div>
-
+                <div class="footer"></div>
+                    <div class="recommendation1">
+                            <label for="notes">Lưu ý:</label>
+                            <textarea id="notes" name="ghiChuChung" placeholder="Ghi chú các lưu ý cần thiết"></textarea>
+                    </div>
                 <div class="signature-section">
                     <div class="signature-box">
                         <div class="signature-title">Đại lý</div>
