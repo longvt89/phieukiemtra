@@ -264,7 +264,7 @@
             if (currentKm > 0) {
                 let html = `<p class="mb-2"><strong>Cấp độ bảo dưỡng gợi ý:</strong> <span class="font-semibold text-blue-800">${suggestedLevel}</span></p>`;
                 if (suggestedItems.length > 0) {
-                    html += `<h4 class="font-semibold text-gray-700 mb-2">Các hạng mục cơ bản bắt buộc:</h4>`;
+                    html += `<h4 class="font-semibold text-gray-700 mb-2">Các hạng mục cơ bản bắt buộc, tích chọn hạng mục cần làm theo yêu cầu:</h4>`;
                     html += `<div class="overflow-x-auto"><table class="min-w-full bg-white border border-gray-200 rounded-md"><thead><tr><th class="py-2 px-4 border-b"></th><th class="py-2 px-4 border-b text-left">Hạng mục</th></tr></thead><tbody>`;
                     suggestedItems.forEach((item, index) => {
                         html += `<tr>
