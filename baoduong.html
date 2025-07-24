@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phiếu Ghi Nhận & Tra Cứu Lịch Sử Bảo Dưỡng Xe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Tùy chỉnh font chữ Inter */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* CSS tùy chỉnh cho modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+        }
+        .modal-buttons {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 p-4">
+    <div class="container mx-auto max-w-4xl bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold text-blue-700 text-center mb-6">Phiếu Ghi Nhận Xe Bảo Dưỡng</h1>
+		<h3 class="text-1xl font-bold text-blue-400 text-center mb-6"> Yêu cầu nhập đúng thông tin xe để dễ dàng tra cứu về sau.</h3>
+		<h4 class="text-1xl font-bold text-blue-400 text-center mb-6"> Đối với việc tra cứu lịch sử xe chỉ điền biển số xe vào ô biển số rồi nhấn tra cứu</h4>
+
+        <form id="maintenanceForm" class="space-y-4">
+            <div class="form-group">
+                <label for="fullName" class="block text-sm font-semibold text-gray-700 mb-1">Họ tên:</label>
+                <input type="text" id="fullName" name="Họ tên" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber" class="block text-sm font-semibold text-gray-700 mb-1">Số Điện thoại:</label>
+                <input type="text" id="phoneNumber" name="Số điện thoại" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="form-group">
+                <label for="licensePlate" class="block text-sm font-semibold text-gray-700 mb-1">Biển số xe (VD:61A12345) :</label>
+                <input type="text" id="licensePlate" name="Biển số xe" required onkeyup="checkLicensePlateInput()" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="form-group">
+                <label for="carType" class="block text-sm font-semibold text-gray-700 mb-1">Loại xe:</label>
+                <input type="text" id="carType" name="Loại xe" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="form-group">
+                <label for="oldKm" class="block text-sm font-semibold text-gray-700 mb-1">Số kilomet cũ (nếu có tem nhớt cũ):</label>
+                <input type="number" id="oldKm" name="Số kilomet cũ" min="0" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="form-group">
+                <label for="currentKm" class="block text-sm font-semibold text-gray-700 mb-1">Số kilomet hiện tại:</label>
+                <input type="number" id="currentKm" name="Số kilomet hiện tại" min="0" required oninput="suggestMaintenance()" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="form-group">
+                <label for="nextKmEstimate" class="block text-sm font-semibold text-gray-700 mb-1">Số kilomet dự tính cho lần bảo dưỡng tiếp theo:</label>
+                <input type="number" id="nextKmEstimate" name="Số kilomet dự tính tiếp theo" min="0" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div id="maintenanceSuggestions" class="mt-6 p-4 border border-blue-200 bg-blue-50 rounded-md" style="display: none;">
+                <h3 class="text-xl font-semibold text-blue-700 mb-3">Gợi ý cấp độ & Hạng mục bảo dưỡng:</h3>
+                <div id="suggestionContent"></div>
+            </div>
+            
+            <input type="hidden" id="selectedMaintenanceItems" name="Hạng mục bảo dưỡng đã làm">
+
+            <div class="buttons text-center mt-6 flex justify-center space-x-4">
+                <button type="button" onclick="submitForm()" id="submitButton" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out">Nhập liệu</button>
+                <button type="button" onclick="lookupHistory()" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out">Tra cứu</button>
+            </div>
+        </form>
+
+        <div id="message" class="mt-6 p-3 rounded-md font-bold text-center" style="display: none;"></div>
+
+        <div id="searchResult" class="mt-6 pt-5 border-t border-gray-200" style="display: none;">
+            <h3 class="text-xl font-semibold text-blue-700 mb-4">Lịch sử bảo dưỡng của xe:</h3>
+            <div id="searchResultContent"></div>
+        </div>
+    </div>
+
+    <div id="customConfirmModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 id="modalTitle" class="text-xl font-bold text-gray-800 mb-4">Xác nhận</h3>
+            <p id="modalMessage" class="text-gray-700 mb-6"></p>
+            <div class="modal-buttons">
+                <button id="modalConfirmBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out">Xác nhận</button>
+                <button id="modalCancelBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL của Web App Google Apps Script của bạn
+        // BẠN PHẢI THAY THẾ 'YOUR_GOOGLE_SHEET_WEB_APP_URL_HERE' BẰNG URL THẬT TỪ APPS SCRIPT CỦA BẠN SAU KHI TRIỂN KHAI.
+        const GOOGLE_SHEET_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwCCciPWVo0Qh7-fDbRkY7NCYFg9IaovdVDlToFoYo1NQVnUZwPsh3rK2Wl6RJ2CGdVfQ/exec';
+
+        // Cấu trúc dữ liệu quy định bảo dưỡng dựa trên hình ảnh bạn đã cung cấp
+        const maintenanceMilestones = [
+            { km: 1000, level: 'Kiểm tra đầu tiên (1 tháng)', items: [
+                'Kiểm tra tổng thể xe', 'Kiểm tra mức dầu động cơ', 'Kiểm tra mức nước làm mát',
+                'Kiểm tra áp suất lốp', 'Kiểm tra đèn, còi, gạt mưa'
+            ]},
+            { km: 5000, level: 'Cấp 1', items: [
+                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+            ]},
+            { km: 10000, level: 'Cấp 2', items: [
+                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh hoặc thay lọc gió động cơ',
+                'Kiểm tra tình trạng ắc quy', 'Kiểm tra hệ thống phanh (má phanh, đĩa phanh)', 'Kiểm tra lọc gió điều hòa',
+                'Kiểm tra hệ thống treo và lái', 'Kiểm tra dầu hộp số (nếu có)',
+            ]},
+            { km: 15000, level: 'Cấp 1', items: [
+                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+            ]},
+            { km: 20000, level: 'Cấp 3', items: [
+                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Thay lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+                'Kiểm tra hệ thống phanh (má phanh, đĩa phanh)', 'Thay lọc gió điều hòa', 'Kiểm tra hệ thống treo và lái',
+                'Kiểm tra dầu hộp số', 'Kiểm tra bugi (nếu đến hạn thay)', 'Kiểm tra dây đai truyền động',
+            ]},
+            { km: 25000, level: 'Cấp 1', items: [
+                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+            ]},
+            { km: 30000, level: 'Cấp 2', items: [
+                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh hoặc thay lọc gió động cơ',
+                'Kiểm tra tình trạng ắc quy', 'Kiểm tra hệ thống phanh (má phanh, đĩa phanh)', 'Kiểm tra lọc gió điều hòa',
+                'Kiểm tra hệ thống treo và lái', 'Kiểm tra dầu hộp số (nếu có)',
+            ]},
+            { km: 35000, level: 'Cấp 1', items: [
+                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+            ]},
+            { km: 40000, level: 'Cấp 4', items: [
+                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Thay lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+                'Kiểm tra và thay thế má phanh, đĩa phanh nếu cần', 'Thay lọc gió điều hòa', 'Kiểm tra hệ thống treo và lái',
+                'Thay dầu hộp số', 'Thay bugi', 'Kiểm tra và thay dây đai truyền động', 'Kiểm tra hệ thống nhiên liệu',
+                'Kiểm tra hệ thống xả', 'Vệ sinh kim phun', 'Kiểm tra và thay nước làm mát',
+            ]},
+            { km: 45000, level: 'Cấp 1', items: [
+                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+            ]},
+            { km: 50000, level: 'Cấp 2', items: [
+                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh hoặc thay lọc gió động cơ',
+                'Kiểm tra tình trạng ắc quy', 'Kiểm tra hệ thống phanh (má phanh, đĩa phanh)', 'Kiểm tra lọc gió điều hòa',
+                'Kiểm tra hệ thống treo và lái', 'Kiểm tra dầu hộp số (nếu có)',
+            ]},
+            { km: 55000, level: 'Cấp 1', items: [
+                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+            ]},
+            { km: 60000, level: 'Cấp 5', items: [
+                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Thay lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+                'Kiểm tra và thay thế má phanh, đĩa phanh nếu cần', 'Thay lọc gió điều hòa', 'Kiểm tra hệ thống treo và lái',
+                'Thay dầu hộp số', 'Thay bugi', 'Kiểm tra và thay dây đai truyền động', 'Kiểm tra hệ thống nhiên liệu',
+                'Kiểm tra hệ thống xả', 'Vệ sinh kim phun', 'Kiểm tra và thay nước làm mát',
+                'Kiểm tra và thay dầu phanh', 'Kiểm tra và thay dầu trợ lực lái',
+            ]}
+        ];
+
+        // Hàm hiển thị thông báo tùy chỉnh
+        function showMessage(msg, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = msg;
+            messageDiv.className = `mt-6 p-3 rounded-md font-bold text-center ${type === 'success' ? 'bg-green-100 text-green-700 border border-green-200' :
+                                                                 type === 'error' ? 'bg-red-100 text-red-700 border border-red-200' :
+                                                                 type === 'warning' ? 'bg-yellow-100 text-yellow-700 border border-yellow-200' :
+                                                                 'bg-blue-100 text-blue-700 border border-blue-200'}`;
+            messageDiv.style.display = 'block';
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000); // Ẩn sau 5 giây
+        }
+
+        // Hàm hiển thị modal xác nhận tùy chỉnh
+        function showCustomConfirm(message, onConfirmCallback, onCancelCallback) {
+            const modal = document.getElementById('customConfirmModal');
+            const modalMessage = document.getElementById('modalMessage');
+            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+
+            modalMessage.textContent = message;
+            modal.classList.remove('hidden'); // Hiển thị modal
+
+            // Xóa các event listener cũ để tránh trùng lặp
+            modalConfirmBtn.onclick = null;
+            modalCancelBtn.onclick = null;
+
+            modalConfirmBtn.onclick = () => {
+                modal.classList.add('hidden'); // Ẩn modal
+                if (onConfirmCallback) onConfirmCallback();
+            };
+
+            modalCancelBtn.onclick = () => {
+                modal.classList.add('hidden'); // Ẩn modal
+                if (onCancelCallback) onCancelCallback();
+            };
+        }
+
+        // Hàm gợi ý cấp độ bảo dưỡng khi nhập Km hiện tại
+        function suggestMaintenance() {
+            const currentKm = parseInt(document.getElementById('currentKm').value);
+            const nextKmEstimateInput = document.getElementById('nextKmEstimate');
+
+            let suggestedLevel = 'Không xác định';
+            let suggestedItems = [];
+            let nextMaintenanceKm = 0;
+
+            let foundCurrentLevel = false;
+            for (let i = maintenanceMilestones.length - 1; i >= 0; i--) {
+                const milestone = maintenanceMilestones[i];
+                if (currentKm >= milestone.km) {
+                    suggestedLevel = milestone.level;
+                    suggestedItems = milestone.items;
+                    foundCurrentLevel = true;
+                    break;
+                }
+            }
+
+            if (!foundCurrentLevel && currentKm < 1000 && currentKm > 0) {
+                const firstMilestone = maintenanceMilestones.find(m => m.km === 1000);
+                if (firstMilestone) {
+                    suggestedLevel = firstMilestone.level;
+                    suggestedItems = firstMilestone.items;
+                }
+            }
+
+            for (const milestone of maintenanceMilestones) {
+                if (milestone.km > currentKm) {
+                    nextMaintenanceKm = milestone.km;
+                    break;
+                }
+            }
+
+            const suggestionContent = document.getElementById('suggestionContent');
+            const maintenanceSuggestionsDiv = document.getElementById('maintenanceSuggestions');
+
+            if (currentKm > 0) {
+                let html = `<p class="mb-2"><strong>Cấp độ bảo dưỡng gợi ý:</strong> <span class="font-semibold text-blue-800">${suggestedLevel}</span></p>`;
+                if (suggestedItems.length > 0) {
+                    html += `<h4 class="font-semibold text-gray-700 mb-2">Các hạng mục cơ bản bắt buộc:</h4>`;
+                    html += `<div class="overflow-x-auto"><table class="min-w-full bg-white border border-gray-200 rounded-md"><thead><tr><th class="py-2 px-4 border-b"></th><th class="py-2 px-4 border-b text-left">Hạng mục</th></tr></thead><tbody>`;
+                    suggestedItems.forEach((item, index) => {
+                        html += `<tr>
+                                    <td class="py-2 px-4 border-b"><input type="checkbox" name="maintenanceItem" value="${item}" class="form-checkbox h-4 w-4 text-blue-600 rounded"></td>
+                                    <td class="py-2 px-4 border-b">${item}</td>
+                                </tr>`;
+                    });
+                    html += `</tbody></table></div>`;
+                } else {
+                    html += `<p class="text-gray-600">Không có hạng mục bảo dưỡng cụ thể cho cấp độ này hoặc dữ liệu chưa được định nghĩa.</p>`;
+                }
+                suggestionContent.innerHTML = html;
+                maintenanceSuggestionsDiv.style.display = 'block';
+
+                if (nextMaintenanceKm > 0) {
+                    nextKmEstimateInput.value = nextMaintenanceKm;
+                } else {
+                    const lastMilestone = maintenanceMilestones[maintenanceMilestones.length - 1];
+                    if (lastMilestone) {
+                        nextKmEstimateInput.value = currentKm + 10000;
+                    } else {
+                        nextKmEstimateInput.value = '';
+                    }
+                }
+
+            } else {
+                maintenanceSuggestionsDiv.style.display = 'none';
+                suggestionContent.innerHTML = '';
+                nextKmEstimateInput.value = '';
+            }
+        }
+
+        let lookupTimer;
+        function checkLicensePlateInput() {
+            clearTimeout(lookupTimer);
+            lookupTimer = setTimeout(() => {
+                const licensePlate = document.getElementById('licensePlate').value.trim();
+                if (licensePlate.length > 0 &&
+                    !document.getElementById('fullName').value &&
+                    !document.getElementById('phoneNumber').value &&
+                    !document.getElementById('carType').value) {
+                    lookupHistory(true);
+                }
+            }, 1000);
+        }
+
+        async function submitForm() {
+            const submitButton = document.getElementById('submitButton');
+            submitButton.disabled = true;
+
+            const form = document.getElementById('maintenanceForm');
+            const formData = new FormData(form);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+
+            const selectedItems = Array.from(document.querySelectorAll('input[name="maintenanceItem"]:checked'))
+                                               .map(checkbox => checkbox.value);
+            data['Hạng mục bảo dưỡng đã làm'] = selectedItems.join('; ');
+
+            const now = new Date();
+            data['Ngày giờ ghi nhận'] = now.toISOString();
+
+            data['Số kilomet cũ'] = data['Số kilomet cũ'] || '0';
+
+            // --- THÊM LOG ĐỂ GỠ LỖI ---
+            console.log('1. Dữ liệu chuẩn bị gửi (form data):', JSON.parse(JSON.stringify(data)));
+            // --- KẾT THÚC THÊM LOG ---
+
+            document.getElementById('searchResult').style.display = 'none';
+            document.getElementById('maintenanceSuggestions').style.display = 'none';
+            document.getElementById('message').style.display = 'none';
+
+            if (!form.checkValidity()) { // Kiểm tra các trường required của form HTML5
+                showMessage('Vui lòng nhập đầy đủ các trường thông tin bắt buộc.', 'error');
+                submitButton.disabled = false;
+                return;
+            }
+
+            try {
+                // --- THÊM LOG ĐỂ GỠ LỖI ---
+                console.log('2. Bắt đầu tra cứu biển số xe:', data['Biển số xe']);
+                // --- KẾT THÚC THÊM LOG ---
+
+                const lookupResponse = await fetch(GOOGLE_SHEET_WEB_APP_URL + '?action=lookup&licensePlate=' + encodeURIComponent(data['Biển số xe']));
+                const lookupData = await lookupResponse.json();
+
+                // --- THÊM LOG ĐỂ GỠ LỖI ---
+                console.log('3. Dữ liệu tra cứu nhận được từ Apps Script (lookupData):', lookupData);
+                // --- KẾT THÚC THÊM LOG ---
+
+                if (lookupData.success && lookupData.records.length > 0) {
+                    const lastRecord = lookupData.records[0];
+                    const prevCurrentKm = parseInt(lastRecord['Số kilomet hiện tại']);
+                    const currentKmInput = parseInt(data['Số kilomet hiện tại']);
+                    
+                    const lastRecordIsoTimestamp = lastRecord['Ngày giờ ghi nhận'];
+                    const currentTime = new Date(data['Ngày giờ ghi nhận']); 
+                    const lastRecordTime = new Date(lastRecordIsoTimestamp); // Chắc chắn parse được ISO string
+
+                    const timeDiff = currentTime.getTime() - lastRecordTime.getTime();
+                    const oneDay = 24 * 60 * 60 * 1000;
+
+                    // --- THÊM LOG ĐỂ GỠ LỖI ---
+                    console.log('4. Kiểm tra trùng lặp:');
+                    console.log('   - Biển số xe cũ:', lastRecord['Biển số xe'], '| Biển số xe mới:', data['Biển số xe']);
+                    console.log('   - Km cũ:', prevCurrentKm, '| Km mới:', currentKmInput);
+                    console.log('   - Timestamp cũ (ISO):', lastRecordIsoTimestamp, '| Timestamp mới (ISO):', data['Ngày giờ ghi nhận']);
+                    console.log('   - Time Diff (ms):', timeDiff, '| One Day (ms):', oneDay);
+                    console.log('   - Điều kiện trùng lặp (Biển số XE trùng && KM trùng && trong 24h):', lastRecord['Biển số xe'].toUpperCase() === data['Biển số xe'].toUpperCase() && prevCurrentKm === currentKmInput && timeDiff < oneDay);
+                    // --- KẾT THÚC THÊM LOG ---
+
+                    if (String(lastRecord['Biển số xe']).toUpperCase() === String(data['Biển số xe']).toUpperCase() && prevCurrentKm === currentKmInput && timeDiff < oneDay) {
+                        showCustomConfirm(
+                            `Biển số xe "${data['Biển số xe']}" với số kilomet hiện tại (${currentKmInput}) đã được ghi nhận trong vòng 24 giờ. Bạn có muốn ghi đè thông tin cũ bằng thông tin mới này không?`,
+                            async () => {
+                                // --- THÊM LOG ĐỂ GỠ LỖI ---
+                                console.log('5. Người dùng xác nhận ghi đè. Gửi hành động UPDATE.');
+                                // --- KẾT THÚC THÊM LOG ---
+                                await sendDataToGoogleSheet(data, form, false, 'update', lastRecord); 
+                                submitButton.disabled = false;
+                            },
+                            () => {
+                                // --- THÊM LOG ĐỂ GỠ LỖI ---
+                                console.log('5. Người dùng HỦY ghi đè.');
+                                // --- KẾT THÚC THÊM LOG ---
+                                showMessage('Đã hủy ghi nhận.', 'warning');
+                                form.reset();
+                                document.getElementById('maintenanceSuggestions').style.display = 'none';
+                                document.getElementById('suggestionContent').innerHTML = '';
+                                submitButton.disabled = false;
+                            }
+                        );
+                        return;
+                    } else if (lastRecord['Biển số xe'].toUpperCase() === data['Biển số xe'].toUpperCase() && prevCurrentKm > currentKmInput) {
+                        // --- THÊM LOG ĐỂ GỠ LỖI ---
+                        console.log('4. Cảnh báo: Km hiện tại nhỏ hơn Km cũ. Không cho phép.');
+                        // --- KẾT THÚC THÊM LOG ---
+                        showMessage('Số kilomet hiện tại không thể nhỏ hơn số kilomet bảo dưỡng gần nhất của xe này.', 'error');
+                        submitButton.disabled = false;
+                        return;
+                    } else if (lastRecord['Biển số xe'].toUpperCase() === data['Biển số xe'].toUpperCase() && prevCurrentKm < currentKmInput) {
+                        // --- THÊM LOG ĐỂ GỠ LỖI ---
+                        console.log('4. Cảnh báo: Biển số xe đã có, Km hiện tại lớn hơn. Hỏi xác nhận thêm mới.');
+                        // --- KẾT THÚC THÊM LOG ---
+                        showCustomConfirm(
+                            `Biển số xe "${data['Biển số xe']}" đã có dữ liệu bảo dưỡng trước đó (Km cuối: ${prevCurrentKm}). Bạn muốn ghi nhận bảo dưỡng lần tiếp theo với Km hiện tại (${currentKmInput}) không?`,
+                            async () => {
+                                // --- THÊM LOG ĐỂ GỠ LỖI ---
+                                console.log('5. Người dùng xác nhận thêm mới. Gửi hành động ADD.');
+                                // --- KẾT THÚC THÊM LOG ---
+                                await sendDataToGoogleSheet(data, form, true, 'add'); 
+                                submitButton.disabled = false;
+                            },
+                            () => {
+                                // --- THÊM LOG ĐỂ GỠ LỖI ---
+                                console.log('5. Người dùng HỦY thêm mới.');
+                                // --- KẾT THÚC THÊM LOG ---
+                                showMessage('Đã hủy ghi nhận.', 'warning');
+                                submitButton.disabled = false;
+                            }
+                        );
+                        return;
+                    }
+                }
+
+                // --- THÊM LOG ĐỂ GỠ LỖI ---
+                console.log('4. Không tìm thấy trùng lặp phù hợp. Gửi hành động ADD mới.');
+                // --- KẾT THÚC THÊM LOG ---
+                await sendDataToGoogleSheet(data, form, true, 'add');
+                submitButton.disabled = false;
+
+            } catch (error) {
+                // --- THÊM LOG ĐỂ GỠ LỖI ---
+                console.error('Lỗi trong submitForm():', error);
+                // --- KẾT THÚC THÊM LOG ---
+                showMessage('Có lỗi xảy ra khi ghi nhận dữ liệu. Vui lòng thử lại.', 'error');
+                submitButton.disabled = false;
+            }
+        }
+
+        async function sendDataToGoogleSheet(data, form, resetFormAfterSend = true, actionType = 'add', recordToUpdate = null) {
+            // --- THÊM LOG ĐỂ GỠ LỖI ---
+            console.log(`6. sendDataToGoogleSheet được gọi với action: ${actionType}`);
+            console.log('   - Dữ liệu payload:', JSON.parse(JSON.stringify(data)));
+            if (actionType === 'update' && recordToUpdate) {
+                console.log('   - Bản ghi cũ (recordToUpdate) để UPDATE:', JSON.parse(JSON.stringify(recordToUpdate)));
+            }
+            // --- KẾT THÚC THÊM LOG ---
+
+            try {
+                const payload = {
+                    action: actionType,
+                    ...data
+                };
+
+                if (actionType === 'update' && recordToUpdate) {
+                    payload['oldLicensePlate'] = recordToUpdate['Biển số xe'];
+                    payload['oldTimestamp'] = recordToUpdate['Ngày giờ ghi nhận']; 
+                }
+
+                const response = await fetch(GOOGLE_SHEET_WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(payload).toString()
+                });
+
+                // --- THÊM LOG ĐỂ GỠ LỖI ---
+                console.log('7. Yêu cầu gửi đến Apps Script đã hoàn tất (do no-cors, không thể kiểm tra phản hồi trực tiếp).');
+                // --- KẾT THÚC THÊM LOG ---
+
+                showMessage('Dữ liệu đã được ghi nhận thành công!', 'success');
+                if (resetFormAfterSend) {
+                    form.reset();
+                    document.getElementById('maintenanceSuggestions').style.display = 'none';
+                    document.getElementById('suggestionContent').innerHTML = '';
+                }
+            } catch (error) {
+                // --- THÊM LOG ĐỂ GỠ LỖI ---
+                console.error('Lỗi trong sendDataToGoogleSheet():', error);
+                // --- KẾT THÚC THÊM LOG ---
+                showMessage('Có lỗi xảy ra khi ghi nhận dữ liệu. Vui lòng thử lại.', 'error');
+            }
+        }
+
+        async function lookupHistory(isAutoLookup = false) {
+            const licensePlateInput = document.getElementById('licensePlate');
+            const licensePlate = licensePlateInput.value.trim();
+            const searchResultDiv = document.getElementById('searchResult');
+            const searchResultContent = document.getElementById('searchResultContent');
+
+            document.getElementById('maintenanceSuggestions').style.display = 'none';
+            document.getElementById('message').style.display = 'none';
+
+            if (!licensePlate) {
+                if (!isAutoLookup) {
+                    showMessage('Vui lòng nhập Biển số xe để tra cứu.', 'error');
+                }
+                searchResultDiv.style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch(GOOGLE_SHEET_WEB_APP_URL + '?action=lookup&licensePlate=' + encodeURIComponent(licensePlate));
+                const result = await response.json();
+
+                // --- THÊM LOG ĐỂ GỠ LỖI ---
+                console.log('Lookup Result for History:', result);
+                // --- KẾT THÚC THÊM LOG ---
+
+                if (result.success && result.records.length > 0) {
+                    let html = `<p class="mb-3">Biển số xe: <strong class="text-blue-700">${licensePlate}</strong></p>`;
+                    html += `<div class="overflow-x-auto"><table class="min-w-full bg-white border border-gray-200 rounded-md">
+                                <thead>
+                                    <tr>
+                                        <th class="py-2 px-4 border-b text-left">Ngày giờ</th>
+                                        <th class="py-2 px-4 border-b text-left">Họ tên</th>
+                                        <th class="py-2 px-4 border-b text-left">Số ĐT</th>
+                                        <th class="py-2 px-4 border-b text-left">Loại xe</th>
+                                        <th class="py-2 px-4 border-b text-left">Km cũ</th>
+                                        <th class="py-2 px-4 border-b text-left">Km hiện tại</th>
+                                        <th class="py-2 px-4 border-b text-left">Km dự tính</th>
+                                        <th class="py-2 px-4 border-b text-left">Hạng mục đã làm</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+                    result.records.forEach(record => {
+                        let displayTimestamp = record['Ngày giờ ghi nhận'];
+                        try {
+                            const dateObj = new Date(displayTimestamp);
+                            if (!isNaN(dateObj.getTime())) {
+                                displayTimestamp = dateObj.toLocaleString('vi-VN');
+                            }
+                        } catch (e) {}
+
+                        html += `<tr class="hover:bg-gray-50">
+                                    <td class="py-2 px-4 border-b">${displayTimestamp || 'N/A'}</td>
+                                    <td class="py-2 px-4 border-b">${record['Họ tên'] || 'N/A'}</td>
+                                    <td class="py-2 px-4 border-b">${record['Số điện thoại'] || 'N/A'}</td>
+                                    <td class="py-2 px-4 border-b">${record['Loại xe'] || 'N/A'}</td>
+                                    <td class="py-2 px-4 border-b">${record['Số kilomet cũ'] || 'N/A'}</td>
+                                    <td class="py-2 px-4 border-b">${record['Số kilomet hiện tại'] || 'N/A'}</td>
+                                    <td class="py-2 px-4 border-b">${record['Hạng mục bảo dưỡng đã làm'] || 'N/A'}</td>
+                                </tr>`;
+                    });
+                    html += `</tbody></table></div>`;
+                    searchResultContent.innerHTML = html;
+                    searchResultDiv.style.display = 'block';
+
+                    if (!document.getElementById('fullName').value) {
+                            const lastRecord = result.records[0];
+                            document.getElementById('fullName').value = lastRecord['Họ tên'] || '';
+                            document.getElementById('phoneNumber').value = lastRecord['Số điện thoại'] || '';
+                            document.getElementById('carType').value = lastRecord['Loại xe'] || '';
+                            document.getElementById('oldKm').value = lastRecord['Số kilomet hiện tại'] || '';
+                            document.getElementById('currentKm').value = '';
+                            document.getElementById('nextKmEstimate').value = '';
+                            showMessage('Đã tìm thấy lịch sử bảo dưỡng. Vui lòng nhập Km hiện tại mới để ghi nhận bảo dưỡng tiếp theo.', 'info');
+                    }
+
+                } else {
+                    searchResultContent.innerHTML = `<p class="text-gray-600">Không tìm thấy lịch sử bảo dưỡng cho biển số xe này: <strong class="text-red-600">${licensePlate}</strong>.</p>`;
+                    searchResultDiv.style.display = 'block';
+                    if (!isAutoLookup) {
+                        showMessage('Không tìm thấy lịch sử bảo dưỡng cho biển số xe này.', 'info');
+                    }
+                    if (!document.getElementById('fullName').value && !document.getElementById('phoneNumber').value) {
+                            document.getElementById('maintenanceForm').reset();
+                            licensePlateInput.value = licensePlate;
+                    }
+                }
+            } catch (error) {
+                console.error('Lỗi khi tra cứu dữ liệu:', error);
+                showMessage('Có lỗi xảy ra khi tra cứu dữ liệu. Vui lòng thử lại.', 'error');
+                searchResultDiv.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
