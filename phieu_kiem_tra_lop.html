@@ -48,16 +48,28 @@
         .car-diagram img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; } /* Make the image fill the container */
         .car-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; } /* Overlay SVG on top of the image */
         /* Tăng kích thước font cho các thông số lốp trên SVG */
-        .tire-measurements text { font-size: 8px; } /* Tăng font cho mm và kg/cm2 */
+        .tire-measurements text { font-size: 8px; } /* Font cho mm và kg/cm2 */
         .tire-measurements rect { stroke-width: 0.6; }
         .tire-measurements g[transform*="translate"] rect { width: 48px; height: 20px; }
-        .tire-measurements g[transform*="translate"] text { font-size: 8px; } /* Tăng font cho giá trị mm */
+        .tire-measurements g[transform*="translate"] text { font-size: 8px; } /* Font cho giá trị mm */
         .tire-measurements g[transform*="translate"] rect[fill="#4472C4"] { height: 16px; }
-        .tire-measurements g[transform*="translate"] text[fill="white"] { font-size: 7px; } /* Tăng font cho giá trị kg/cm2 */
+        .tire-measurements g[transform*="translate"] text[fill="white"] { font-size: 7px; } /* Font cho giá trị kg/cm2 */
         #tire-size-box { stroke-width: 1.1; }
-        #tire-size-text { font-size: 10px; font-weight: bold; fill: red; } /* Tăng font cho Size Lốp */
-        .note-section { margin-top: 10px; font-size: 11px; } /* Tăng font cho Lưu ý và Hiện trạng lốp */
-        .info-section { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; font-size: 12px; } /* Tăng font cho thông tin chung cuối phiếu */
+        #tire-size-text { font-size: 10px; font-weight: bold; fill: red; } /* Font cho Size Lốp */
+
+        /* CSS cho DOT và Hiệu lốp */
+        .tire-dot-brand text { font-size: 6.5px; fill: #555; } /* Font cho DOT và Hiệu */
+        .tire-dot-brand rect { fill: #f0f0f0; stroke: #aaa; stroke-width: 0.5; }
+        /* Điều chỉnh vị trí của nhãn DOT và Hiệu lốp */
+        .tire-dot-brand-fl { transform: translate(-50px, 85px); } /* Vị trí cho FL */
+        .tire-dot-brand-fr { transform: translate(160px, 85px); } /* Vị trí cho FR */
+        .tire-dot-brand-rl { transform: translate(-50px, 185px); } /* Vị trí cho RL */
+        .tire-dot-brand-rr { transform: translate(160px, 185px); } /* Vị trí cho RR */
+        .tire-dot-brand-spare { transform: translate(56px, 230px); } /* Vị trí cho lốp dự phòng */
+
+
+        .note-section { margin-top: 10px; font-size: 11px; } /* Font cho Lưu ý và Hiện trạng lốp */
+        .info-section { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; font-size: 12px; } /* Font cho thông tin chung cuối phiếu */
         .info-item { border-bottom: 1px dotted #333; padding-bottom: 2px; }
         .controls { padding: 20px; background: #f8f9fa; border-top: 1px solid #ddd; }
         .control-group { margin-bottom: 15px; }
@@ -69,6 +81,11 @@
         .depth-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 10px; }
         .depth-inputs input { width: 100px; padding: 4px; font-size: 12px; text-align: center; }
         .pressure-input { width: 100%; width: 130px; padding: 4px; text-align: center; }
+        
+        /* Inputs for DOT and Brand */
+        .dot-brand-inputs { display: flex; gap: 5px; margin-top: 5px; }
+        .dot-brand-inputs input { width: calc(50% - 5px); padding: 4px; font-size: 12px; text-align: center; }
+
         .buttons { display: flex; gap: 10px; justify-content: center; }
         .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
         .btn-primary { background: #4472C4; color: white; }
@@ -122,6 +139,16 @@
             .tire-measurements g[transform*="translate"] text[fill="white"] {
                 font-size: 7px !important;
             }
+
+            /* Print-specific styles for DOT and Brand */
+            .tire-dot-brand text { font-size: 6.5px !important; fill: #555 !important; }
+            .tire-dot-brand rect { fill: #f0f0f0 !important; stroke: #aaa !important; stroke-width: 0.5 !important; }
+            .tire-dot-brand-fl { transform: translate(-50px, 85px) !important; }
+            .tire-dot-brand-fr { transform: translate(160px, 85px) !important; }
+            .tire-dot-brand-rl { transform: translate(-50px, 185px) !important; }
+            .tire-dot-brand-rr { transform: translate(160px, 185px) !important; }
+            .tire-dot-brand-spare { transform: translate(56px, 230px) !important; }
+
             #tire-size-box {
                 stroke-width: 1.1 !important;
             }
@@ -239,6 +266,10 @@
                             <input type="number" id="fl-outer" name="fl_outer_depth" placeholder="Ngoài (mm)" step="0.1">
                         </div>
                         <input type="number" class="pressure-input" id="fl-pressure" name="fl_pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
+                        <div class="dot-brand-inputs">
+                            <input type="text" id="fl-dot" name="fl_dot" placeholder="DOT" maxlength="4">
+                            <input type="text" id="fl-brand" name="fl_brand" placeholder="Hiệu lốp">
+                        </div>
                     </div>
 
                     <div class="tire-input-group">
@@ -248,6 +279,10 @@
                             <input type="number" id="fr-outer" name="fr_outer_depth" placeholder="Ngoài (mm)" step="0.1">
                         </div>
                         <input type="number" class="pressure-input" id="fr-pressure" name="fr_pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
+                        <div class="dot-brand-inputs">
+                            <input type="text" id="fr-dot" name="fr_dot" placeholder="DOT" maxlength="4">
+                            <input type="text" id="fr-brand" name="fr_brand" placeholder="Hiệu lốp">
+                        </div>
                     </div>
 
                     <div class="tire-input-group">
@@ -257,6 +292,10 @@
                             <input type="number" id="rl-outer" name="rl_outer_depth" placeholder="Ngoài (mm)" step="0.1">
                         </div>
                         <input type="number" class="pressure-input" id="rl-pressure" name="rl_pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
+                        <div class="dot-brand-inputs">
+                            <input type="text" id="rl-dot" name="rl_dot" placeholder="DOT" maxlength="4">
+                            <input type="text" id="rl-brand" name="rl_brand" placeholder="Hiệu lốp">
+                        </div>
                     </div>
 
                     <div class="tire-input-group">
@@ -266,6 +305,10 @@
                             <input type="number" id="rr-outer" name="rr_outer_depth" placeholder="Ngoài (mm)" step="0.1">
                         </div>
                         <input type="number" class="pressure-input" id="rr-pressure" name="rr_pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
+                        <div class="dot-brand-inputs">
+                            <input type="text" id="rr-dot" name="rr_dot" placeholder="DOT" maxlength="4">
+                            <input type="text" id="rr-brand" name="rr_brand" placeholder="Hiệu lốp">
+                        </div>
                     </div>
                 </div>
 
@@ -274,6 +317,10 @@
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
                         <input type="number" id="spare-depth" name="spare_depth" placeholder="Độ sâu (mm)" step="0.1">
                         <input type="number" id="spare-pressure" name="spare_pressure" placeholder="Áp suất (kg/cm²)" step="0.1">
+                    </div>
+                    <div class="dot-brand-inputs">
+                        <input type="text" id="spare-dot" name="spare_dot" placeholder="DOT" maxlength="4">
+                        <input type="text" id="spare-brand" name="spare_brand" placeholder="Hiệu lốp">
                     </div>
                     <label style="margin-top: 8px; display: block; font-size: 10px;">Khuyến cáo lốp dự phòng:</label>
                     <div class="recommendation-checkboxes" style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 9px;">
@@ -309,7 +356,7 @@
                         0866.478.777 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CSKH: 0866.478.777 - FAX: 0866 478 777
                     </div>
                 </div>
-        </div>
+            </div>
 
             <div class="title">PHIẾU ĐÁNH GIÁ HIỆN TRẠNG LỐP</div>
 
@@ -382,44 +429,64 @@
                 <img src="sodooto.png" alt="Car Diagram">
                 <svg class="car-svg" viewBox="0 0 160 240">
                     <g id="tire-measurements">
-                        <g transform="translate(-50,45)"> 
+                        <g transform="translate(-50,45)">
                             <rect width="50" height="30" fill="white" stroke="#4472C4"/>
                             <text x="24" y="8" text-anchor="middle" fill="#4472C4">mm</text>
                             <text x="24" y="17" text-anchor="middle" fill="#4472C4" id="fl-display">0/0</text>
                         </g>
-                        <g transform="translate(-50, 65)"> 
-                            <rect width="50" height="20" fill="#4472C4"/>
+                        <g transform="translate(-50, 65)">
+                            <rect width="50" height="16" fill="#4472C4"/>
                             <text x="24" y="11" text-anchor="middle" fill="white" id="fl-pressure-display-text">0</text>
                         </g>
+                        <g class="tire-dot-brand tire-dot-brand-fl">
+                            <rect x="0" y="0" width="50" height="20"/>
+                            <text x="25" y="8" text-anchor="middle" id="fl-dot-display">DOT: </text>
+                            <text x="25" y="16.5" text-anchor="middle" id="fl-brand-display"></text>
+                        </g>
                         
-                        <g transform="translate(160, 40)"> 
+                        <g transform="translate(160, 40)">
                             <rect width="50" height="25" fill="white" stroke="#4472C4"/>
                             <text x="24" y="8" text-anchor="middle" fill="#4472C4">mm</text>
                             <text x="24" y="17" text-anchor="middle" fill="#4472C4" id="fr-display">0/0</text>
                         </g>
-                        <g transform="translate(160, 65)"> 
-                            <rect width="50" height="20" fill="#4472C4"/>
+                        <g transform="translate(160, 65)">
+                            <rect width="50" height="16" fill="#4472C4"/>
                             <text x="24" y="11" text-anchor="middle" fill="white" id="fr-pressure-display-text">0</text>
                         </g>
+                        <g class="tire-dot-brand tire-dot-brand-fr">
+                            <rect x="0" y="0" width="50" height="20"/>
+                            <text x="25" y="8" text-anchor="middle" id="fr-dot-display">DOT: </text>
+                            <text x="25" y="16.5" text-anchor="middle" id="fr-brand-display"></text>
+                        </g>
                         
-                        <g transform="translate(-50, 140)"> 
+                        <g transform="translate(-50, 140)">
                             <rect width="50" height="25" fill="white" stroke="#4472C4"/>
                             <text x="24" y="8" text-anchor="middle" fill="#4472C4">mm</text>
                             <text x="24" y="17" text-anchor="middle" fill="#4472C4" id="rl-display">0/0</text>
                         </g>
-                        <g transform="translate(-50, 165)"> 
-                            <rect width="50" height="20" fill="#4472C4"/>
+                        <g transform="translate(-50, 165)">
+                            <rect width="50" height="16" fill="#4472C4"/>
                             <text x="24" y="11" text-anchor="middle" fill="white" id="rl-pressure-display-text">0</text>
                         </g>
+                        <g class="tire-dot-brand tire-dot-brand-rl">
+                            <rect x="0" y="0" width="50" height="20"/>
+                            <text x="25" y="8" text-anchor="middle" id="rl-dot-display">DOT: </text>
+                            <text x="25" y="16.5" text-anchor="middle" id="rl-brand-display"></text>
+                        </g>
                         
-                        <g transform="translate(160, 140)"> 
+                        <g transform="translate(160, 140)">
                             <rect width="50" height="25" fill="white" stroke="#4472C4"/>
                             <text x="24" y="8" text-anchor="middle" fill="#4472C4">mm</text>
                             <text x="24" y="17" text-anchor="middle" fill="#4472C4" id="rr-display">0/0</text>
                         </g>
-                        <g transform="translate(160, 165)"> 
-                            <rect width="50" height="20" fill="#4472C4"/>
+                        <g transform="translate(160, 165)">
+                            <rect width="50" height="16" fill="#4472C4"/>
                             <text x="24" y="11" text-anchor="middle" fill="white" id="rr-pressure-display-text">0</text>
+                        </g>
+                        <g class="tire-dot-brand tire-dot-brand-rr">
+                            <rect x="0" y="0" width="50" height="20"/>
+                            <text x="25" y="8" text-anchor="middle" id="rr-dot-display">DOT: </text>
+                            <text x="25" y="16.5" text-anchor="middle" id="rr-brand-display"></text>
                         </g>
                         
                         <g transform="translate(56, 195)">
@@ -430,6 +497,11 @@
                         <g transform="translate(56, 215)">
                             <rect width="48" height="14" fill="#4472C4"/>
                             <text x="24" y="9" text-anchor="middle" fill="white" id="spare-pressure-display-text">0</text>
+                        </g>
+                        <g class="tire-dot-brand tire-dot-brand-spare">
+                            <rect x="0" y="0" width="48" height="18"/>
+                            <text x="24" y="7" text-anchor="middle" id="spare-dot-display">DOT: </text>
+                            <text x="24" y="15" text-anchor="middle" id="spare-brand-display"></text>
                         </g>
                     </g>
                     
@@ -617,11 +689,17 @@
                 const inner = parseFloat(document.getElementById(pos + '-inner').value) || 0;
                 const outer = parseFloat(document.getElementById(pos + '-outer').value) || 0;
                 const pressure = parseFloat(document.getElementById(pos + '-pressure').value) || 0;
+                const dot = document.getElementById(pos + '-dot').value || '';
+                const brand = document.getElementById(pos + '-brand').value || '';
 
                 // Update tread depth display (e.g., "3.5/3.2")
                 document.getElementById(pos + '-display').textContent = inner.toFixed(1) + '/' + outer.toFixed(1); 
                 // Update tire pressure display
                 document.getElementById(pos + '-pressure-display-text').textContent = pressure.toFixed(1);
+                // Update DOT and Brand display
+                document.getElementById(pos + '-dot-display').textContent = 'DOT: ' + dot;
+                document.getElementById(pos + '-brand-display').textContent = brand;
+
                 // Update colored shapes indicating tread depth
                 updateTireShapes(pos, inner, outer);
             });
@@ -629,8 +707,13 @@
             // Update spare tire measurements
             const spareDepth = parseFloat(document.getElementById('spare-depth').value) || 0;
             const sparePressure = parseFloat(document.getElementById('spare-pressure').value) || 0;
+            const spareDot = document.getElementById('spare-dot').value || '';
+            const spareBrand = document.getElementById('spare-brand').value || '';
+
             document.getElementById('spare-display').textContent = spareDepth.toFixed(1); 
             document.getElementById('spare-pressure-display-text').textContent = sparePressure.toFixed(1);
+            document.getElementById('spare-dot-display').textContent = 'DOT: ' + spareDot;
+            document.getElementById('spare-brand-display').textContent = spareBrand;
 
             // Update recommendations (including new checkbox logic)
             updateRecommendations();
