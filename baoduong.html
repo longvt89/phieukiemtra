@@ -326,8 +326,8 @@
         <div class="button-group">
             <button class="app-button print-button" id="printButton">🖨️ In Phiếu</button>
             <button class="app-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/tracuu.html'">📄 Tra cứu thông tin xe </button>
-            <button class="app-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra'">📄 Phiếu Kiểm Tra Xe </button>
-            <button class="app-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieu_kiem_tra_lop.html'">📄 Phiếu Kiểm Tra Lốp</button>
+            <button class="app-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra'">📄 Phiếu KT Xe </button>
+            <button class="app-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieu_kiem_tra_lop.html'">📄 Phiếu KT Lốp</button>
             <button class="app-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/kiemtragam.html'">📄 Phiếu Kiểm Gầm</button>
             <button class="app-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/baoduong.html'">📄 Phiếu Bảo Dưỡng</button>
             <button class="app-button" id="submitToSheet">📤 Gửi Thông Tin</button>
@@ -474,72 +474,72 @@
 
         // Cấu trúc dữ liệu quy định bảo dưỡng dựa trên hình ảnh bạn đã cung cấp
         const maintenanceMilestones = [
-            { km: 1000, level: 'Kiểm tra đầu tiên (1 tháng)', items: [
-                'Kiểm tra tổng thể xe', 'Kiểm tra mức dầu động cơ', 'Kiểm tra mức nước làm mát',
-                'Kiểm tra áp suất lốp', 'Kiểm tra đèn, còi, gạt mưa'
+            { km: 1000, level: 'KT đầu tiên (1 tháng)', items: [
+                'KT tổng thể xe', 'KT mức dầu động cơ', 'KT mức nước làm mát',
+                'KT áp suất lốp', 'KT đèn, còi, gạt mưa'
             ]},
             { km: 5000, level: 'Cấp 1', items: [
-                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
-                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+                'KT và thay dầu động cơ', 'KT và thay lọc dầu', 'KT mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'KT áp suất lốp', 'KT đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'KT tình trạng ắc quy',
             ]},
             { km: 10000, level: 'Cấp 2', items: [
-                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
-                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh hoặc thay lọc gió động cơ',
-                'Kiểm tra tình trạng ắc quy', 'Kiểm tra hệ thống phanh (má phanh, đĩa phanh)', 'Kiểm tra lọc gió điều hòa',
-                'Kiểm tra hệ thống treo và lái', 'Kiểm tra dầu hộp số (nếu có)',
+                'KT và thay dầu động cơ', 'KT và thay lọc dầu', 'KT mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'KT áp suất lốp', 'KT đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh hoặc thay lọc gió động cơ',
+                'KT tình trạng ắc quy', 'KT hệ thống phanh (má phanh, đĩa phanh)', 'KT lọc gió điều hòa',
+                'KT hệ thống treo và lái', 'KT dầu hộp số (nếu có)',
             ]},
             { km: 15000, level: 'Cấp 1', items: [
-                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
-                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+                'KT và thay dầu động cơ', 'KT và thay lọc dầu', 'KT mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'KT áp suất lốp', 'KT đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'KT tình trạng ắc quy',
             ]},
             { km: 20000, level: 'Cấp 3', items: [
-                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
-                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Thay lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
-                'Kiểm tra hệ thống phanh (má phanh, đĩa phanh)', 'Thay lọc gió điều hòa', 'Kiểm tra hệ thống treo và lái',
-                'Kiểm tra dầu hộp số', 'Kiểm tra bugi (nếu đến hạn thay)', 'Kiểm tra dây đai truyền động',
+                'KT và thay dầu động cơ', 'KT và thay lọc dầu', 'KT mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'KT áp suất lốp', 'KT đèn chiếu sáng, còi, gạt mưa', 'Thay lọc gió động cơ', 'KT tình trạng ắc quy',
+                'KT hệ thống phanh (má phanh, đĩa phanh)', 'Thay lọc gió điều hòa', 'KT hệ thống treo và lái',
+                'KT dầu hộp số', 'KT bugi (nếu đến hạn thay)', 'KT dây đai truyền động',
             ]},
             { km: 25000, level: 'Cấp 1', items: [
-                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
-                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+                'KT và thay dầu động cơ', 'KT và thay lọc dầu', 'KT mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'KT áp suất lốp', 'KT đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'KT tình trạng ắc quy',
             ]},
             { km: 30000, level: 'Cấp 2', items: [
-                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
-                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh hoặc thay lọc gió động cơ',
-                'Kiểm tra tình trạng ắc quy', 'Kiểm tra hệ thống phanh (má phanh, đĩa phanh)', 'Kiểm tra lọc gió điều hòa',
-                'Kiểm tra hệ thống treo và lái', 'Kiểm tra dầu hộp số (nếu có)',
+                'KT và thay dầu động cơ', 'KT và thay lọc dầu', 'KT mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'KT áp suất lốp', 'KT đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh hoặc thay lọc gió động cơ',
+                'KT tình trạng ắc quy', 'KT hệ thống phanh (má phanh, đĩa phanh)', 'KT lọc gió điều hòa',
+                'KT hệ thống treo và lái', 'KT dầu hộp số (nếu có)',
             ]},
             { km: 35000, level: 'Cấp 1', items: [
-                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
-                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+                'KT và thay dầu động cơ', 'KT và thay lọc dầu', 'KT mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'KT áp suất lốp', 'KT đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'KT tình trạng ắc quy',
             ]},
             { km: 40000, level: 'Cấp 4', items: [
-                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
-                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Thay lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
-                'Kiểm tra và thay thế má phanh, đĩa phanh nếu cần', 'Thay lọc gió điều hòa', 'Kiểm tra hệ thống treo và lái',
-                'Thay dầu hộp số', 'Thay bugi', 'Kiểm tra và thay dây đai truyền động', 'Kiểm tra hệ thống nhiên liệu',
-                'Kiểm tra hệ thống xả', 'Vệ sinh kim phun', 'Kiểm tra và thay nước làm mát',
+                'KT và thay dầu động cơ', 'KT và thay lọc dầu', 'KT mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'KT áp suất lốp', 'KT đèn chiếu sáng, còi, gạt mưa', 'Thay lọc gió động cơ', 'KT tình trạng ắc quy',
+                'KT và thay thế má phanh, đĩa phanh nếu cần', 'Thay lọc gió điều hòa', 'KT hệ thống treo và lái',
+                'Thay dầu hộp số', 'Thay bugi', 'KT và thay dây đai truyền động', 'KT hệ thống nhiên liệu',
+                'KT hệ thống xả', 'Vệ sinh kim phun', 'KT và thay nước làm mát',
             ]},
             { km: 45000, level: 'Cấp 1', items: [
-                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
-                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+                'KT và thay dầu động cơ', 'KT và thay lọc dầu', 'KT mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'KT áp suất lốp', 'KT đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'KT tình trạng ắc quy',
             ]},
             { km: 50000, level: 'Cấp 2', items: [
-                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
-                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh hoặc thay lọc gió động cơ',
-                'Kiểm tra tình trạng ắc quy', 'Kiểm tra hệ thống phanh (má phanh, đĩa phanh)', 'Kiểm tra lọc gió điều hòa',
-                'Kiểm tra hệ thống treo và lái', 'Kiểm tra dầu hộp số (nếu có)',
+                'KT và thay dầu động cơ', 'KT và thay lọc dầu', 'KT mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'KT áp suất lốp', 'KT đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh hoặc thay lọc gió động cơ',
+                'KT tình trạng ắc quy', 'KT hệ thống phanh (má phanh, đĩa phanh)', 'KT lọc gió điều hòa',
+                'KT hệ thống treo và lái', 'KT dầu hộp số (nếu có)',
             ]},
             { km: 55000, level: 'Cấp 1', items: [
-                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
-                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
+                'KT và thay dầu động cơ', 'KT và thay lọc dầu', 'KT mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'KT áp suất lốp', 'KT đèn chiếu sáng, còi, gạt mưa', 'Vệ sinh lọc gió động cơ', 'KT tình trạng ắc quy',
             ]},
             { km: 60000, level: 'Cấp 4+', items: [
-                'Kiểm tra và thay dầu động cơ', 'Kiểm tra và thay lọc dầu', 'Kiểm tra mực nước làm mát, dầu phanh, dầu trợ lực lái',
-                'Kiểm tra áp suất lốp', 'Kiểm tra đèn chiếu sáng, còi, gạt mưa', 'Thay lọc gió động cơ', 'Kiểm tra tình trạng ắc quy',
-                'Kiểm tra và thay thế má phanh, đĩa phanh nếu cần', 'Thay lọc gió điều hòa', 'Kiểm tra hệ thống treo và lái',
-                'Thay dầu hộp số', 'Thay bugi', 'Kiểm tra và thay dây đai truyền động', 'Kiểm tra hệ thống nhiên liệu',
-                'Kiểm tra hệ thống xả', 'Vệ sinh kim phun', 'Kiểm tra và thay nước làm mát',
-                'Kiểm tra và thay dầu phanh', 'Kiểm tra và thay dầu trợ lực lái',
+                'KT và thay dầu động cơ', 'KT và thay lọc dầu', 'KT mực nước làm mát, dầu phanh, dầu trợ lực lái',
+                'KT áp suất lốp', 'KT đèn chiếu sáng, còi, gạt mưa', 'Thay lọc gió động cơ', 'KT tình trạng ắc quy',
+                'KT và thay thế má phanh, đĩa phanh nếu cần', 'Thay lọc gió điều hòa', 'KT hệ thống treo và lái',
+                'Thay dầu hộp số', 'Thay bugi', 'KT và thay dây đai truyền động', 'KT hệ thống nhiên liệu',
+                'KT hệ thống xả', 'Vệ sinh kim phun', 'KT và thay nước làm mát',
+                'KT và thay dầu phanh', 'KT và thay dầu trợ lực lái',
             ]}
         ];
 
@@ -958,7 +958,7 @@
         }
 
 
-        let hasSubmitted = false; // Biến cờ kiểm tra trạng thái gửi form thành công
+        let hasSubmitted = false; // Biến cờ KT trạng thái gửi form thành công
 
         // Chạy khi toàn bộ DOM đã được tải
         document.addEventListener('DOMContentLoaded', () => {
@@ -1012,7 +1012,7 @@
                     event.preventDefault(); // Ngăn hành vi gửi form mặc định
                     const scriptURL = form.action; // Lấy URL Apps Script từ thuộc tính 'action' của form
 
-                    // Kiểm tra validation của form
+                    // KT validation của form
                     if (!form.checkValidity()) {
                         alert('Vui lòng điền đầy đủ các trường bắt buộc trước khi gửi!');
                         form.reportValidity(); // Hiển thị lỗi validation của trình duyệt
@@ -1035,7 +1035,7 @@
                         body: urlEncodedData
                     })
                     .then(response => response.json().then(data => {
-                        if (!response.ok) { // Kiểm tra nếu phản hồi không thành công (HTTP status code >= 400)
+                        if (!response.ok) { // KT nếu phản hồi không thành công (HTTP status code >= 400)
                             // Sử dụng String() để đảm bảo data.message là chuỗi
                             throw new Error(String(data.message || 'Lỗi từ máy chủ không xác định.'));
                         }
@@ -1052,7 +1052,7 @@
                         }
                     })
                     .catch(error => { // Bắt các lỗi trong quá trình fetch hoặc xử lý phản hồi
-                        alert('❌ Có lỗi xảy ra khi gửi. Vui lòng kiểm tra console (F12) để biết chi tiết.');
+                        alert('❌ Có lỗi xảy ra khi gửi. Vui lòng KT console (F12) để biết chi tiết.');
                         console.error('Lỗi Fetch hoặc phản hồi không hợp lệ:', error);
                     })
                     .finally(() => { // Luôn chạy sau khi fetch hoàn tất (thành công hoặc lỗi)
