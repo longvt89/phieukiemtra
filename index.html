@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phiếu Kiểm Tra Xe - PHI LONG AUTO</title>
     <style>
-	    /* Reset và cấu hình cơ bản */
+        /* Reset và cấu hình cơ bản */
         * {
             margin: 0; padding: 0;
             box-sizing: border-box;
@@ -20,13 +20,13 @@
         }
 
         .container {
-            max-width: 230mm; /* Đã tăng kích thước A4 theo chiều ngang để chứa đủ các nút */
+            max-width: 230mm;
             margin: 0 auto; background: white;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
         .form-content {
-            padding: 15mm; /* Khoảng cách lề trong phiếu */
+            padding: 15mm;
         }
 
         /* Header Section */
@@ -50,23 +50,21 @@
 
         .header-right {
             text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 20px;
         }
-/* Logo  */
-        .header-right {
-    	 display: flex; align-items: center; /* Canh giữa theo chiều dọc */
-    	 justify-content: flex-end; /* Đẩy sát phải */
-   	 padding-right: 20px;
-	}
 
-	.logo {
-   	 text-align: right;
-	}
+        .logo {
+            text-align: right;
+        }
 
-	.logo img {
-  	  height: 80px;
-   	  object-fit: contain;
-   	  margin-top: 0px; /* Điều chỉnh nếu muốn dời lên hoặc xuống */
-	}
+        .logo img {
+            height: 80px;
+            object-fit: contain;
+            margin-top: 0px;
+        }
 
         /* Customer Info Section */
         .customer-info {
@@ -104,7 +102,7 @@
             margin-right: 5px;
             vertical-align: middle;
         }
-        .info-group input[type="radio"] { /* Added style for radio buttons */
+        .info-group input[type="radio"] {
             width: 15px; height: 15px;
             margin-right: 5px;
             vertical-align: middle;
@@ -126,30 +124,27 @@
 
 
         /* Main Content Section */
-        /* ĐIỀU CHỈNH LẦN NÀY: Dùng flexbox để kiểm soát tốt hơn bố cục màn hình */
         .main-content {
-            display: flex; /* Thay đổi từ grid sang flex */
-            justify-content: space-between; /* Đẩy hai cột sang hai bên */
-            align-items: flex-start; /* Căn chỉnh các mục từ trên xuống */
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             gap: 15px; margin-bottom: 15px;
-            flex-wrap: wrap; /* Cho phép các mục xuống dòng trên màn hình nhỏ */
+            flex-wrap: wrap;
         }
 
         /* Tire Section */
-        /* ĐIỀU CHỈNH LẦN NÀY: Giới hạn chiều rộng tối đa cho khối sơ đồ xe */
         .tire-section {
             display: flex; flex-direction: column;
             align-items: center;
             position: relative;
             justify-content: flex-start;
-            max-width: 280px; /* Giới hạn chiều rộng tối đa cho khối này */
-            flex-shrink: 0; /* Ngăn không cho khối này bị co lại quá mức nếu có quá nhiều nội dung */
+            max-width: 280px;
+            flex-shrink: 0;
         }
 
-        /* ĐIỀU CHỈNH LẦN NÀY: Thu nhỏ KÍCH THƯỚC tổng thể của SƠ ĐỒ LỐP trên màn hình */
         .tire-diagram-container {
-            position: relative; width: 120px; /* Đã giảm từ 140px xuống 120px */
-            height: 170px; /* Đã giảm từ 200px xuống 170px */
+            position: relative; width: 120px;
+            height: 170px;
             display: flex; justify-content: center;
             align-items: flex-start;
             border-bottom: 1px dashed #ccc;
@@ -175,7 +170,7 @@
             object-position: center;
         }
 
-        /* Khung nhập liệu cho từng lốp - điều chỉnh kích thước và font */
+        /* Khung nhập liệu cho từng lốp */
         .tire-position {
             position: absolute; background: white;
             border-radius: 5px;
@@ -193,11 +188,10 @@
             border: 1px solid #000;
         }
 
-        /* ĐIỀU CHỈNH LẦN NÀY: Tinh chỉnh vị trí các ô nhập liệu Áp suất/Độ dày để khớp với hình ảnh đã thu nhỏ */
-        .tire-front-left { top: 20px; left: -85px; } /* Điều chỉnh vị trí */
-        .tire-front-right { top: 20px; left: 120px; } /* Điều chỉnh vị trí */
-        .tire-rear-left { top: 115px; left: -85px; } /* Điều chỉnh vị trí */
-        .tire-rear-right { top: 115px; left: 120px; } /* Điều chỉnh vị trí */
+        .tire-front-left { top: 20px; left: -85px; }
+        .tire-front-right { top: 20px; left: 120px; }
+        .tire-rear-left { top: 115px; left: -85px; }
+        .tire-rear-right { top: 115px; left: 120px; }
         .tire-spare { bottom: -10px; left: 50%; transform: translateX(-50%); width: 85px; }
 
 
@@ -266,17 +260,17 @@
             min-height: 50px;
         }
         .recommendation1 textarea {
-   	 width: 100%;
-   	 padding: 8px;
-   	 font-size: 14px; border: 1px solid #ccc;
-   	 border-radius: 6px;
-   	 resize: vertical;
-	}
-	.recommendation1 label {
-    	display: block;
-   	 margin-bottom: 6px;
-   	 font-weight: bold;
-	}
+            width: 100%;
+            padding: 8px;
+            font-size: 14px; border: 1px solid #ccc;
+            border-radius: 6px;
+            resize: vertical;
+        }
+        .recommendation1 label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
 
         /* Safety Check Section */
         .safety-check {
@@ -284,7 +278,7 @@
             display: flex;
             flex-direction: column;
             height: 100%;
-            flex-grow: 1; /* Cho phép khối này giãn nở để chiếm không gian còn lại */
+            flex-grow: 1;
         }
 
         .safety-title {
@@ -296,7 +290,7 @@
         }
 
         .safety-grid {
-            display: grid; /* Cột này chỉ ảnh hưởng đến màn hình hiển thị, không ảnh hưởng bản in */
+            display: grid;
             grid-template-columns: 2.5fr 1fr 1fr 1fr; gap: 5px;
             font-size: 11px;
             flex-grow: 1;
@@ -334,12 +328,50 @@
             justify-content: center;
         }
 
+        /* Styles for custom checkboxes (on screen) */
         .checkbox {
-            width: 15px; height: 15px;
+            appearance: none;
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
             border: 1px solid #000;
             cursor: pointer;
-            margin: 0;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+
+        /* Màu nền cho các checkbox trên giao diện */
+        .safety-grid .checkbox-cell:nth-of-type(4n+2) .checkbox { /* TỐT - XANH LÁ */
+            background-color: #d4edda;
+        }
+
+        .safety-grid .checkbox-cell:nth-of-type(4n+3) .checkbox { /* LƯU Ý - VÀNG */
+            background-color: #fff3cd;
+        }
+
+        .safety-grid .checkbox-cell:nth-of-type(4n+4) .checkbox { /* THAY - ĐỎ */
+            background-color: #f8d7da;
+        }
+
+        /* Dấu "✓" khi checkbox được chọn */
+        .checkbox:checked::after {
+            content: '✓';
+            font-size: 14px;
+            color: #333;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+        }
+
+        .checkbox:checked {
+            outline: none;
+        }
+
 
         /* Detailed Check Table */
         .detailed-check {
@@ -377,7 +409,6 @@
             font-size: 11px;
             background: transparent;
         }
-        /* Make numeric inputs for quantity/unit price use type="number" */
         .detailed-check input[type="number"] {
             width: 100%; border: none;
             text-align: center;
@@ -443,18 +474,18 @@
         /* Buttons */
         .button-group {
             display: flex; justify-content: center;
-            flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
-            gap: 10px; /* Điều chỉnh khoảng cách giữa các nút */
+            flex-wrap: wrap;
+            gap: 10px;
             margin-bottom: 20px;
         }
 
         .tire-form-button, .print-button, .clear-button {
-            padding: 8px 12px; /* Giảm padding để nút nhỏ gọn hơn */
+            padding: 8px 12px;
             border: none; border-radius: 5px;
             cursor: pointer;
-            font-size: 14px; /* Giảm font size */
-            white-space: nowrap; /* Ngăn văn bản trong nút xuống dòng */
-            flex-shrink: 0; /* Đảm bảo nút không bị co lại quá mức */
+            font-size: 14px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .print-button {
@@ -463,7 +494,7 @@
 
         .print-button:hover { background: #0056b3; }
 
-        .clear-button { /* New style for clear button */
+        .clear-button {
             background: #dc3545; color: white;
         }
         .clear-button:hover { background: #c82333; }
@@ -472,42 +503,15 @@
             background: #28a745; color: white;
         }
         .tire-form-button:hover { background: #218838; }
-	/* Checkbox Hạng mục kiểm tra */
-		.checkbox-cell input[type="checkbox"] {
-            appearance: none;
-            -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 3px;
-            border: 1px solid #000;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .safety-grid .checkbox-cell:nth-of-type(4n+2) input[type="checkbox"] {
-            background-color: #d4edda; /* Tốt - xanh lá */
-        }
-
-        .safety-grid .checkbox-cell:nth-of-type(4n+3) input[type="checkbox"] {
-            background-color: #fff3cd; /* Lưu ý - vàng */
-        }
-
-        .safety-grid .checkbox-cell:nth-of-type(4n) input[type="checkbox"] {
-            background-color: #f8d7da; /* Thay - đỏ */
-        }
-
-        .checkbox-cell input[type="checkbox"]:checked {
-            outline: 2px solid black;
-        }
 
         /* Print Styles */
         @media print {
-            .button-group { display: none; } /* Ẩn nút khi in */
+            .button-group { display: none; }
 
             body {
                 margin: 0; padding: 0;
                 background: white;
-                font-size: 11px;
+                font-size: 10px; /* Base font size for print */
                 font-weight: 500;
             }
 
@@ -518,147 +522,196 @@
             }
 
             .form-content {
-                padding: 8mm; width: 210mm;
-                height: 297mm;
+                padding: 4mm 5mm; /* Reduced overall padding */
+                width: 210mm;
+                /* height: 297mm; */ /* REMOVED fixed height to allow content to flow naturally */
                 box-sizing: border-box;
-                overflow: hidden;
+                /* overflow: hidden; */ /* REMOVED overflow hidden for print */
+                /* page-break-after: always; */ /* REMOVED this, let content naturally fit */
             }
 
-            .header { margin-bottom: 8px; padding-bottom: 5px; }
-            .header h1 { font-size: 18px; }
-            .form-number { font-size: 14px; }
-            .logo {max-width: 100px;max-height: 60px;text-align: right;}
-	    .logo img {max-width: 100%; maxheight: 100%; object-fit: contain; display: block; margin-left: auto;  /* Đẩy về phải */
-		      }
-            .customer-info { margin-bottom: 8px; gap: 10px; }
-            .info-group { margin-bottom: 6px; font-size: 14px; }
-            .info-group .info-input { font-size: 14px; min-width: 40px; }
-            .info-group .info-input.name-input { min-width: 120px; }
-            .info-group .info-input.phone-email-input { min-width: 90px; }
+            .header { margin-bottom: 2mm; padding-bottom: 2mm; }
+            .header h1 { font-size: 16px; }
+            .form-number { font-size: 12px; }
+            .logo {
+                max-width: 80px; /* Slightly smaller logo */
+                max-height: 50px;
+                text-align: right;
+            }
+            .logo img {
+                max-width: 100%; max-height: 100%; object-fit: contain; display: block; margin-left: auto;
+                object-position: right;
+            }
+
+            .customer-info { margin-bottom: 2mm; gap: 8px; }
+            .info-group { margin-bottom: 3px; font-size: 10.5px; }
+            .info-group label { font-size: 10.5px; }
+            .info-group .info-input { font-size: 10.5px; min-width: 55px; } /* Min-width adjusted */
+            .info-group .info-input.name-input { min-width: 100px; }
+            .info-group .info-input.phone-email-input { min-width: 70px; }
             .info-group .info-input.datetime-input { min-width: 100px; }
             .info-group .info-input.car-type-input { min-width: 100px; }
-            .info-group .info-input.license-km-input { min-width: 90px; }
-            .info-group.inline-fields { justify-content: flex-start; }
-            .info-group.inline-fields > div { margin-right: 5px; }
-            .info-group.inline-fields label { margin-right: 2px; }
+            .info-group .info-input.license-km-input { min-width: 70px; }
+            .info-group.inline-fields > div { margin-right: 4px; }
 
-            /* Điều chỉnh: main-content để cân bằng hơn giữa 2 cột, giảm không gian cho bảng kiểm tra an toàn */
+
             .main-content {
-                grid-template-columns: 1fr 1fr; /* Đã đổi từ 0.7fr 1.3fr thành 1fr 1fr để cân bằng */
-                gap: 5px; margin-bottom: 8px;
+                display: flex; /* Ensure flexbox */
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 3mm; /* Reduced gap between columns */
+                margin-bottom: 3mm; /* Reduced margin */
+                flex-wrap: nowrap; /* Prevent wrapping columns on print */
             }
 
-            /* Điều chỉnh KÍCH THƯỚC VÀ VỊ TRÍ tổng thể của SƠ ĐỒ LỐP khi in */
+            .tire-section {
+                flex-shrink: 0;
+                width: 40%; /* Reduced width of tire section to give more space to safety check */
+                padding-right: 3mm; /* Small padding to separate from safety check */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
             .tire-diagram-container {
-                width: 180px !important; /* Thu nhỏ chiều rộng ảnh sơ đồ khi in */
-                height: 210px !important; /* Thu nhỏ chiều cao ảnh sơ đồ khi in */
-                margin-left: 50px !important; /* Căn giữa trong khoảng không gian cột */
-                margin-right: auto !important; /* Căn giữa trong khoảng không gian cột */
-                transform: none !important; /* Reset transform scale */
-                padding-bottom: 5px !important; margin-bottom: 5px !important;
+                width: 130px !important; /* Smaller diagram */
+                height: 150px !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                padding-bottom: 4px !important; margin-bottom: 4px !important;
+                border-bottom: 1px dashed #ccc;
             }
 
             .tire-diagram {
                 width: 100% !important; height: 100% !important;
             }
 
-            /* Khung nhập liệu cho từng lốp - điều chỉnh kích thước và font khi in */
             .tire-position {
-                font-size: 10px !important; /* TĂNG FONT CỠ CHỮ CƠ BẢN KHI IN */
-                padding: 5px 6px !important; /* TĂNG PADDING KHI IN */
-                width: 80px !important; /* TĂNG CHIỀU RỘNG CỐ ĐỊNH CHO Ô NHẬP KHI IN */
-                height: auto !important; line-height: 1 !important; /* TĂNG LINE-HEIGHT KHI IN */
-                border-radius: 6px !important;
+                font-size: 9px !important;
+                padding: 2px 4px !important;
+                width: 70px !important;
+                line-height: 1.1 !important;
+                border-radius: 4px !important;
             }
 
-            /* Vị trí ô nhập liệu khi in (tương đối với sơ đồ đã thu nhỏ và căn giữa) */
-            /* Cần tinh chỉnh lại các giá trị này để khớp đúng trên sơ đồ đã điều chỉnh */
-            /* DI CHUYỂN CÁC Ô SÁT BÁNH XE HƠN, VÀ ĐIỀU CHỈNH LẠI DO THAY ĐỔI KÍCH THƯỚC Ô */
-            .tire-front-left { top: 25px !important; left: -50px !important; } /* Đã điều chỉnh */
-            .tire-front-right { top: 25px !important; left: 150px !important; } /* Đã điều chỉnh */
-            .tire-rear-left { top: 110px !important; left: -50px !important; } /* Đã điều chỉnh */
-            .tire-rear-right { top: 110px !important; left: 150px !important; } /* Đã điều chỉnh */
-            .tire-spare { bottom: -30px !important; left: 50% !important; transform: translateX(-50%) !important; width: 60px !important; } /* Tăng width khi in - bootom thay đổi vị trí */
+            /* Adjusted positions relative to the NEW smaller diagram size */
+            .tire-front-left { top: 15px !important; left: -60px !important; }
+            .tire-front-right { top: 15px !important; left: 125px !important; } /* (130px diagram width - 5px for visual balance) */
+            .tire-rear-left { top: 90px !important; left: -60px !important; }
+            .tire-rear-right { top: 90px !important; left: 125px !important; }
+            .tire-spare { bottom: -15px !important; left: 50% !important; transform: translateX(-50%) !important; width: 60px !important; }
 
             .tire-input-group label {
-                font-size: 9px !important; /* TĂNG FONT LABEL KHI IN */
-                margin-right: 1px !important; font-weight: bold !important;
-                font-family: Arial, Helvetica, sans-serif !important;
+                font-size: 8.5px !important;
             }
             .pressure-input, .thickness-input {
-                width: 35px !important; /* TĂNG WIDTH INPUT KHI IN */
-                height: 16px !important; /* TĂNG HEIGHT INPUT KHI IN */
-                font-size: 14px !important; /* TĂNG FONT INPUT KHI IN */
-                padding: 2px 2px !important;
+                width: 30px !important;
+                height: 13px !important;
+                font-size: 10px !important;
+                padding: 0;
             }
             .tire-position small {
-                font-size: 9px !important; /* TĂNG FONT ĐƠN VỊ KHI IN */
-                margin-left: 1px !important;
+                font-size: 7.5px !important;
             }
 
-            .tire-section > .tire-size-recommendation {
-                margin-top: 7px !important;
+            .tire-size-recommendation {
+                position: static !important;
+                margin-top: 3mm; /* Space below diagram */
+                width: 100%; /* Ensure it fits in its column */
             }
-            .tire-size-recommendation label { margin-bottom: 1px; font-size: 14px; }
-            .tire-size-recommendation input { min-width: 70px; font-size: 12px; }
-			.tire-size-recommendation {position: absolute !important; top: 150px !important; left: 230px !important; }
+            .tire-size-recommendation label { margin-bottom: 1px; font-size: 10.5px; }
+            .tire-size-recommendation input { min-width: 70px; font-size: 10.5px; }
 
-            .recommendation { font-size: 14px; height: 60px; margin-top: 5px; }
-            .recommendation textarea { min-height: 90px; height: 90px; font-size: 13px; width: 200%; padding: 4px; box-sizing: border-box; }
-		.recommendation1 textarea {width: 100%; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 6px;resize: vertical;}
-		.recommendation1 label {display: block;margin-bottom: 6px;font-weight: bold;}
+            .recommendation { font-size: 10.5px; margin-top: 3mm; }
+            .recommendation textarea { min-height: 30px; height: 30px; font-size: 10.5px; width: 100%; padding: 2mm; }
 
-            .safety-check { padding: 5px; height: auto; flex-grow: 0; }
-            /* ĐIỀU CHỈNH: safety-grid để thu hẹp cột "Hạng Mục" và cố định các cột checkbox. */
+
+            .safety-check {
+                flex-grow: 1; /* Allow it to take remaining width */
+                padding: 3mm; /* Reduced padding */
+                height: auto; /* Let content define height */
+            }
+            .safety-title { padding: 2mm; font-size: 10.5px; margin: -3mm -3mm 2mm -3mm; }
             .safety-grid {
-                flex-grow: 0; height: auto;
-                font-size: 9px;
-                gap: 2px;
-                /* Cột Hạng Mục (1fr) sẽ chiếm phần còn lại, 3 cột checkbox có chiều rộng cố định */
-                grid-template-columns: 1fr 12mm 12mm 12mm;
+                flex-grow: 1; /* Allow it to take remaining height */
+                height: auto;
+                font-size: 9px; /* Smaller font for safety check items */
+                gap: 0.5mm;
+                grid-template-columns: 1fr 8mm 8mm 8mm; /* Smaller checkbox columns */
             }
-            .safety-title { padding: 3px; font-size: 11px; margin: -5px -5px 5px -5px; }
-            .checkbox { width: 12px; height: 12px; }
             .item-name {
-                padding: 1px; font-size: 9px;
-                /* ĐIỀU CHỈNH: In đậm chữ trong cột "Hạng Mục" của bảng kiểm tra an toàn khi in */
-                font-weight: bold; font-size: 13px;
+                padding: 0.5mm 1mm; /* Reduced padding */
+                font-size: 9.5px; /* Fine-tuned font size */
+                line-height: 1.1; /* Reduced line height */
+            }
+            .checkbox-cell {
+                padding: 0.5mm 0; /* Reduced vertical padding */
+            }
+            .checkbox {
+                width: 10px; height: 10px;
             }
 
-            .detailed-check { margin-top: 8px; font-size: 9px; }
-            .detailed-check th, .detailed-check td { padding: 2px; font-size: 9px; }
-            .detailed-check input[type="text"], .detailed-check input[type="number"] { font-size: 14px; }
-            .detailed-check input[type="checkbox"] { width: 12px; height: 12px; }
+            /* Bổ sung để hiển thị màu checkbox khi in và dấu "✓" */
+            .safety-grid .checkbox-cell:nth-of-type(4n+2) .checkbox {
+                background-color: #d4edda !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .safety-grid .checkbox-cell:nth-of-type(4n+3) .checkbox {
+                background-color: #fff3cd !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .safety-grid .checkbox-cell:nth-of-type(4n+4) .checkbox {
+                background-color: #f8d7da !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .checkbox:checked::after {
+                font-size: 8px !important;
+            }
 
+            .detailed-check { margin-top: 3mm; font-size: 9.5px; } /* Reduced margin and font */
+            .detailed-check th, .detailed-check td { padding: 0.5mm 1mm; font-size: 9.5px; } /* Reduced padding and font */
+            .detailed-check input[type="text"], .detailed-check input[type="number"] { font-size: 10.5px; padding: 0; height: 1.1em; } /* Further condensed height */
+            .detailed-check input[type="checkbox"] {
+                width: 11px; height: 11px;
+                border-radius: 2px;
+            }
+            .detailed-check input[type="checkbox"]:checked::after {
+                font-size: 9px !important;
+            }
+            .detailed-check input[type="checkbox"]:checked {
+                background-color: #f0f0f0 !important;
+            }
             .detailed-check .hang-muc {
-                /* ĐIỀU CHỈNH: In đậm chữ trong cột "Hạng Mục" của bảng chi tiết khi in */
-                font-weight: bold; font-size: 13px;
+                font-weight: bold; font-size: 10.5px;
             }
             .detailed-check input[type="text"].hang-muc-input {
-                /* ĐIỀU CHỈNH: In đậm chữ trong ô input của cột "Hạng Mục" khi in */
-                font-weight: bold; font-size: 14px;
+                font-weight: bold; font-size: 10.5px;
             }
 
-            .footer { font-size: 8px; margin-top: 8px; padding-top: 5px; line-height: 1.1; }
+            .recommendation1 { margin-top: 3mm; } /* Reduced margin-top */
+            .recommendation1 label { margin-bottom: 1mm; font-size: 10.5px; }
+            .recommendation1 textarea { padding: 2mm; font-size: 10.5px; min-height: 18mm; height: 18mm; } /* Significantly reduced height */
 
-            .signature-section { margin-top: 8px; padding-top: 5px; gap: 30px; }
-            .signature-title { margin-bottom: 15px; font-size: 10px; }
-            .signature-input { font-size: 10px; margin-top: -10px; }
-            .signature-subtitle { font-size: 8px; }
 
-            .main-content, .detailed-check, .signature-section { page-break-inside: avoid; }
+            .signature-section { margin-top: 3mm; padding-top: 2mm; gap: 15mm; } /* Reduced margins/gap */
+            .signature-title { margin-bottom: 7mm; font-size: 10.5px; }
+            .signature-input { font-size: 10.5px; margin-top: -3mm; }
+            .signature-subtitle { font-size: 8.5px; }
 
-            /* BỔ SUNG: In đậm TẤT CẢ dữ liệu nhập liệu của người dùng khi in */
-            /* Bao gồm tất cả các loại input trừ readonly và textarea */
+            /* Đảm bảo không ngắt trang bên trong các khối này */
+            .main-content, .detailed-check, .signature-section, .recommendation1 { page-break-inside: avoid; }
+
             .form-content input:not([readonly]),
             .form-content textarea {
                 font-weight: bold !important;
             }
-            /* Đảm bảo các ô tính toán tổng và các lựa chọn radio đã chọn cũng in đậm */
-            .detailed-check .thanh-tien-input, /* Đây là input readonly nhưng cần in đậm */
-            #grand-total, /* Đây là input readonly nhưng cần in đậm */
-            .info-group input[type="radio"]:checked + label { /* In đậm label của radio đã chọn */
-                font-weight: bold !important; font-size: 14px;
+            .detailed-check .thanh-tien-input,
+            #grand-total,
+            .info-group input[type="radio"]:checked + label {
+                font-weight: bold !important; font-size: 11px;
             }
         }
     </style>
@@ -670,8 +723,8 @@
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/tracuu.html'">📄 Tra cứu thông tin xe </button>
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieu_kiem_tra_lop.html'">📄 Phiếu Kiểm Tra Lốp</button>
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/kiemtragam.html'">📄 Phiếu Kiểm Gầm</button>
-	    <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieunhandichvu.html'">📄 Phiếu Dịch Vụ </button>
-	    <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/baoduong.html'">📄 Phiếu Bảo Dưỡng </button>
+            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieunhandichvu.html'">📄 Phiếu Dịch Vụ </button>
+            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/baoduong.html'">📄 Phiếu Bảo Dưỡng </button>
             <button class="tire-form-button" id="submitToSheet">📤 Gửi Thông Tin</button>
             <button class="tire-form-button clear-button" id="clearFormButton">🗑️ Xóa Form</button>
         </div>
@@ -736,7 +789,7 @@
                             <label for="deliveryDateTime">Ngày gửi giao xe:</label>
                             <input type="datetime-local" id="deliveryDateTime" name="giaoxe" class="info-input datetime-input">
                         </div>
-                         <div class="info-group">
+                        <div class="info-group">
                             <label for="branchSelect">Chi nhánh:</label>
                             <select id="branchSelect" name="chiNhanh" class="info-input" required>
                                 <option value="">-- Chọn chi nhánh --</option>
@@ -745,7 +798,7 @@
                                 <option value="Chi Nhánh 3 - Bình Dương">Chi Nhánh 3 - Bình Dương</option>
                             </select>
                         </div>
-                        </div>
+                    </div>
                 </div>
 
                 <div class="main-content">
@@ -1088,10 +1141,10 @@
                 </table>
 
                 <div class="footer"></div>
-                    <div class="recommendation1">
-                            <label for="notes"> Khuyến cáo :</label>
-                            <textarea id="notes" name="ghiChuChung" placeholder="Ghi chú các lưu ý cần thiết"></textarea>
-                    </div>
+                <div class="recommendation1">
+                    <label for="recommendationNotes"> Khuyến cáo :</label>
+                    <textarea id="recommendationNotes" name="khuyenCao" placeholder="Ghi chú các khuyến cáo cần thiết"></textarea>
+                </div>
                 <div class="signature-section">
                     <div class="signature-box">
                         <div class="signature-title">Đại lý</div>
@@ -1118,7 +1171,7 @@
         // Constants for Local Storage keys
         const RECEIPT_NUMBER_KEY = 'phieuKiemTraXe_receiptNumber';
         const LAST_MONTH_KEY = 'phieuKiemTraXe_lastMonth';
-        const FORM_DATA_KEY = 'phieuKiemTraXe_formData'; // Key for saving form data
+        const FORM_DATA_KEY = 'phieuKiemTraXe_formData';
 
         // Constants for branch locations
         const branchLocations = [
@@ -1132,15 +1185,10 @@
 
         /**
          * Calculates the distance between two geographical points using the Haversine formula.
-         * @param {number} lat1 - Latitude of point 1 in degrees.
-         * @param {number} lon1 - Longitude of point 1 in degrees.
-         * @param {number} lat2 - Latitude of point 2 in degrees.
-         * @param {number} lon2 - Longitude of point 2 in degrees.
-         * @returns {number} Distance in meters.
          */
         function getDistance(lat1, lon1, lat2, lon2) {
             const R = 6371e3; // metres
-            const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+            const φ1 = lat1 * Math.PI / 180;
             const φ2 = lat2 * Math.PI / 180;
             const Δφ = (lat2 - lat1) * Math.PI / 180;
             const Δλ = (lon2 - lon1) * Math.PI / 180;
@@ -1150,7 +1198,7 @@
                       Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-            const d = R * c; // in metres
+            const d = R * c;
             return d;
         }
 
@@ -1175,19 +1223,16 @@
                         });
 
                         const branchSelect = document.getElementById('branchSelect');
-                        if (closestBranch && minDistance <= GEOLOCATION_ERROR_RADIUS) { // Within 100 meters
+                        if (closestBranch && minDistance <= GEOLOCATION_ERROR_RADIUS) {
                             branchSelect.value = closestBranch.name;
                             console.log(`Tự động chọn chi nhánh: ${closestBranch.name} (khoảng cách: ${minDistance.toFixed(2)}m)`);
-                        } else if (closestBranch) {
-                            console.log(`Chi nhánh gần nhất (${closestBranch.name}) ở ngoài bán kính cho phép (${minDistance.toFixed(2)}m > ${GEOLOCATION_ERROR_RADIUS}m). Không tự động chọn.`);
                         } else {
-                            console.log('Không tìm thấy chi nhánh nào gần nhất.');
+                            console.log('Không tìm thấy chi nhánh nào gần nhất hoặc khoảng cách quá xa.');
                         }
-                        saveFormData(); // Save after potentially setting branch
+                        saveFormData();
                     },
                     (error) => {
                         console.warn(`Lỗi khi lấy vị trí: ${error.message}`);
-                        alert('Không thể tự động xác định chi nhánh. Vui lòng chọn thủ công. Lỗi: ' + error.message);
                     },
                     {
                         enableHighAccuracy: true,
@@ -1197,26 +1242,23 @@
                 );
             } else {
                 console.log('Trình duyệt không hỗ trợ Geolocation.');
-                alert('Trình duyệt của bạn không hỗ trợ định vị. Vui lòng chọn chi nhánh thủ công.');
             }
         }
 
 
         function calculateRowTotal(inputElement) {
             const row = inputElement.closest('tr');
-            // Ensure inputs are treated as numbers, handle empty string as 0
             const quantity = parseFloat(row.querySelector('.sl-input').value) || 0;
             const unitPrice = parseFloat(row.querySelector('.don-gia-input').value) || 0;
             const total = quantity * unitPrice;
             row.querySelector('.thanh-tien-input').value = total.toLocaleString('vi-VN');
             updateGrandTotal();
-            saveFormData(); // Save data after calculation
+            saveFormData();
         }
 
         function updateGrandTotal() {
             let grandTotal = 0;
             document.querySelectorAll('.thanh-tien-input').forEach(input => {
-                // Parse locale-specific number (e.g., "1.000.000" -> 1000000)
                 const value = parseFloat(input.value.replace(/\./g, '').replace(/,/g, '.')) || 0;
                 grandTotal += value;
             });
@@ -1233,12 +1275,12 @@
             const formElement = document.getElementById('inspectionFormXe');
             const receivedDateTimeInput = document.getElementById('receivedDateTime');
 
-            localStorage.removeItem(FORM_DATA_KEY); // Clear saved data
-            formElement.reset(); // Reset all form fields
-            initializeReceiptNumber(); // Re-initialize receipt number for the next form
-            receivedDateTimeInput.value = getCurrentDateTimeLocal(); // Set current time for next form
-            updateGrandTotal(); // Update total to 0
-            hasSubmitted = false; // Reset submission flag
+            localStorage.removeItem(FORM_DATA_KEY);
+            formElement.reset();
+            initializeReceiptNumber();
+            receivedDateTimeInput.value = getCurrentDateTimeLocal();
+            updateGrandTotal();
+            hasSubmitted = false;
             alert('Form đã được xóa và reset thành công!');
         }
 
@@ -1246,7 +1288,7 @@
 
         function initializeReceiptNumber() {
             const now = new Date();
-            const currentMonth = now.getMonth(); // 0-11
+            const currentMonth = now.getMonth();
             const currentYear = now.getFullYear();
             const storedMonthData = localStorage.getItem(LAST_MONTH_KEY);
             let receiptNumber = parseInt(localStorage.getItem(RECEIPT_NUMBER_KEY)) || 0;
@@ -1259,20 +1301,18 @@
                     lastStoredYear = parsedMonthData.year;
 
                     if (currentMonth !== lastStoredMonth || currentYear !== lastStoredYear) {
-                        receiptNumber = 1; // Reset if month or year changed
+                        receiptNumber = 1;
                         localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
                         localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
                     }
-                    // else: Keep existing number if still in same month/year
                 } catch (e) {
                     console.error("Lỗi khi đọc dữ liệu tháng từ localStorage:", e);
-                    // Fallback to reset if parse error
                     receiptNumber = 1;
                     localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
                     localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
                 }
             } else {
-                receiptNumber = 1; // First time, set to 1
+                receiptNumber = 1;
                 localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
                 localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
             }
@@ -1301,7 +1341,7 @@
             }
 
             if (currentMonth !== lastStoredMonth || currentYear !== lastStoredYear) {
-                receiptNumber = 1; // Reset if month/year changed before increment
+                receiptNumber = 1;
             } else {
                 receiptNumber++;
             }
@@ -1320,11 +1360,9 @@
             if (!form) return;
 
             const formData = {};
-            // Select all relevant form elements (inputs, textareas, selects).
-            // Exclude read-only inputs that are calculated or displayed (like receipt number, grand total)
             const inputs = form.querySelectorAll('input:not([readonly]), textarea, select');
             inputs.forEach(input => {
-                if (input.name) { // Only process elements with a 'name' attribute
+                if (input.name) {
                     if (input.type === 'checkbox') {
                         formData[input.name] = input.checked;
                     } else if (input.type === 'radio') {
@@ -1337,7 +1375,6 @@
                 }
             });
             localStorage.setItem(FORM_DATA_KEY, JSON.stringify(formData));
-            // console.log('Form data saved to localStorage:', formData); // For debugging
         }
 
         function loadFormData() {
@@ -1363,40 +1400,36 @@
                     });
                 }
             }
-            // console.log('Form data loaded from localStorage:', formData); // For debugging
-            updateGrandTotal(); // Recalculate total after loading data
+            updateGrandTotal();
         }
 
         // --- Form Submission & Print Logic ---
-        let hasSubmitted = false; // Flag to track if form has been submitted successfully
+        let hasSubmitted = false;
 
         document.addEventListener('DOMContentLoaded', () => {
-            initializeReceiptNumber(); // Set up receipt number (before loading form data to avoid overwrite)
+            initializeReceiptNumber();
 
             const receivedDateTimeInput = document.getElementById('receivedDateTime');
             receivedDateTimeInput.value = getCurrentDateTimeLocal();
 
-            loadFormData(); // Attempt to load saved data when page loads
-            getClosestBranch(); // Attempt to get and set closest branch on load
+            loadFormData();
+            getClosestBranch();
 
             const form = document.getElementById('inspectionFormXe');
             if (form) {
-                // Attach event listeners to save data on input/change
                 form.addEventListener('input', saveFormData);
-                form.addEventListener('change', saveFormData); // For checkboxes, radio buttons, select elements
+                form.addEventListener('change', saveFormData);
             }
 
-            // Event listener for the "Send Information" button
             const submitButton = document.getElementById('submitToSheet');
             if (submitButton) {
-                submitButton.addEventListener('click', (event) => { // Added event parameter
-                    event.preventDefault(); // Prevent default form submission
-                    const scriptURL = form.action; // Get URL from form's action attribute
+                submitButton.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const scriptURL = form.action;
 
-                    // Simple form validation: check if required fields are filled
                     if (!form.checkValidity()) {
                         alert('Vui lòng điền đầy đủ các trường bắt buộc trước khi gửi!');
-                        form.reportValidity(); // Hiển thị các lỗi validation của trình duyệt
+                        form.reportValidity();
                         return;
                     }
 
@@ -1422,8 +1455,7 @@
                         if (data.result === 'success') {
                             alert('✅ Gửi thông tin thành công! Bạn có thể in phiếu.');
                             console.log('Dữ liệu đã gửi:', data.row);
-                            hasSubmitted = true; // Set flag to true
-                            // Data is NOT cleared/reset here anymore. User will explicitly clear.
+                            hasSubmitted = true;
                         } else {
                             alert('❌ Không gửi được: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
                             console.error('Lỗi từ Apps Script:', data.message);
@@ -1440,44 +1472,35 @@
                 });
             }
 
-            // Event listener for the "Print" button
             const printButton = document.getElementById('printButton');
             if (printButton) {
                 printButton.addEventListener('click', (event) => {
-                    event.preventDefault(); // Prevent default print behavior
+                    event.preventDefault();
                     if (!hasSubmitted) {
                         alert('Vui lòng nhấn "Gửi Thông Tin" trước khi in phiếu!');
-                        return; // Stop execution if not submitted
+                        return;
                     }
 
-                    // Tăng số phiếu trước khi in (vì mỗi bản in là một phiếu mới)
                     incrementReceiptNumberOnPrint();
-                    window.print(); // Trigger print dialog
-                    // We DO NOT reset/clear here automatically anymore.
-                    // The user will confirm print and then clear manually.
+                    alert('Vui lòng đảm bảo bạn đã chọn "Đồ họa nền" (Background graphics) hoặc "In màu nền" trong cài đặt in của trình duyệt để phiếu được in đúng màu.');
+                    window.print();
                 });
             }
 
-            // NEW: Event listener for the "Clear Form" button
             const clearFormButton = document.getElementById('clearFormButton');
             if (clearFormButton) {
                 clearFormButton.addEventListener('click', () => {
-                    // Ask for user confirmation before clearing the form
                     if (confirm('Bạn có chắc chắn muốn xóa toàn bộ thông tin trên form không? (Chỉ xóa sau khi đã in thành công)')) {
-                        resetFormAndLocalStorage(); // Call the dedicated reset function
+                        resetFormAndLocalStorage();
                     }
                 });
             }
-
-            // IMPORTANT: Removed window.onafterprint automatic reset.
-            // This is replaced by the manual "Clear Form" button for reliability across devices.
         });
-        // Helper function to collect form data for submission
+
         function collectFormDataAsUrlEncoded(formElement) {
             const formData = new FormData(formElement);
             const params = new URLSearchParams();
 
-            // Add formType and receipt number/month from span elements
             params.append('formType', formElement.querySelector('[name="formType"]').value);
             params.append('receiptNumber', document.getElementById('receiptNumber')?.textContent || '');
             params.append('currentMonthYear', document.getElementById('currentMonth')?.textContent || '');
@@ -1486,7 +1509,6 @@
                 params.append(pair[0], pair[1]);
             }
 
-            // Manually add unchecked checkboxes and unselected radio groups to ensure their absence is recorded
             formElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 if (!checkbox.checked && !params.has(checkbox.name)) {
                     params.append(checkbox.name, '');
