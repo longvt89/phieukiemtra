@@ -472,6 +472,33 @@
             background: #28a745; color: white;
         }
         .tire-form-button:hover { background: #218838; }
+	/* Checkbox Hạng mục kiểm tra */
+		.checkbox-cell input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            border: 1px solid #000;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .safety-grid .checkbox-cell:nth-of-type(4n+2) input[type="checkbox"] {
+            background-color: #d4edda; /* Tốt - xanh lá */
+        }
+
+        .safety-grid .checkbox-cell:nth-of-type(4n+3) input[type="checkbox"] {
+            background-color: #fff3cd; /* Lưu ý - vàng */
+        }
+
+        .safety-grid .checkbox-cell:nth-of-type(4n) input[type="checkbox"] {
+            background-color: #f8d7da; /* Thay - đỏ */
+        }
+
+        .checkbox-cell input[type="checkbox"]:checked {
+            outline: 2px solid black;
+        }
 
         /* Print Styles */
         @media print {
