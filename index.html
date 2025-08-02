@@ -595,10 +595,10 @@
             }
 
             /* Adjusted positions relative to the NEW smaller diagram size */
-            .tire-front-left { top: 15px !important; left: -60px !important; }
-            .tire-front-right { top: 15px !important; left: 125px !important; } /* (130px diagram width - 5px for visual balance) */
-            .tire-rear-left { top: 90px !important; left: -60px !important; }
-            .tire-rear-right { top: 90px !important; left: 125px !important; }
+            .tire-front-left { top: 10% !important; left: -50% !important; }
+            .tire-front-right { top: 10% !important; left: 100% !important; } /* (130px diagram width - 5px for visual balance) */
+            .tire-rear-left { top: 60% !important; left: -50% !important; }
+            .tire-rear-right { top: 60% !important; left: 100% !important; }
             .tire-spare { bottom: -15px !important; left: 50% !important; transform: translateX(-50%) !important; width: 60px !important; }
 
             .tire-input-group label {
@@ -693,16 +693,23 @@
 
             .recommendation1 { margin-top: 3mm; } /* Reduced margin-top */
             .recommendation1 label { margin-bottom: 1mm; font-size: 10.5px; }
-            /*.recommendation1 textarea { padding: 2mm; font-size: 10.5px; min-height: 18mm; height: 18mm; } Significantly reduced height */
+            /* Cần chuyển đổi nội dung textarea thành div để kiểm soát hiển thị khi in */
+            /* Do đó, các thuộc tính này không áp dụng trực tiếp cho textarea nữa khi in */
             .recommendation1 textarea {
-        width: 100%; padding: 2mm; font-size: 10.5px;
-        /* Loại bỏ min-height và height cố định để textarea tự động co giãn */
-        height: auto !important; /* Đảm bảo chiều cao tự động co giãn */
-        min-height: unset !important; /* Bỏ giới hạn chiều cao tối thiểu */
-        overflow: visible !important; /* Đảm bảo nội dung không bị ẩn */
-        white-space: pre-wrap; /* Giữ ngắt dòng và tự động ngắt khi cần */
-        word-wrap: break-word; /* Đảm bảo các từ dài sẽ ngắt dòng */
+                display: none; /* Ẩn textarea gốc khi in */
             }
+            .recommendation1 .print-content {
+                border: 1px dotted #000; /* Có thể dùng border solid nếu muốn */
+                padding: 2mm;
+                font-size: 10.5px;
+                white-space: pre-line; /* Giữ ngắt dòng nhưng không tràn ngang, tự động wrap */
+                word-wrap: break-word; /* Đảm bảo từ dài ngắt dòng */
+                min-height: 18mm; /* Giữ min-height như bạn đã có */
+                height: auto; /* Tự động co giãn chiều cao */
+                box-sizing: border-box;
+                text-align: left; /* Đảm bảo căn lề trái */
+            }
+
 
             .signature-section { margin-top: 3mm; padding-top: 2mm; gap: 15mm; } /* Reduced margins/gap */
             .signature-title { margin-bottom: 7mm; font-size: 10.5px; }
@@ -737,7 +744,7 @@
             <button class="tire-form-button clear-button" id="clearFormButton">🗑️ Xóa Form</button>
         </div>
         <div class="form-content">
-            <form id="inspectionFormXe" action="https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec" method="POST">
+            <form id="inspectionFormXe" action="https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLxXb8HY746mRz/exec" method="POST">
                 <input type="hidden" name="formType" value="PhieuKiemTraXe">
 
                 <div class="header">
@@ -1152,6 +1159,7 @@
                 <div class="recommendation1">
                     <label for="recommendationNotes"> Khuyến cáo :</label>
                     <textarea id="recommendationNotes" name="khuyenCao" placeholder="Ghi chú các khuyến cáo cần thiết"></textarea>
+                    <div class="print-content" id="recommendationPrintContent"></div>
                 </div>
                 <div class="signature-section">
                     <div class="signature-box">
@@ -1288,6 +1296,7 @@
             initializeReceiptNumber();
             receivedDateTimeInput.value = getCurrentDateTimeLocal();
             updateGrandTotal();
+            document.getElementById('recommendationPrintContent').textContent = ''; // Clear print content
             hasSubmitted = false;
             alert('Form đã được xóa và reset thành công!');
         }
@@ -1383,6 +1392,9 @@
                 }
             });
             localStorage.setItem(FORM_DATA_KEY, JSON.stringify(formData));
+
+            // Cập nhật nội dung hiển thị cho bản in ngay khi có thay đổi
+            updateRecommendationPrintContent();
         }
 
         function loadFormData() {
@@ -1409,7 +1421,29 @@
                 }
             }
             updateGrandTotal();
+            updateRecommendationPrintContent(); // Cập nhật nội dung in sau khi tải dữ liệu
         }
+
+        /**
+         * Chuyển đổi nội dung textarea từ xuống dòng sang ";" và hiển thị vào div cho bản in
+         */
+        function updateRecommendationPrintContent() {
+            const recommendationTextarea = document.getElementById('recommendationNotes');
+            const recommendationPrintContent = document.getElementById('recommendationPrintContent');
+
+            if (recommendationTextarea && recommendationPrintContent) {
+                // Thay thế tất cả các ký tự xuống dòng (CRLF, LF, CR) bằng dấu chấm phẩy và khoảng trắng
+                // Loại bỏ các khoảng trắng thừa ở đầu/cuối mỗi "dòng" trước khi nối
+                let processedContent = recommendationTextarea.value
+                                        .split(/[\r\n]+/) // Tách theo bất kỳ loại xuống dòng nào
+                                        .map(line => line.trim()) // Loại bỏ khoảng trắng ở đầu/cuối mỗi dòng
+                                        .filter(line => line.length > 0) // Loại bỏ các dòng trống
+                                        .join('; '); // Nối các dòng bằng dấu chấm phẩy và khoảng trắng
+
+                recommendationPrintContent.textContent = processedContent;
+            }
+        }
+
 
         // --- Form Submission & Print Logic ---
         let hasSubmitted = false;
@@ -1425,6 +1459,7 @@
 
             const form = document.getElementById('inspectionFormXe');
             if (form) {
+                // Bắt sự kiện 'input' và 'change' trên toàn bộ form để lưu dữ liệu
                 form.addEventListener('input', saveFormData);
                 form.addEventListener('change', saveFormData);
             }
@@ -1444,6 +1479,7 @@
                     submitButton.disabled = true;
                     submitButton.textContent = 'Đang gửi...';
 
+                    // Lấy dữ liệu để gửi, KHÔNG xử lý xuống dòng thành dấu chấm phẩy cho Apps Script
                     const urlEncodedData = collectFormDataAsUrlEncoded(form);
 
                     fetch(scriptURL, {
@@ -1489,6 +1525,9 @@
                         return;
                     }
 
+                    // Gọi hàm này để đảm bảo nội dung khuyến cáo được định dạng lại cho bản in
+                    updateRecommendationPrintContent();
+
                     incrementReceiptNumberOnPrint();
                     alert('Vui lòng đảm bảo bạn đã chọn "Đồ họa nền" (Background graphics) hoặc "In màu nền" trong cài đặt in của trình duyệt để phiếu được in đúng màu.');
                     window.print();
@@ -1513,10 +1552,16 @@
             params.append('receiptNumber', document.getElementById('receiptNumber')?.textContent || '');
             params.append('currentMonthYear', document.getElementById('currentMonth')?.textContent || '');
 
+            // Lặp qua tất cả các cặp key-value từ FormData
             for (const pair of formData.entries()) {
-                params.append(pair[0], pair[1]);
+                let valueToAppend = pair[1];
+                // KHÔNG xử lý đặc biệt cho textarea 'khuyenCao' nữa.
+                // Google Sheets có thể tự động hiểu ký tự xuống dòng (\n)
+                // khi dữ liệu được gửi qua POST với Content-Type: application/x-www-form-urlencoded
+                params.append(pair[0], valueToAppend);
             }
 
+            // Đảm bảo các checkbox/radio không được chọn cũng được gửi với giá trị rỗng
             formElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 if (!checkbox.checked && !params.has(checkbox.name)) {
                     params.append(checkbox.name, '');
@@ -1535,4 +1580,3 @@
     </script>
 </body>
 </html>
-
