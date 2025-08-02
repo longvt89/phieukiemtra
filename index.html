@@ -693,8 +693,16 @@
 
             .recommendation1 { margin-top: 3mm; } /* Reduced margin-top */
             .recommendation1 label { margin-bottom: 1mm; font-size: 10.5px; }
-            .recommendation1 textarea { padding: 2mm; font-size: 10.5px; min-height: 18mm; height: 18mm; } /* Significantly reduced height */
-
+            /*.recommendation1 textarea { padding: 2mm; font-size: 10.5px; min-height: 18mm; height: 18mm; } Significantly reduced height */
+            .recommendation1 textarea {
+        width: 100%; padding: 2mm; font-size: 10.5px;
+        /* Loại bỏ min-height và height cố định để textarea tự động co giãn */
+        height: auto !important; /* Đảm bảo chiều cao tự động co giãn */
+        min-height: unset !important; /* Bỏ giới hạn chiều cao tối thiểu */
+        overflow: visible !important; /* Đảm bảo nội dung không bị ẩn */
+        white-space: pre-wrap; /* Giữ ngắt dòng và tự động ngắt khi cần */
+        word-wrap: break-word; /* Đảm bảo các từ dài sẽ ngắt dòng */
+            }
 
             .signature-section { margin-top: 3mm; padding-top: 2mm; gap: 15mm; } /* Reduced margins/gap */
             .signature-title { margin-bottom: 7mm; font-size: 10.5px; }
@@ -1527,3 +1535,4 @@
     </script>
 </body>
 </html>
+
