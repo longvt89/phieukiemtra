@@ -197,9 +197,25 @@
                 size: A5 portrait; /* Đảm bảo kích thước A5 và hướng dọc */
                 margin: 3mm; /* Lề đều 3mm cho tất cả các cạnh */
             }
+            /* CSS cho QR code */
+            #qrcode-container {
+                /* Đảm bảo container này có position relative để định vị QR code bên trong */
+                position: relative;
+                width: 30mm; /* Điều chỉnh chiều rộng theo khung đỏ của bạn */
+                height: 25mm; /* Điều chỉnh chiều cao theo khung đỏ của bạn */
+                display: flex; /* Có thể bỏ dòng này nếu không cần căn chỉnh flex */
+                justify-content: flex-end; /* Có thể bỏ dòng này nếu không cần căn chỉnh flex */
+            }
+
+            #qr-code-display {
+                width: 100%; /* Chiều rộng bằng với container */
+                height: 100%; /* Chiều cao bằng với container */
+                object-fit: contain; /* Đảm bảo hình ảnh không bị méo và nằm gọn trong container */
+            }
         }
         .hidden { display: none; }
     </style>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -326,12 +342,12 @@
 
                 <h3 style="margin: 15px 0 10px 0; color: #4472C4; font-size: 12px;">Thông số Bố Thắng:</h3>
                 <div class="control-group">
-                    <label for="frontBrakePadInput">Bố thắng trước (mm):</label>
-                    <input type="number" id="frontBrakePadInput" name="front_brake_pad" placeholder="Nhập độ dày bố thắng trước (mm)" step="0.1">
+                    <label for="frontBrakePadInput">Bố thắng trước (%):</label>
+                    <input type="number" id="frontBrakePadInput" name="front_brake_pad" placeholder="Nhập độ dày bố thắng trước (%)" step="0.1">
                 </div>
                 <div class="control-group">
-                    <label for="rearBrakePadInput">Bố thắng sau (mm):</label>
-                    <input type="number" id="rearBrakePadInput" name="rear_brake_pad" placeholder="Nhập độ dày bố thắng sau (mm)" step="0.1">
+                    <label for="rearBrakePadInput">Bố thắng sau (%):</label>
+                    <input type="number" id="rearBrakePadInput" name="rear_brake_pad" placeholder="Nhập độ dày bố thắng sau (%)" step="0.1">
                 </div>
                 <div class="control-group">
                     <label for="brakeRecommendationInput">Khuyến cáo bố thắng:</label>
@@ -348,6 +364,7 @@
                 <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/baoduong.html'">📄 Phiếu Bảo Dưỡng</button>
                 <button class="btn btn-primary" id="updatePreviewBtn">Cập nhật xem trước</button>
                 <button class="btn btn-success" id="submitFormBtn">📤 Gửi Thông Tin</button>
+                <button class="btn btn-info" id="printFormBtn" style="background-color: #17a2b8; color: white;">🖨️ In Phiếu</button>
             </div>
         </div>
 
@@ -532,9 +549,9 @@
 
                 <div id="brake-pad-section" style="margin-bottom: 8px;">
                     <span style="font-weight: bold;">BỐ THẮNG TRƯỚC:</span>
-                    <span style="border-bottom: 1px dotted #333; display: inline-block; min-width: 50px; margin-left: 5px;" id="front-brake-pad-display"></span> mm
+                    <span style="border-bottom: 1px dotted #333; display: inline-block; min-width: 50px; margin-left: 5px;" id="front-brake-pad-display"></span> %
                     <span style="font-weight: bold; margin-left: 15px;">BỐ THẮNG SAU:</span>
-                    <span style="border-bottom: 1px dotted #333; display: inline-block; min-width: 50px; margin-left: 5px;" id="rear-brake-pad-display"></span> mm
+                    <span style="border-bottom: 1px dotted #333; display: inline-block; min-width: 50px; margin-left: 5px;" id="rear-brake-pad-display"></span> %
                     <div style="margin-top: 5px;">
                         <span style="font-weight: bold;">KHUYẾN CÁO BỐ THẮNG:</span>
                         <span style="border-bottom: 1px dotted #333; display: inline-block; min-width: 200px; margin-left: 5px;" id="brake-recommendation-display"></span>
@@ -542,7 +559,7 @@
                 </div>
                 </div>
 
-            <div class="info-section">
+            <div class="info-section" style="position: relative;">
                 <div>
                     <div class="info-item" style="margin-bottom: 8px;">
                         <span style="font-weight: bold;">NGÀY:</span>
@@ -567,6 +584,9 @@
                         <span style="font-weight: bold;">Số điện thoại:</span>
                         <span id="phone-display" style="margin-left: 10px;"></span>
                     </div>
+                    <div id="qrcode-container" style="margin-top: 10px; display: flex; justify-content: flex-end;">
+                        <img id="qr-code-display" src="" alt="QR Code">
+                    </div>
                 </div>
             </div>
         </div>
@@ -586,6 +606,9 @@
             { name: 'Chi Nhánh 3 - Bình Dương', lat: 11.004401, lon: 106.6719367 }
         ];
         const GEOLOCATION_ERROR_RADIUS = 100; // meters
+
+        // Biến toàn cục để lưu instance QR Code
+        let qrcodeInstance = null;
 
         // --- Utility Functions ---
 
@@ -822,10 +845,13 @@
             const rearBrakePad = parseFloat(document.getElementById('rearBrakePadInput').value) || 0;
             const brakeRecommendation = document.getElementById('brakeRecommendationInput').value || '';
 
+            // Cập nhật hiển thị Bố Thắng với đơn vị %
             document.getElementById('front-brake-pad-display').textContent = frontBrakePad.toFixed(1);
             document.getElementById('rear-brake-pad-display').textContent = rearBrakePad.toFixed(1);
             document.getElementById('brake-recommendation-display').textContent = brakeRecommendation;
 
+            // Generate and update QR Code
+            generateQRCode();
 
             // Update recommendations (including new checkbox logic)
             updateRecommendations();
@@ -911,6 +937,97 @@
             });
             return params.toString();
         }
+
+        // --- QR Code Generation Function ---
+        function generateQRCode() {
+            const licensePlate = document.getElementById('licensePlateInput').value;
+            const inspectionDate = document.getElementById('inspectionDateInput').value;
+            const technician = document.getElementById('technicianInput').value;
+            const branch = document.getElementById('branchSelect').value;
+            const tireSize = document.getElementById('tireSizeInput').value;
+            const overallCondition = document.getElementById('tireOverallConditionInput').value;
+
+            // Thu thập dữ liệu bố thắng
+            const frontBrakePad = document.getElementById('frontBrakePadInput').value;
+            const rearBrakePad = document.getElementById('rearBrakePadInput').value;
+            const brakeRecommendation = document.getElementById('brakeRecommendationInput').value;
+
+            // Lấy dữ liệu lốp chi tiết
+            const tireData = {};
+            const positions = ['fl', 'fr', 'rl', 'rr'];
+            positions.forEach(pos => {
+                tireData[pos] = {
+                    inner_depth: document.getElementById(pos + '-inner').value,
+                    outer_depth: document.getElementById(pos + '-outer').value,
+                    pressure: document.getElementById(pos + '-pressure').value,
+                    dot: document.getElementById(pos + '-dot').value,
+                    brand: document.getElementById(pos + '-brand').value
+                };
+            });
+            const spareData = {
+                depth: document.getElementById('spare-depth').value,
+                pressure: document.getElementById('spare-pressure').value,
+                dot: document.getElementById('spare-dot').value,
+                brand: document.getElementById('spare-brand').value
+            };
+
+            // Lấy các khuyến cáo đã chọn
+            const recommendations = [];
+            document.querySelectorAll('.recommendation-checkboxes input[type="checkbox"]').forEach(checkbox => {
+                if (checkbox.checked) {
+                    recommendations.push(checkbox.dataset.recId);
+                }
+            });
+
+            // Tạo một chuỗi dữ liệu JSON hoặc URL để mã hóa vào QR Code
+            const qrData = {
+                bien_so: licensePlate,
+                ngay: inspectionDate,
+                ky_thuat_vien: technician,
+                chi_nhanh: branch,
+                size_lop: tireSize,
+                hien_trang_lop: overallCondition,
+                bo_thang_truoc: frontBrakePad,
+                bo_thang_sau: rearBrakePad,
+                khuyen_cao_bo_thang: brakeRecommendation,
+                lop: tireData,
+                lop_du_phong: spareData,
+                khuyen_cao: recommendations
+            };
+
+            // Convert object to a readable string (e.g., JSON string or URL parameters)
+            const qrText = JSON.stringify(qrData); // Using JSON string for comprehensive data
+
+            const qrCodeElement = document.getElementById('qrcode-container');
+            let qrCodeImage = document.getElementById('qr-code-display'); // Lấy lại tham chiếu để đảm bảo đúng
+
+            // Xóa QR code cũ nếu có
+            if (qrcodeInstance) {
+                qrcodeInstance.clear();
+                // qrcode.js có thể thêm một canvas hoặc img mới vào container,
+                // nên tốt nhất là làm sạch container và tạo lại img element
+                qrCodeElement.innerHTML = '';
+                qrCodeImage = document.createElement('img');
+                qrCodeImage.id = 'qr-code-display';
+                qrCodeElement.appendChild(qrCodeImage);
+            }
+
+            // Tạo QR code mới
+            qrcodeInstance = new QRCode(qrCodeElement, {
+                text: qrText,
+                width: 150,  // Kích thước mong muốn khi tạo
+                height: 150, // Kích thước mong muốn khi tạo
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H // Higher error correction
+            });
+
+            // Nếu qrcode.js tạo ra canvas, bạn cần chuyển nó thành hình ảnh.
+            // Tuy nhiên, với `qrcode.js` và render mode mặc định, nó thường tạo ra `img` tag chứa data URL.
+            // Nếu bạn gặp vấn đề, có thể thêm một setTimeout nhỏ hoặc đảm bảo logic chuyển đổi canvas.
+            // Với thiết lập hiện tại, CSS `#qr-code-display` sẽ kiểm soát kích thước cuối cùng.
+        }
+
 
         // --- Event Listeners ---
 
