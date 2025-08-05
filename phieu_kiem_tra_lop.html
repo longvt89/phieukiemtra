@@ -365,6 +365,7 @@
                 <button class="btn btn-primary" id="updatePreviewBtn">Cập nhật xem trước</button>
                 <button class="btn btn-success" id="submitFormBtn">📤 Gửi Thông Tin</button>
                 <button class="btn btn-info" id="printFormBtn" style="background-color: #17a2b8; color: white;">🖨️ In Phiếu</button>
+        <button class="btn btn-danger" id="clearFormBtn" style="background-color: #dc3545; color: white;">🗑️ Xóa Dữ Liệu Đã Nhập</button>
             </div>
         </div>
 
@@ -1096,7 +1097,22 @@
                     .finally(() => {
                         submitFormBtn.disabled = false;
                         submitFormBtn.textContent = '📤 Gửi Thông Tin';
-                    });
+                    
+      // === THÊM MỚI: Nút xóa form ===
+      const clearFormBtn = document.getElementById('clearFormBtn');
+      if (clearFormBtn) {
+        clearFormBtn.addEventListener('click', function() {
+          if (confirm('Bạn có chắc chắn muốn xóa toàn bộ dữ liệu đã nhập?')) {
+            localStorage.removeItem(FORM_DATA_TIRE_KEY);
+            const formElement = document.getElementById('tireEvaluationForm');
+            formElement.reset();
+            document.getElementById('inspectionDateInput').value = new Date().toISOString().split('T')[0];
+            updatePreview();
+            alert('🗑️ Dữ liệu đã được xóa thành công.');
+          }
+        });
+      }
+});
                 });
             }
 
