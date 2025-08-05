@@ -88,6 +88,8 @@
         .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
         .btn-primary { background: #4472C4; color: white; }
         .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; } /* CSS mới cho nút xóa */
+        .btn-info { background-color: #17a2b8; color: white; }
         .btn:hover { opacity: 0.8; }
 
         /* CSS cho chế độ in */
@@ -353,7 +355,7 @@
                     <label for="brakeRecommendationInput">Khuyến cáo bố thắng:</label>
                     <textarea id="brakeRecommendationInput" name="brake_recommendation" placeholder="Nhập khuyến cáo về bố thắng"></textarea>
                 </div>
-                </form>
+            </form>
         </div>
 
         <div class="controls">
@@ -364,8 +366,7 @@
                 <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/baoduong.html'">📄 Phiếu Bảo Dưỡng</button>
                 <button class="btn btn-primary" id="updatePreviewBtn">Cập nhật xem trước</button>
                 <button class="btn btn-success" id="submitFormBtn">📤 Gửi Thông Tin</button>
-                <button class="btn btn-info" id="printFormBtn" style="background-color: #17a2b8; color: white;">🖨️ In Phiếu</button>
-        <button class="btn btn-danger" id="clearFormBtn" style="background-color: #dc3545; color: white;">🗑️ Xóa Dữ Liệu Đã Nhập</button>
+                <button class="btn btn-danger" id="clearFormBtn">🗑️ Xóa Dữ liệu</button> 
             </div>
         </div>
 
@@ -1029,6 +1030,32 @@
             // Với thiết lập hiện tại, CSS `#qr-code-display` sẽ kiểm soát kích thước cuối cùng.
         }
 
+        /**
+         * Clears all form data, local storage, and resets the preview.
+         */
+        function clearFormData() {
+            if (confirm('Bạn có chắc chắn muốn xóa toàn bộ dữ liệu đã nhập?')) {
+                const formElement = document.getElementById('tireEvaluationForm');
+                
+                // Clear all input fields in the form
+                formElement.reset();
+                
+                // Clear local storage
+                localStorage.removeItem(FORM_DATA_TIRE_KEY);
+
+                // Reset the date input to the current date
+                document.getElementById('inspectionDateInput').value = new Date().toISOString().split('T')[0];
+
+                // Update the preview to a blank state
+                updatePreview();
+
+                // Reset the submission flag
+                hasSubmitted = false;
+
+                alert('Dữ liệu đã được xóa thành công!');
+            }
+        }
+
 
         // --- Event Listeners ---
 
@@ -1097,22 +1124,7 @@
                     .finally(() => {
                         submitFormBtn.disabled = false;
                         submitFormBtn.textContent = '📤 Gửi Thông Tin';
-                    
-      // === THÊM MỚI: Nút xóa form ===
-      const clearFormBtn = document.getElementById('clearFormBtn');
-      if (clearFormBtn) {
-        clearFormBtn.addEventListener('click', function() {
-          if (confirm('Bạn có chắc chắn muốn xóa toàn bộ dữ liệu đã nhập?')) {
-            localStorage.removeItem(FORM_DATA_TIRE_KEY);
-            const formElement = document.getElementById('tireEvaluationForm');
-            formElement.reset();
-            document.getElementById('inspectionDateInput').value = new Date().toISOString().split('T')[0];
-            updatePreview();
-            alert('🗑️ Dữ liệu đã được xóa thành công.');
-          }
-        });
-      }
-});
+                    });
                 });
             }
 
@@ -1139,6 +1151,15 @@
                         updatePreview(); // Reset preview to blank state for new form
                         hasSubmitted = false; // Reset flag for new submission
                     }
+                });
+            }
+
+            // Xóa dữ liệu button logic
+            const clearFormBtn = document.getElementById('clearFormBtn');
+            if (clearFormBtn) {
+                clearFormBtn.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    clearFormData();
                 });
             }
 
