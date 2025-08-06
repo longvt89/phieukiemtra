@@ -497,7 +497,7 @@
             height: 250px;
             border: 2px solid #000;
             border-radius: 15px;
-            background-image: url('sodooto.png');
+            background-image: url('https://i.imgur.com/8QoN12p.png');
             background-size: 90% 100%;
             background-repeat: no-repeat;
             background-position: center;
@@ -590,6 +590,31 @@
             color: #a02020;
             margin-top: 8px;
             text-align: center;
+        }
+
+        .price-input-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1.5px dotted #555;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .price-input-group input {
+            flex-grow: 1;
+            border: none;
+            border-bottom: 1px dotted #000;
+            height: 16px;
+            padding: 0;
+            background: transparent;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            color: #000;
+            outline: none;
+            width: 100%;
         }
 
         .tire-status-bar {
@@ -935,8 +960,21 @@
             }
 
             /* Bố cục của phần cuối trang */
+            .price-input-group {
+                display: flex !important;
+                align-items: center;
+                gap: 3px;
+                font-size: 9px !important;
+                font-weight: bold;
+                margin-top: 8px;
+            }
+            .price-input-group input {
+                height: 14px !important;
+                font-size: 9px !important;
+            }
+
             .tire-status-bar {
-                margin-top: 0 !important;
+                margin-top: 5px !important;
                 padding-top: 4px !important;
                 border-top: 1px dotted #555 !important;
                 page-break-inside: avoid;
@@ -991,25 +1029,137 @@
                 margin-top: 8px !important;
                 font-size: 9px !important;
                 gap: 8px !important;
-                display: flex; /* Đảm bảo sử dụng flex để căn ngang */
-                flex-direction: row; /* Sắp xếp theo hàng ngang */
-                justify-content: space-between;
-                align-items: flex-start;
-                page-break-inside: avoid;
-                text-align: center;
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: flex-start !important;
+                page-break-inside: avoid !important;
+                text-align: center !important;
             }
             .signature-row > div {
                 flex: 1 !important;
                 max-width: 33% !important;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                text-align: center !important;
             }
-            .signature-item { min-height: 14px !important; display: block; width: 100%; }
+            .signature-item { min-height: 14px !important; display: block !important; width: 100% !important; }
         }
         
         /* Responsive adjustments for screen */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                width: 90%;
+                padding: 10px;
+            }
+            .header-left .logo-big { font-size: 36px; }
+            .header-left .logo-subtitle { font-size: 12px; }
+            .header-right { font-size: 11px; }
+
+            .form-fields {
+                font-size: 12px;
+                gap: 4px 8px;
+            }
+            .field-group { flex-basis: calc(50% - 6px); }
+
+            .inspection-container {
+                flex-direction: row;
+                gap: 8px;
+            }
+            .brake-pad-section, .warning-section { flex: 1; }
+            .brake-pad-title { font-size: 14px; }
+            .position-row { font-size: 12px; }
+
+            .tire-inspection-main {
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                align-items: stretch;
+                gap: 5px;
+            }
+            .tire-block-left, .tire-block-right {
+                flex: 1;
+                flex-basis: 30%;
+                min-width: 30%;
+                max-width: 30%;
+                margin: 0;
+            }
+            .car-tire-diagram-wrapper {
+                flex: 0 0 35%;
+                width: 35%;
+                min-width: 35%;
+                max-width: 35%;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
+            .car-tire-diagram {
+                width: 100%;
+                height: 200px;
+                background-size: 100% 100%;
+                margin-left: 0;
+            }
+            .steering-wheel {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .right-vertical-text {
+                position: absolute;
+                right: 0;
+                top: 0;
+                height: 100%;
+                font-size: 10px;
+                border-left: 1px solid #274888;
+                padding-left: 4px;
+                margin: 0;
+            }
+
+            .spare-tire-and-notes-wrapper {
+                flex-direction: row;
+                align-items: flex-start;
+                gap: 8px;
+                margin-top: 8px;
+                font-size: 9px;
+            }
+            .spare-tire-block { flex-basis: 30%; }
+            .spare-tire-note { flex: 1; }
+
+            .price-input-group {
+                font-size: 12px;
+                gap: 5px;
+                margin-top: 10px;
+                padding-top: 8px;
+            }
+            .price-input-group input { font-size: 12px; }
+
+            .tire-status-bar {
+                margin-top: 8px;
+                padding-top: 6px;
+            }
+            .tire-status-textarea { min-height: 30px; font-size: 10px; }
+
+            .bottom-highlight { padding: 6px 10px; }
+            .bottom-highlight-text { font-size: 12px; }
+            .qr-code { width: 60px; height: 60px; }
+
+            .bottom-icons-row {
+                gap: 4px 6px;
+                margin-top: 8px;
+            }
+            .icon-item { font-size: 8px; max-width: 55px; }
+            .icon-item img { height: 35px; }
+
+            .signature-row {
+                font-size: 10px;
+                gap: 8px;
+            }
+            .signature-row > div { max-width: none; }
+        }
+
         @media (max-width: 768px) {
             body { padding: 8px; }
             .container { width: 100%; padding: 8px 12px; }
@@ -1067,19 +1217,19 @@
             <div class="form-fields" role="form" aria-label="Thông tin xe khách hàng">
                 <div class="field-group">
                     <span class="field-label-bold">Tên khách hàng / xe:</span>
-                    <span class="field-line" contenteditable="true" aria-label="Chỗ điền tên khách hàng hoặc xe" id="customer-name"></span>
+                    <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="customer-name"></span>
                 </div>
                 <div class="field-group">
                     <span class="field-label-bold">Km chạy:</span>
-                    <span class="field-line" contenteditable="true" aria-label="Chỗ điền số kilomet đã chạy" id="mileage"></span>
+                    <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="mileage"></span>
                 </div>
                 <div class="field-group">
                     <span class="field-label-bold">Hiệu xe / Model:</span>
-                    <span class="field-line" contenteditable="true" aria-label="Chỗ điền hiệu xe hoặc model" id="car-model"></span>
+                    <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="car-model"></span>
                 </div>
                 <div class="field-group">
                     <span class="field-label-bold">Biển số:</span>
-                    <span class="field-line" contenteditable="true" aria-label="Chỗ điền biển số" id="license-plate"></span>
+                    <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="license-plate"></span>
                 </div>
                 <div class="field-group">
                     <span class="field-label-bold">Chi Nhánh:</span>
@@ -1308,7 +1458,12 @@
             <div class="car-note" aria-label="Lưu ý kiểm tra và bơm lốp dự phòng">
                 Lưu ý: Kiểm tra và bơm lốp dự phòng
             </div>
-
+            
+            <div class="price-input-group">
+                <label for="price-input">Giá tham khảo:</label>
+                <input type="text" id="price-input" placeholder="Nhập số tiền" aria-label="Giá tham khảo" />
+            </div>
+    
             <div class="tire-status-bar" aria-label="Hiện trạng lốp và ghi chú kiểm tra">
                 <div class="tire-status-icon" aria-hidden="true" title="Icon trạng thái hiện trạng lốp"></div>
                 <textarea class="tire-status-textarea" placeholder="Hiện trạng lốp:" aria-label="Nhập hiện trạng lốp" id="tire-status-note"></textarea>
@@ -1322,39 +1477,39 @@
         
         <div class="bottom-icons-row" aria-label="Các loại hỗ trợ và phụ kiện">
             <div class="icon-item" aria-label="Hệ thống">
-                <img src="hethong.png" alt="Hình minh họa hệ thống gồm các bộ phận xe chuyên dụng" />
+                <img src="https://i.imgur.com/5J3t3Qj.png" alt="Hình minh họa hệ thống gồm các bộ phận xe chuyên dụng" />
                 HỆ THỐNG
             </div>
             <div class="icon-item" aria-label="Nâng cấp ánh sáng">
-                <img src="anhsang.png" alt="Hình minh họa đèn pha xe ô tô cao cấp" />
+                <img src="https://i.imgur.com/gK1qU9W.png" alt="Hình minh họa đèn pha xe ô tô cao cấp" />
                 NÂNG CẤP ÁNH SÁNG
             </div>
             <div class="icon-item" aria-label="Phụ kiện dã ngoại">
-                <img src="phukien.png" alt="Hình minh họa phụ kiện đi dã ngoại" />
+                <img src="https://i.imgur.com/s65J5B5.png" alt="Hình minh họa phụ kiện đi dã ngoại" />
                 PHỤ KIỆN DÃ NGOẠI
             </div>
             <div class="icon-item" aria-label="Nâng cấp mâm và lốp">
-                <img src="lopxe.png" alt="Hình minh họa vành bánh xe thể thao" />
+                <img src="https://i.imgur.com/7bK7LgH.png" alt="Hình minh họa vành bánh xe thể thao" />
                 NÂNG CẤP MÂM & LỐP
             </div>
             <div class="icon-item" aria-label="Phụ kiện hiệu suất">
-                <img src="hieuxuat.png" alt="Hình minh họa phụ kiện nâng cao hiệu suất xe" />
+                <img src="https://i.imgur.com/h5E7c7Q.png" alt="Hình minh họa phụ kiện nâng cao hiệu suất xe" />
                 PHỤ KIỆN HIỆU SUẤT
             </div>
             <div class="icon-item" aria-label="Phụ kiện bảo vệ xe">
-                <img src="baove.png" alt="Hình minh họa phụ kiện bảo vệ xe" />
+                <img src="https://i.imgur.com/T0b471P.png" alt="Hình minh họa phụ kiện bảo vệ xe" />
                 PHỤ KIỆN BẢO VỆ XE
             </div>
             <div class="icon-item" aria-label="Phụ kiện cứu hộ">
-                <img src="cuuho.png" alt="Hình minh họa phụ kiện cứu hộ" />
+                <img src="https://i.imgur.com/6Xy19Qc.png" alt="Hình minh họa phụ kiện cứu hộ" />
                 PHỤ KIỆN CỨU HỘ
             </div>
             <div class="icon-item" aria-label="Đồ chơi nội thất">
-                <img src="noithat.png" alt="Hình minh họa đồ chơi nội thất xe" />
+                <img src="https://i.imgur.com/v8tT1qX.png" alt="Hình minh họa đồ chơi nội thất xe" />
                 ĐỒ CHƠI NỘI THẤT
             </div>
             <div class="icon-item" aria-label="Đồ chơi ngoại thất">
-                <img src="ngoaithat.png" alt="Hình minh họa đồ chơi ngoại thất xe" />
+                <img src="https://i.imgur.com/y1c4o8t.png" alt="Hình minh họa đồ chơi ngoại thất xe" />
                 ĐỒ CHƠI NGOẠI THẤT
             </div>
         </div>
@@ -1552,6 +1707,32 @@
         }
         
         window.addEventListener('load', getBranchFromLocation);
+
+        // Hàm định dạng số tiền tự động
+        function formatPriceInput(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value === '') return;
+            
+            let formattedValue = new Intl.NumberFormat('vi-VN').format(value);
+            input.value = formattedValue;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const priceInput = document.getElementById('price-input');
+            if (priceInput) {
+                priceInput.addEventListener('input', function() {
+                    formatPriceInput(this);
+                });
+                priceInput.addEventListener('blur', function() {
+                    if (this.value !== '') {
+                        this.value += ' VND';
+                    }
+                });
+                priceInput.addEventListener('focus', function() {
+                    this.value = this.value.replace(' VND', '');
+                });
+            }
+        });
     </script>
 </body>
 </html>
