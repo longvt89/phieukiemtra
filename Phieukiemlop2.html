@@ -958,8 +958,7 @@
                 margin-top: 3px !important;
                 text-align: center !important;
             }
-
-            /* Bố cục của phần cuối trang */
+            
             .price-input-group {
                 display: flex !important;
                 align-items: center;
@@ -1217,19 +1216,19 @@
             <div class="form-fields" role="form" aria-label="Thông tin xe khách hàng">
                 <div class="field-group">
                     <span class="field-label-bold">Tên khách hàng / xe:</span>
-                    <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="customer-name"></span>
+                    <span class="field-line" contenteditable="true" aria-label="Chỗ điền tên khách hàng hoặc xe" id="customer-name"></span>
                 </div>
                 <div class="field-group">
                     <span class="field-label-bold">Km chạy:</span>
-                    <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="mileage"></span>
+                    <span class="field-line" contenteditable="true" aria-label="Chỗ điền số kilomet đã chạy" id="mileage"></span>
                 </div>
                 <div class="field-group">
                     <span class="field-label-bold">Hiệu xe / Model:</span>
-                    <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="car-model"></span>
+                    <span class="field-line" contenteditable="true" aria-label="Chỗ điền hiệu xe hoặc model" id="car-model"></span>
                 </div>
                 <div class="field-group">
                     <span class="field-label-bold">Biển số:</span>
-                    <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="license-plate"></span>
+                    <span class="field-line" contenteditable="true" aria-label="Chỗ điền biển số" id="license-plate"></span>
                 </div>
                 <div class="field-group">
                     <span class="field-label-bold">Chi Nhánh:</span>
@@ -1710,9 +1709,13 @@
 
         // Hàm định dạng số tiền tự động
         function formatPriceInput(input) {
-            let value = input.value.replace(/\D/g, '');
-            if (value === '') return;
+            let value = input.value.replace(/\D/g, ''); // Xóa tất cả các ký tự không phải số
+            if (value === '') {
+                input.value = '';
+                return;
+            }
             
+            // Định dạng lại số
             let formattedValue = new Intl.NumberFormat('vi-VN').format(value);
             input.value = formattedValue;
         }
@@ -1721,11 +1724,26 @@
             const priceInput = document.getElementById('price-input');
             if (priceInput) {
                 priceInput.addEventListener('input', function() {
-                    formatPriceInput(this);
+                    // Cải thiện: Xóa ký tự không phải số và định dạng lại ngay khi gõ
+                    let cursorPosition = this.selectionStart;
+                    let oldLength = this.value.length;
+
+                    let value = this.value.replace(/\D/g, '');
+                    let formattedValue = new Intl.NumberFormat('vi-VN').format(value);
+                    
+                    this.value = formattedValue;
+                    
+                    let newLength = this.value.length;
+                    cursorPosition += (newLength - oldLength);
+                    this.setSelectionRange(cursorPosition, cursorPosition);
+
                 });
                 priceInput.addEventListener('blur', function() {
                     if (this.value !== '') {
-                        this.value += ' VND';
+                        let valueWithoutVND = this.value.replace(' VND', '');
+                        if (!valueWithoutVND.endsWith(' VND')) {
+                            this.value += ' VND';
+                        }
                     }
                 });
                 priceInput.addEventListener('focus', function() {
