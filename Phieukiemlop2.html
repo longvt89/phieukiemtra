@@ -1243,9 +1243,9 @@ body {
 <body>
     <div class="top-menu-buttons">
         <button onclick="clearFormData()">Xóa form</button>
-        <button onclick="submitFormData()">Gửi Thông Tin</button>
-        <button onclick="window.print()">In phiếu</button>
-        <button onclick="alert('Chức năng xuất PDF đang được phát triển.')">Xuất PDF</button>
+        <button onclick="submitFormData()">Lưu & Gửi</button>
+        <button onclick="handlePrint()">In phiếu</button>
+        <button onclick="exportPDF()">Xuất PDF</button>
         <button onclick="window.location.href='https://longvt89.github.io/phieukiemtra'">Trang chủ</button>
     </div>
 
@@ -1577,6 +1577,10 @@ body {
             </div>
         </div>
     </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <script>
     const branchSelect = document.getElementById('branch-select');
     const branchDisplay = document.getElementById('branch-display');
@@ -1737,6 +1741,28 @@ body {
             window.location.reload();
         }
     }
+
+    // --- HÀM MỚI ĐỂ XỬ LÝ LỆNH IN VỚI KHỔ GIẤY A5 ---
+    function handlePrint() {
+        // Tạo một thẻ style mới để ghi đè kích thước trang A5
+        const printStyle = document.createElement('style');
+        printStyle.id = 'a5-print-style';
+        printStyle.textContent = '@page { size: A5; margin: 5mm; }';
+        document.head.appendChild(printStyle);
+        
+        // Gọi lệnh in
+        window.print();
+        
+        // Sau khi in (hoặc hộp thoại in bị đóng), xóa thẻ style để không ảnh hưởng đến hiển thị
+        // Sử dụng setTimeout để đảm bảo lệnh xóa được chạy sau khi in hoàn tất
+        setTimeout(() => {
+            const styleElement = document.getElementById('a5-print-style');
+            if (styleElement) {
+                styleElement.remove();
+            }
+        }, 100);
+    }
+    // --- KẾT THÚC HÀM MỚI ---
 
     const focusedElements = document.querySelectorAll(
         '#customer-name, #mileage, #car-model, #license-plate, input[name^="tire_size"], input[name^="tire_depth"], input[name^="tire_pressure"], input[name^="tire_dot"], input[name^="spare_tire"], #price-input, #tire-status-note, #inspector, #inspection-date, #service-advisor'
@@ -1927,13 +1953,9 @@ body {
         'spare_tire_dot': 'dự phòng'
     };
 
-    /**
-     * @description Kiểm tra tất cả các trường DOT và tạo cảnh báo gộp.
-     * Cảnh báo sẽ hiển thị trong một div riêng biệt và chỉ hiện khi có dữ liệu.
-     */
     function checkAllTireDOTs() {
         const dotWarningMessage = document.getElementById('dot-warning-message');
-        if (!dotWarningMessage) return; // Đảm bảo div đã được tạo
+        if (!dotWarningMessage) return;
 
         const dotInputs = document.querySelectorAll('.dot-data-input');
         const currentFullYear = new Date().getFullYear();
@@ -2111,6 +2133,59 @@ body {
             });
         }
     });
+    // Cập nhật lại event listener cho nút "In phiếu"
+    const printButton = document.querySelector('button[onclick="window.print()"]');
+    if (printButton) {
+        printButton.setAttribute('onclick', 'handlePrint()');
+    }
+
+    // --- HÀM XUẤT PDF MỚI ---
+    async function exportPDF() {
+        const { jsPDF } = window.jspdf;
+        const container = document.querySelector('.container');
+
+        // Tạm thời ẩn các nút để không bị chụp vào file PDF
+        const menuButtons = document.querySelector('.top-menu-buttons');
+        const originalDisplay = menuButtons.style.display;
+        menuButtons.style.display = 'none';
+        
+        try {
+            const canvas = await html2canvas(container, {
+                scale: 2, // Tăng scale để hình ảnh rõ nét hơn
+                useCORS: true // Quan trọng: cho phép tải các hình ảnh từ nguồn khác
+            });
+
+            const imgData = canvas.toDataURL('image/png');
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const imgWidth = 210; // Chiều rộng khổ A4
+            const pageHeight = 297; // Chiều cao khổ A4
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                doc.addPage();
+                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+            
+            // Khôi phục lại trạng thái ban đầu của các nút
+            menuButtons.style.display = originalDisplay;
+
+            doc.save('Phieu-Kiem-Tra-Lop-Xe.pdf');
+            
+        } catch (error) {
+            console.error("Lỗi khi tạo PDF:", error);
+            alert("Có lỗi xảy ra khi tạo file PDF. Vui lòng thử lại.");
+            // Đảm bảo khôi phục lại trạng thái ban đầu ngay cả khi có lỗi
+            menuButtons.style.display = originalDisplay;
+        }
+    }
+    // --- KẾT THÚC HÀM XUẤT PDF MỚI ---
 </script>
     
 </body>
