@@ -266,24 +266,31 @@
             width: 100%;
         }
 
+        /* CSS cho phần gauges đã sửa */
         .gauges {
             display: flex;
-            gap: 4px;
-            flex-shrink: 0;
-            cursor: pointer;
+            justify-content: flex-end;
+            align-items: center;
+            width: 50px;
+            position: relative;
         }
-
+        
         .status-box {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
             width: 16px;
             height: 16px;
             border: 1.5px solid #333;
             border-radius: 3px;
-            flex-shrink: 0;
-            opacity: 0.3;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s;
         }
 
         .status-box.active {
             opacity: 1;
+            visibility: visible;
             border: 1.5px solid #000;
             box-shadow: 0 0 3px #000;
         }
@@ -299,20 +306,24 @@
             border-left: 8px solid transparent;
             border-right: 8px solid transparent;
             border-bottom: 13px solid #eccf3d;
-            margin-top: -3px;
-            border-radius: 2px;
             border: none;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
         }
         .status-yellow.active {
-            background-color: transparent;
             border-bottom: 13px solid #eccf3d;
             border-left: 8px solid transparent;
             border-right: 8px solid transparent;
+            box-shadow: none;
         }
 
         .status-red {
             background-color: #b12828;
             border-radius: 50%;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
         }
 
         .note-row {
@@ -1208,7 +1219,7 @@
 </head>
 <body>
     <div class="top-menu-buttons">
-        <button onclick="window.location.reload()">Tải lại</button>
+        <button onclick="clearFormData()">Xóa form</button>
         <button onclick="submitFormData()">Lưu & Gửi</button>
         <button onclick="window.print()">In phiếu</button>
         <button onclick="alert('Chức năng xuất PDF đang được phát triển.')">Xuất PDF</button>
@@ -1553,18 +1564,131 @@
             branchValueInput.value = event.target.value;
         });
 
-        const focusableElements = document.querySelectorAll(
+        const formElements = document.querySelectorAll(
+            '#customer-name, #mileage, #car-model, #license-plate, input[name^="tire_size"], input[name^="tire_depth"], input[name^="tire_pressure"], input[name^="tire_dot"], input[name^="spare_tire"], #price-input, #tire-status-note, #inspector, #inspection-date, #service-advisor, input[type="checkbox"][name="recommendation"], .position-row .input-line, #branch-select'
+        );
+        const storageKey = 'tireInspectionForm';
+
+        function saveFormData() {
+            const data = {};
+            formElements.forEach(element => {
+                if (element.type === 'checkbox') {
+                    data[element.name + '_' + element.value] = element.checked;
+                } else if (element.tagName === 'SELECT') {
+                    data[element.id] = element.value;
+                } else if (element.hasAttribute('contenteditable')) {
+                    data[element.id] = element.innerText;
+                } else {
+                    data[element.name || element.id] = element.value;
+                }
+            });
+            localStorage.setItem(storageKey, JSON.stringify(data));
+            console.log('Dữ liệu đã được lưu tự động.');
+        }
+
+        function loadFormData() {
+            const savedData = JSON.parse(localStorage.getItem(storageKey));
+            if (savedData) {
+                formElements.forEach(element => {
+                    if (element.type === 'checkbox') {
+                        const key = element.name + '_' + element.value;
+                        if (savedData[key]) {
+                            element.checked = savedData[key];
+                        }
+                    } else if (element.tagName === 'SELECT') {
+                        if (savedData[element.id]) {
+                            element.value = savedData[element.id];
+                        }
+                    } else if (element.hasAttribute('contenteditable')) {
+                        if (savedData[element.id] !== undefined) {
+                            element.innerText = savedData[element.id];
+                        }
+                    } else {
+                        if (savedData[element.name || element.id] !== undefined) {
+                            element.value = savedData[element.name || element.id];
+                        }
+                    }
+                });
+
+                // Khôi phục trạng thái má phanh
+                ['front-mm', 'back-mm'].forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        updateBrakeStatus(element);
+                    }
+                });
+                
+                // Khôi phục giá trị của select chi nhánh
+                if (savedData['branch-value']) {
+                    if (branchSelect.querySelector(`option[value="${savedData['branch-value']}"]`)) {
+                        branchSelect.value = savedData['branch-value'];
+                        branchDisplay.innerText = savedData['branch-value'];
+                        branchDisplay.style.display = 'block';
+                        branchSelect.style.display = 'none';
+                    } else {
+                        branchDisplay.innerText = 'Không tìm thấy chi nhánh';
+                        branchDisplay.style.display = 'block';
+                        branchSelect.style.display = 'none';
+                    }
+                } else {
+                    branchDisplay.innerText = 'Đang tìm vị trí...';
+                    branchDisplay.style.display = 'block';
+                    branchSelect.style.display = 'none';
+                }
+
+                console.log('Dữ liệu đã được khôi phục.');
+            }
+        }
+
+        setInterval(saveFormData, 2000);
+        window.addEventListener('load', loadFormData);
+
+        document.querySelectorAll('[contenteditable="true"]').forEach(element => {
+            element.addEventListener('input', saveFormData);
+        });
+        document.querySelectorAll('input, select, textarea').forEach(element => {
+            element.addEventListener('input', saveFormData);
+            element.addEventListener('change', saveFormData);
+        });
+
+        function clearFormData() {
+            if (confirm('Bạn có chắc chắn muốn xóa toàn bộ dữ liệu form? Thao tác này không thể hoàn tác.')) {
+                formElements.forEach(element => {
+                    if (element.type === 'checkbox') {
+                        element.checked = false;
+                    } else if (element.tagName === 'SELECT') {
+                        element.value = '';
+                    } else if (element.hasAttribute('contenteditable')) {
+                        element.innerText = '';
+                    } else {
+                        element.value = '';
+                    }
+                });
+                
+                document.querySelectorAll('.gauges .status-box').forEach(box => {
+                    box.classList.remove('active');
+                    box.setAttribute('aria-checked', 'false');
+                });
+
+                localStorage.removeItem(storageKey);
+                console.log('Dữ liệu form và localStorage đã được xóa.');
+
+                window.location.reload();
+            }
+        }
+
+        const focusedElements = document.querySelectorAll(
             '#customer-name, #mileage, #car-model, #license-plate, input[name^="tire_size"], input[name^="tire_depth"], input[name^="tire_pressure"], input[name^="tire_dot"], input[name^="spare_tire"], #price-input, #tire-status-note, #inspector, #inspection-date, #service-advisor'
         );
 
         function setupEnterKeyListener() {
-            focusableElements.forEach(element => {
+            focusedElements.forEach(element => {
                 element.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') {
                         e.preventDefault();
-                        const currentIndex = Array.from(focusableElements).indexOf(element);
-                        const nextIndex = (currentIndex + 1) % focusableElements.length;
-                        const nextElement = focusableElements[nextIndex];
+                        const currentIndex = Array.from(focusedElements).indexOf(element);
+                        const nextIndex = (currentIndex + 1) % focusedElements.length;
+                        const nextElement = focusedElements[nextIndex];
 
                         if (nextElement) {
                             nextElement.focus();
@@ -1670,25 +1794,35 @@
             const gauges = parentRow.querySelector('.gauges');
             const value = parseFloat(element.innerText.trim().replace(',', '.'));
 
-            // Loại bỏ tất cả các trạng thái active trước khi áp dụng trạng thái mới
+            // Loại bỏ tất cả các trạng thái active trước
             gauges.querySelectorAll('.status-box').forEach(box => {
                 box.classList.remove('active');
                 box.setAttribute('aria-checked', 'false');
             });
-
-            // Áp dụng trạng thái mới dựa trên giá trị
-            if (!isNaN(value)) {
-                if (value >= 4) {
-                    gauges.querySelector('.status-green').classList.add('active');
-                    gauges.querySelector('.status-green').setAttribute('aria-checked', 'true');
-                } else if (value >= 3 && value < 4) {
-                    gauges.querySelector('.status-yellow').classList.add('active');
-                    gauges.querySelector('.status-yellow').setAttribute('aria-checked', 'true');
-                } else if (value < 3) {
-                    gauges.querySelector('.status-red').classList.add('active');
-                    gauges.querySelector('.status-red').setAttribute('aria-checked', 'true');
+            
+            // Áp dụng trạng thái mới
+            if (!isNaN(value) && element.innerText.trim() !== '') {
+                if (value > 4) {
+                    const box = gauges.querySelector('.status-green');
+                    if (box) {
+                        box.classList.add('active');
+                        box.setAttribute('aria-checked', 'true');
+                    }
+                } else if (value >= 3 && value <= 4) {
+                    const box = gauges.querySelector('.status-yellow');
+                    if (box) {
+                        box.classList.add('active');
+                        box.setAttribute('aria-checked', 'true');
+                    }
+                } else if (value >= 1.6 && value < 3) {
+                    const box = gauges.querySelector('.status-red');
+                    if (box) {
+                        box.classList.add('active');
+                        box.setAttribute('aria-checked', 'true');
+                    }
                 }
             }
+            saveFormData();
         }
         
         const branchLocations = [
@@ -1734,6 +1868,7 @@
                             branchValueInput.value = closestBranch.name;
                             branchDisplay.style.display = 'block';
                             branchSelect.style.display = 'none';
+                            branchSelect.value = closestBranch.name;
                             console.log(`Đã tìm thấy chi nhánh gần nhất: ${closestBranch.name} (Khoảng cách: ${minDistance.toFixed(2)} km)`);
                         } else {
                             console.log('Không tìm thấy chi nhánh nào gần đây. Vui lòng chọn thủ công.');
@@ -1741,12 +1876,14 @@
                             branchSelect.style.display = 'block';
                             branchValueInput.value = '';
                         }
+                        saveFormData();
                     },
                     (error) => {
                         console.error('Lỗi định vị:', error);
                         branchDisplay.style.display = 'none';
                         branchSelect.style.display = 'block';
                         branchValueInput.value = '';
+                        saveFormData();
                     },
                     { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
                 );
@@ -1755,10 +1892,15 @@
                 branchDisplay.style.display = 'none';
                 branchSelect.style.display = 'block';
                 branchValueInput.value = '';
+                saveFormData();
             }
         }
 
-        window.addEventListener('load', getBranchFromLocation);
+        window.addEventListener('load', () => {
+            loadFormData();
+            getBranchFromLocation();
+        });
+
 
         function formatPriceInput(input) {
             let value = input.value.replace(/\D/g, '');
