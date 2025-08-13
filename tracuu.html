@@ -179,7 +179,7 @@
     <div class="container">
         <div class="button-group">
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieunhandichvu.html'">📄 Phiếu Nhận Dịch Vụ </button>
-            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/Phieukiemlop2.html'">📄 Phiếu Kiểm Tra Lốp</button>
+            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieu_kiem_tra_lop.html'">📄 Phiếu Kiểm Tra Lốp</button>
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/index.html'">📄 Phiếu Kiểm Tra Xe </button>
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/kiemtragam.html'">📄 Phiếu Kiểm Gầm</button>
             <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/baoduong.html'">📄 Phiếu Bảo Dưỡng</button>
@@ -344,7 +344,6 @@
             const errorMessage = document.getElementById('errorMessage');
             const loadingSpinner = document.getElementById('loadingSpinner');
             const historyButton = document.getElementById('historyButton');
-            const searchButton = document.getElementById('searchButton');
 
             // Clear previous results and hide messages
             document.getElementById('carDetailsContainer').innerHTML = '';
@@ -361,8 +360,6 @@
             }
 
             loadingSpinner.style.display = 'block'; // Show loading spinner
-            searchButton.disabled = true; // Disable search button
-            historyButton.disabled = true; // Disable history button
 
             try {
                 let queryParams = new URLSearchParams();
@@ -377,17 +374,25 @@
                 const result = await response.json();
 
                 loadingSpinner.style.display = 'none'; // Hide loading spinner
-                searchButton.disabled = false; // Re-enable search button
-                historyButton.disabled = false; // Re-enable history button
 
                 if (result.result === 'success' && result.data && result.data.length > 0) {
                     resultsSection.classList.remove('hidden');
                     displayCarRecords(result.data, actionType === 'history');
                     
-                    // Show history button if a search returns at least one result, and we're not already in history mode
-                    if (actionType === 'latest') {
+                    // Show history button only if a single car is found by license plate for 'latest' search
+                    // Or if a phone number search returns multiple cars
+                    if (actionType === 'latest' && (licensePlateInput || (phoneNumberInput && result.data.length > 1))) {
+                            // If searching by phone number and multiple cars are found, the history button should still appear
+                            // If searching by license plate, and a car is found, history button should appear
                         historyButton.classList.remove('hidden');
+                    } else if (actionType === 'latest' && phoneNumberInput && result.data.length === 1) {
+                        // If phone number search returns only one car, still show history button for that car
+                        historyButton.classList.remove('hidden');
+                    } else if (actionType === 'history') {
+                        // If we are already viewing history, keep the button hidden or show a "Back to Latest" button if desired
+                        historyButton.classList.add('hidden'); // Hide history button when already showing history
                     }
+
 
                 } else if (result.result === 'not_found') {
                     resultsSection.classList.remove('hidden');
@@ -400,8 +405,6 @@
             } catch (error) {
                 console.error('Lỗi khi tải dữ liệu:', error);
                 loadingSpinner.style.display = 'none'; // Hide loading spinner on error
-                searchButton.disabled = false; // Re-enable search button
-                historyButton.disabled = false; // Re-enable history button
                 resultsSection.classList.remove('hidden');
                 errorMessage.textContent = 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau.';
                 errorMessage.classList.remove('hidden');
@@ -415,20 +418,6 @@
 
         document.getElementById('historyButton').addEventListener('click', function() {
             performSearch('history'); // Perform history search
-        });
-
-        // Add event listener for Enter key on input fields
-        document.getElementById('licensePlate').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                document.getElementById('searchButton').click();
-            }
-        });
-        document.getElementById('phoneNumber').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                document.getElementById('searchButton').click();
-            }
         });
     </script>
 </body>
