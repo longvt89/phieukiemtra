@@ -218,207 +218,232 @@
     </div>
 
     <script>
-        // !!! QUAN TRỌNG: Thay thế URL này bằng URL Web App đã triển khai từ Google Apps Script của bạn !!!
-        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; // Cập nhật URL này nếu bạn triển khai lại Apps Script
+    // !!! QUAN TRỌNG: Thay thế URL này bằng URL Web App đã triển khai từ Google Apps Script của bạn !!!
+    const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec';
 
-        // Function to display car records
-        function displayCarRecords(records, isHistory = false) {
-            const carDetailsContainer = document.getElementById('carDetailsContainer');
-            carDetailsContainer.innerHTML = ''; // Clear previous results
+    const ELEMENTS = {
+        licensePlateInput: document.getElementById('licensePlate'),
+        phoneNumberInput: document.getElementById('phoneNumber'),
+        searchButton: document.getElementById('searchButton'),
+        historyButton: document.getElementById('historyButton'),
+        loadingSpinner: document.getElementById('loadingSpinner'),
+        resultsSection: document.getElementById('results'),
+        carDetailsContainer: document.getElementById('carDetailsContainer'),
+        noResultsMessage: document.getElementById('noResultsMessage'),
+        errorMessage: document.getElementById('errorMessage')
+    };
 
-            if (records.length === 0) {
-                document.getElementById('noResultsMessage').classList.remove('hidden');
-                return;
+    // Cấu hình các nhãn hiển thị cho từng formType
+    const FORM_LABELS = {
+        'PhieuDanhGiaLop': {
+            carModel: 'Loại xe',
+            tireSize: 'Size lốp',
+            tireStatus: 'Hiện trạng lốp',
+            recommendation: 'Hiện Trạng Khuyến nghị'
+        },
+        'PhieuKiemTraGam': {
+            carModel: 'Loại xe',
+            unconfirmedItems: 'Hạng mục chưa thay',
+            recommendation: 'Hiện Trạng Khuyến nghị'
+        },
+        'PhieuNhanDichVu': {
+            carModel: 'Hãng xe',
+            yeuCauKhachHang: 'Yêu cầu khách hàng',
+            chanDoanBanDau: 'Chẩn đoán ban đầu',
+            thongTinDichVu: 'Thông tin dịch vụ chi tiết',
+            tongCong: 'Tổng cộng'
+        },
+        'PhieuKiemTraXe': {
+            carModel: 'Loại xe',
+            chiTietKiemTraAnToan: 'Chi tiết kiểm tra an toàn',
+            bangChiTietCongViec: 'Bảng chi tiết công việc',
+            tongCongThanhToan: 'Tổng cộng thanh toán'
+        },
+        'PhieuDanhGiaLopMoi': {
+            carModel: 'Loại xe',
+            tireStatusNote: 'Hiện trạng lốp',
+            brakeNote: 'Ghi chú phanh',
+            rec_canchinhthuoclai: 'Khuyến cáo Cân chỉnh thước lái',
+            rec_canbangdong: 'Khuyến cáo Cân bằng động',
+            rec_daolop: 'Khuyến cáo Đảo lốp',
+            rec_thaythe: 'Khuyến cáo Thay thế'
+        }
+    };
+
+    // Hàm định dạng tiền tệ
+    function formatCurrency(value) {
+        if (typeof value === 'string') {
+            value = parseFloat(value.replace(/\./g, '').replace(/,/g, '.'));
+        }
+        if (isNaN(value)) return '0';
+        return value.toLocaleString('vi-VN');
+    }
+
+    // Hàm chung để hiển thị thông tin chi tiết của một bản ghi
+    function renderRecordDetails(record, container) {
+        const labels = FORM_LABELS[record.formType] || {};
+        const detailsDiv = document.createElement('div');
+
+        const commonDetails = `
+            <div class="result-item"><strong>Họ tên khách:</strong><span>${record.customerName || 'N/A'}</span></div>
+            <div class="result-item"><strong>Số điện thoại:</strong><span>${record.phoneNumber || 'N/A'}</span></div>
+            <div class="result-item"><strong>Biển số xe:</strong><span>${record.licensePlate || 'N/A'}</span></div>
+            <div class="result-item"><strong>Hãng/Đời xe:</strong><span>${record.carModel || 'N/A'}</span></div>
+            <div class="result-item"><strong>Số kilomet:</strong><span>${record.odometer || 'N/A'}</span></div>
+            <div class="result-item"><strong>Ngày nhập liệu:</strong><span>${record.entryDate || 'N/A'}</span></div>
+        `;
+        detailsDiv.innerHTML = commonDetails;
+
+        if (record.formType === 'PhieuNhanDichVu' && record.thongTinDichVuChiTietParsed) {
+            const tableHtml = `
+                <table class="parsed-service-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Hạng mục</th>
+                            <th>Diễn giải</th>
+                            <th class="qty-col">SL</th>
+                            <th class="total-col">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${record.thongTinDichVuChiTietParsed.map(item => `
+                            <tr>
+                                <td>${item.stt}</td>
+                                <td>${item.hangMuc || 'N/A'}</td>
+                                <td>${item.dienGiai || 'N/A'}</td>
+                                <td class="qty-col">${item.soLuong || 'N/A'}</td>
+                                <td class="total-col">${item.thanhTien ? formatCurrency(item.thanhTien) : '0'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            detailsDiv.innerHTML += `
+                <div class="result-item"><strong>${labels.yeuCauKhachHang}:</strong><span>${record.yeuCauKhachHang || 'Không có'}</span></div>
+                <div class="result-item"><strong>${labels.chanDoanBanDau}:</strong><span>${record.chanDoanBanDau || 'Không có'}</span></div>
+                <div class="result-item"><strong>${labels.thongTinDichVu}:</strong><span>${tableHtml}</span></div>
+                <div class="result-item"><strong>${labels.tongCong}:</strong><span>${record.tongCong ? formatCurrency(record.tongCong) + ' VNĐ' : '0 VNĐ'}</span></div>
+            `;
+        } else if (record.formType === 'PhieuKiemTraXe') {
+            detailsDiv.innerHTML += `
+                <div class="result-item"><strong>Chi tiết kiểm tra an toàn:</strong><span>${record.chiTietKiemTraAnToan || 'Không có'}</span></div>
+                <div class="result-item"><strong>Bảng chi tiết công việc:</strong><span>${record.bangChiTietCongViec || 'Không có'}</span></div>
+                <div class="result-item"><strong>Tổng cộng thanh toán:</strong><span>${record.tongCongThanhToan ? formatCurrency(record.tongCongThanhToan) + ' VNĐ' : '0 VNĐ'}</span></div>
+            `;
+        } else {
+            for (const key in labels) {
+                if (record[key]) {
+                    detailsDiv.innerHTML += `
+                        <div class="result-item"><strong>${labels[key]}:</strong><span>${record[key] || 'Không có'}</span></div>
+                    `;
+                }
             }
+        }
 
-            document.getElementById('noResultsMessage').classList.add('hidden');
+        detailsDiv.innerHTML += `<div class="result-item"><strong>Ghi chú chung:</strong><span>${record.notes || 'Không có'}</span></div>`;
 
-            const groupedRecords = {};
-            // Group records by license plate if searching by phone number and showing history
-            if (isHistory && document.getElementById('phoneNumber').value.trim() && !document.getElementById('licensePlate').value.trim()) {
-                records.forEach(record => {
-                    const lp = record.licensePlate || 'Không rõ biển số';
-                    if (!groupedRecords[lp]) {
-                        groupedRecords[lp] = [];
-                    }
-                    groupedRecords[lp].push(record);
-                });
+        container.appendChild(detailsDiv);
+    }
+
+    // Hiển thị các bản ghi tìm thấy
+    function displayCarRecords(records, isHistory = false) {
+        const { carDetailsContainer, noResultsMessage, resultsSection } = ELEMENTS;
+        carDetailsContainer.innerHTML = '';
+        noResultsMessage.classList.add('hidden');
+        resultsSection.classList.remove('hidden');
+
+        if (records.length === 0) {
+            noResultsMessage.classList.remove('hidden');
+            return;
+        }
+
+        const groupedRecords = records.reduce((acc, record) => {
+            const key = record.licensePlate || 'Không rõ biển số';
+            if (!acc[key]) {
+                acc[key] = [];
+            }
+            acc[key].push(record);
+            return acc;
+        }, {});
+
+        for (const key in groupedRecords) {
+            const recordsForThisCar = groupedRecords[key];
+            const latestRecord = recordsForThisCar[0];
+            const customerInfo = `${latestRecord.customerName || 'N/A'} - ${latestRecord.phoneNumber || 'N/A'}`;
+
+            const carBlock = document.createElement('div');
+            carBlock.className = 'car-entry-block';
+            carBlock.innerHTML = `<h3>Xe: ${key} (${customerInfo})</h3>`;
+            carDetailsContainer.appendChild(carBlock);
+
+            recordsForThisCar.forEach((record) => {
+                const entryTitle = document.createElement('h4');
+                entryTitle.className = 'text-lg font-semibold text-gray-600 mb-3 mt-4';
+                entryTitle.textContent = `Lần nhập liệu: ${record.entryDate || 'N/A'} - Loại phiếu: ${record.formType || 'N/A'}`;
+                carBlock.appendChild(entryTitle);
+                renderRecordDetails(record, carBlock);
+            });
+        }
+    }
+
+    // Hàm tìm kiếm chính
+    async function performSearch(actionType) {
+        const { licensePlateInput, phoneNumberInput, resultsSection, noResultsMessage, errorMessage, loadingSpinner, historyButton } = ELEMENTS;
+
+        ELEMENTS.carDetailsContainer.innerHTML = '';
+        resultsSection.classList.add('hidden');
+        noResultsMessage.classList.add('hidden');
+        errorMessage.classList.add('hidden');
+        historyButton.classList.add('hidden');
+
+        const licensePlate = licensePlateInput.value.trim().toUpperCase();
+        const phoneNumber = phoneNumberInput.value.trim();
+
+        if (!licensePlate && !phoneNumber) {
+            errorMessage.textContent = 'Vui lòng nhập Biển số xe hoặc Số điện thoại để tìm kiếm.';
+            errorMessage.classList.remove('hidden');
+            resultsSection.classList.remove('hidden');
+            return;
+        }
+
+        loadingSpinner.style.display = 'block';
+
+        try {
+            const url = new URL(GOOGLE_APPS_SCRIPT_WEB_APP_URL);
+            if (licensePlate) url.searchParams.append('licensePlate', licensePlate);
+            if (phoneNumber) url.searchParams.append('phoneNumber', phoneNumber);
+            url.searchParams.append('action', actionType);
+
+            const response = await fetch(url);
+            const result = await response.json();
+
+            loadingSpinner.style.display = 'none';
+
+            if (result.result === 'success' && result.data && result.data.length > 0) {
+                displayCarRecords(result.data, actionType === 'history');
+                if (actionType === 'latest') {
+                    historyButton.classList.remove('hidden');
+                }
+            } else if (result.result === 'not_found' || (result.result === 'success' && result.data && result.data.length === 0)) {
+                noResultsMessage.classList.remove('hidden');
+                resultsSection.classList.remove('hidden');
             } else {
-                // If searching by license plate, or showing latest, just use the records directly
-                // For 'latest', there will only be one record
-                // For history by license plate, all records are for that one license plate
-                // Sử dụng foundCar.licensePlate hoặc foundCar.phoneNumber để làm key nếu cần
-                records.forEach(record => {
-                    const key = record.licensePlate || record.phoneNumber || 'Thông tin xe';
-                    if (!groupedRecords[key]) {
-                        groupedRecords[key] = [];
-                    }
-                    groupedRecords[key].push(record);
-                });
-            }
-
-            for (const key in groupedRecords) { // Đổi licensePlate thành key
-                const recordsForThisCar = groupedRecords[key];
-                
-                const carBlock = document.createElement('div');
-                carBlock.className = 'car-entry-block';
-                carDetailsContainer.appendChild(carBlock);
-
-                const carTitle = document.createElement('h3');
-                carTitle.textContent = `Xe: ${key} (${recordsForThisCar[0].customerName || 'N/A'} - ${recordsForThisCar[0].phoneNumber || 'N/A'})`; // Sử dụng key
-                carBlock.appendChild(carTitle);
-
-                recordsForThisCar.forEach((foundCar, index) => {
-                    const entryTitle = document.createElement('h4');
-                    entryTitle.className = 'text-lg font-semibold text-gray-600 mb-3 mt-4';
-                    entryTitle.textContent = `Lần nhập liệu: ${foundCar.entryDate} - Loại phiếu: ${foundCar.formType}`;
-                    carBlock.appendChild(entryTitle);
-
-                    const entryDetails = document.createElement('div');
-                    let detailsHtml = `
-                        <div class="result-item"><strong>Họ tên khách:</strong><span>${foundCar.customerName || 'N/A'}</span></div>
-                        <div class="result-item"><strong>Số điện thoại:</strong><span>${foundCar.phoneNumber || 'N/A'}</span></div>
-                        <div class="result-item"><strong>Biển số xe:</strong><span>${foundCar.licensePlate || 'N/A'}</span></div>
-                        <div class="result-item"><strong>Hãng/Đời xe:</strong><span>${foundCar.carModel || 'N/A'}</span></div>
-                        <div class="result-item"><strong>Số kilomet:</strong><span>${foundCar.odometer || 'N/A'}</span></div>
-                        <div class="result-item"><strong>Ngày nhập liệu:</strong><span>${foundCar.entryDate || 'N/A'}</span></div>
-                    `;
-
-                    if (foundCar.formType === 'Phiếu Kiểm Tra Lốp') {
-                        detailsHtml += `
-                            <div class="result-item"><strong>Size lốp:</strong><span>${foundCar.tireSize || 'N/A'}</span></div>
-                            <div class="result-item"><strong>Hiện trạng lốp:</strong><span>${foundCar.tireStatus || 'Không có thông tin'}</span></div>
-                            <div class="result-item"><strong>Hạng mục chưa thay:</strong><span>${foundCar.unconfirmedItems || 'Không có'}</span></div>
-                            <div class="result-item"><strong>Hiện Trạng Khuyến nghị:</strong><span>${foundCar.recommendation || 'Không có'}</span></div>
-                        `;
-                    } else if (foundCar.formType === 'Phiếu Kiểm Tra Gầm') {
-                        detailsHtml += `
-                            <div class="result-item"><strong>Hạng mục chưa thay:</strong><span>${foundCar.unconfirmedItems || 'Không có'}</span></div>
-                            <div class="result-item"><strong>Hiện Trạng Khuyến nghị:</strong><span>${foundCar.recommendation || 'Không có'}</span></div>
-                        `;
-                    } else if (foundCar.formType === 'Phiếu Nhận Dịch Vụ') {
-                        detailsHtml += `
-                            <div class="result-item"><strong>Yêu cầu khách hàng:</strong><span>${foundCar.yeuCauKhachHang || 'Không có'}</span></div>
-                            <div class="result-item"><strong>Chẩn đoán ban đầu:</strong><span>${foundCar.chanDoanBanDau || 'Không có'}</span></div>
-                            <div class="result-item">
-                                <strong>Thông tin dịch vụ chi tiết (đã xác nhận):</strong>
-                                ${foundCar.thongTinDichVuChiTietParsed && foundCar.thongTinDichVuChiTietParsed.length > 0 ? 
-                                    `<table class="parsed-service-table">
-                                        <thead>
-                                            <tr><th>STT</th><th>Hạng mục</th><th class="qty-col">SL</th><th class="total-col">Thành tiền</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            ${foundCar.thongTinDichVuChiTietParsed.map(item => `
-                                                <tr>
-                                                    <td>${item.stt}</td>
-                                                    <td>${item.hangMuc || 'N/A'}</td>
-                                                    <td class="qty-col">${item.soLuong || 'N/A'}</td>
-                                                    <td class="total-col">${item.thanhTien ? parseFloat(item.thanhTien.replace(/\./g, '').replace(/,/g, '.')).toLocaleString('vi-VN') : '0'}</td>
-                                                </tr>
-                                            `).join('')}
-                                        </tbody>
-                                    </table>`
-                                    : `<span>Không có</span>`
-                                }
-                            </div>
-                            <div class="result-item"><strong>Tổng cộng:</strong><span>${foundCar.tongCong ? foundCar.tongCong.toLocaleString('vi-VN') + ' VNĐ' : '0 VNĐ'}</span></div>
-                        `;
-                    }
-                    
-                    detailsHtml += `
-                        <div class="result-item"><strong>Ghi chú chung:</strong><span>${foundCar.notes || 'Không có'}</span></div>
-                    `;
-
-                    entryDetails.innerHTML = detailsHtml;
-                    carBlock.appendChild(entryDetails);
-                });
-            }
-        }
-
-        // Main search function
-        async function performSearch(actionType) {
-            const licensePlateInput = document.getElementById('licensePlate').value.trim().toUpperCase();
-            const phoneNumberInput = document.getElementById('phoneNumber').value.trim();
-            const resultsSection = document.getElementById('results');
-            const noResultsMessage = document.getElementById('noResultsMessage');
-            const errorMessage = document.getElementById('errorMessage');
-            const loadingSpinner = document.getElementById('loadingSpinner');
-            const historyButton = document.getElementById('historyButton');
-
-            // Clear previous results and hide messages
-            document.getElementById('carDetailsContainer').innerHTML = '';
-            noResultsMessage.classList.add('hidden');
-            errorMessage.classList.add('hidden');
-            resultsSection.classList.add('hidden');
-            historyButton.classList.add('hidden'); // Hide history button initially
-
-            if (!licensePlateInput && !phoneNumberInput) {
-                errorMessage.textContent = 'Vui lòng nhập Biển số xe hoặc Số điện thoại để tìm kiếm.';
+                errorMessage.textContent = result.message || 'Đã xảy ra lỗi không xác định khi tra cứu dữ liệu.';
                 errorMessage.classList.remove('hidden');
                 resultsSection.classList.remove('hidden');
-                return;
             }
-
-            loadingSpinner.style.display = 'block'; // Show loading spinner
-
-            try {
-                let queryParams = new URLSearchParams();
-                if (licensePlateInput) {
-                    queryParams.append('licensePlate', licensePlateInput);
-                } else if (phoneNumberInput) {
-                    queryParams.append('phoneNumber', phoneNumberInput);
-                }
-                queryParams.append('action', actionType); // 'latest' or 'history'
-
-                const response = await fetch(`${GOOGLE_APPS_SCRIPT_WEB_APP_URL}?${queryParams.toString()}`);
-                const result = await response.json();
-
-                loadingSpinner.style.display = 'none'; // Hide loading spinner
-
-                if (result.result === 'success' && result.data && result.data.length > 0) {
-                    resultsSection.classList.remove('hidden');
-                    displayCarRecords(result.data, actionType === 'history');
-                    
-                    // Show history button only if a single car is found by license plate for 'latest' search
-                    // Or if a phone number search returns multiple cars
-                    if (actionType === 'latest' && (licensePlateInput || (phoneNumberInput && result.data.length > 1))) {
-                            // If searching by phone number and multiple cars are found, the history button should still appear
-                            // If searching by license plate, and a car is found, history button should appear
-                        historyButton.classList.remove('hidden');
-                    } else if (actionType === 'latest' && phoneNumberInput && result.data.length === 1) {
-                        // If phone number search returns only one car, still show history button for that car
-                        historyButton.classList.remove('hidden');
-                    } else if (actionType === 'history') {
-                        // If we are already viewing history, keep the button hidden or show a "Back to Latest" button if desired
-                        historyButton.classList.add('hidden'); // Hide history button when already showing history
-                    }
-
-
-                } else if (result.result === 'not_found') {
-                    resultsSection.classList.remove('hidden');
-                    noResultsMessage.classList.remove('hidden');
-                } else {
-                    resultsSection.classList.remove('hidden');
-                    errorMessage.textContent = result.message || 'Đã xảy ra lỗi không xác định khi tra cứu dữ liệu.';
-                    errorMessage.classList.remove('hidden');
-                }
-            } catch (error) {
-                console.error('Lỗi khi tải dữ liệu:', error);
-                loadingSpinner.style.display = 'none'; // Hide loading spinner on error
-                resultsSection.classList.remove('hidden');
-                errorMessage.textContent = 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau.';
-                errorMessage.classList.remove('hidden');
-            }
+        } catch (error) {
+            console.error('Lỗi khi tải dữ liệu:', error);
+            loadingSpinner.style.display = 'none';
+            errorMessage.textContent = 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau.';
+            errorMessage.classList.remove('hidden');
+            resultsSection.classList.remove('hidden');
         }
+    }
 
-        // Event listeners for buttons
-        document.getElementById('searchButton').addEventListener('click', function() {
-            performSearch('latest'); // Default to latest search
-        });
-
-        document.getElementById('historyButton').addEventListener('click', function() {
-            performSearch('history'); // Perform history search
-        });
-    </script>
+    ELEMENTS.searchButton.addEventListener('click', () => performSearch('latest'));
+    ELEMENTS.historyButton.addEventListener('click', () => performSearch('history'));
+</script>
 </body>
 </html>
