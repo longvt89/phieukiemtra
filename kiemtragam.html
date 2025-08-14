@@ -335,140 +335,141 @@
 
     
     <form id="inspectionForm" action="https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec" method="POST" class="max-w-6xl mx-auto bg-white p-4 shadow-lg rounded-lg" autocomplete="off">
-        <input type="hidden" name="formType" value="PhieuKiemTraGam">
-        <header class="mb-4 border-b border-slate-300 pb-3 flex flex-wrap items-center justify-between">
-            <div class="logo-container mr-3 flex-shrink-0">
-                <img src="https://longvt89.github.io/phieukiemtra/logophilong.jpg"
-                    alt="Logo công ty Phi Long Automobile màu xanh và trắng, thiết kế dạng biểu tượng hình khối hiện đại"
-                    onerror="this.style.display='none'"
-                    style="background-color:#e0f2fe; border-radius: 10px; object-fit: contain;" />
-            </div>
-            <h1 class="text-2xl font-extrabold text-slate-900 flex-grow text-center min-w-[250px]">
-                PHIẾU KIỂM TRA GẦM
-            </h1>
-            
-            <div style="width: 70px;"></div>
-        </header>
+    <input type="hidden" name="formType" value="PhieuKiemTraGam">
+    
+    <header class="mb-4 border-b border-slate-300 pb-3 flex flex-wrap items-center justify-between">
+        <div class="logo-container mr-3 flex-shrink-0">
+            <img src="https://longvt89.github.io/phieukiemtra/logophilong.jpg"
+                 alt="Logo công ty Phi Long Automobile màu xanh và trắng, thiết kế dạng biểu tượng hình khối hiện đại"
+                 onerror="this.style.display='none'"
+                 style="background-color:#e0f2fe; border-radius: 10px; object-fit: contain;" />
+        </div>
+        <h1 class="text-2xl font-extrabold text-slate-900 flex-grow text-center min-w-[250px]">
+            PHIẾU KIỂM TRA GẦM
+        </h1>
+        
+        <div style="width: 70px;"></div>
+    </header>
+
+    
+    <section class="grid grid-cols-6 gap-x-2 gap-y-1 mb-3 text-sm text-slate-800">
+        
+        <div class="col-span-3 info-field-group">
+            <label for="receiveDate">Ngày nhận xe:</label>
+            <input type="date" id="receiveDate" name="receiveDate" required />
+        </div>
+        <div class="col-span-3 info-field-group">
+            <label for="advisor">Cố vấn DV:</label>
+            <input type="text" id="advisor" name="advisor" placeholder="Họ tên cố vấn" />
+        </div>
 
         
-        <section class="grid grid-cols-6 gap-x-2 gap-y-1 mb-3 text-sm text-slate-800">
-            
-            <div class="col-span-3 info-field-group">
-                <label for="receiveDate">Ngày nhận xe:</label>
-                <input type="date" id="receiveDate" name="receiveDate" required />
-            </div>
-            <div class="col-span-3 info-field-group">
-                <label for="advisor">Cố vấn DV:</label>
-                <input type="text" id="advisor" name="advisor" placeholder="Họ tên cố vấn" />
-            </div>
-
-            
-            <div class="col-span-3 info-field-group">
-                <label for="deliverDate">Ngày giao xe:</label>
-                <input type="date" id="deliverDate" name="deliverDate" />
-            </div>
-            <div class="col-span-3 info-field-group">
-                <label for="ktv">KTV:</label>
-                <input type="text" id="ktv" name="ktv" placeholder="Tên KTV" />
-            </div>
-
-            
-            <div class="col-span-2 info-field-group">
-                <label for="customerName">Tên KH:</label>
-                <input type="text" id="customerName" name="customerName" placeholder="Tên khách hàng" />
-            </div>
-            <div class="col-span-2 info-field-group">
-                <label for="vehicleTypeYear">Loại xe/NSX:</label>
-                <input type="text" id="vehicleTypeYear" name="vehicleTypeYear" placeholder="Loại xe / Năm SX" />
-            </div>
-            <div class="col-span-2 info-field-group">
-                <label for="licensePlate">Biển số:</label>
-                <input type="text" id="licensePlate" name="licensePlate" placeholder="Biển số" />
-            </div>
-
-            
-            <div class="col-span-2 info-field-group">
-                <label for="km">Số km:</label>
-                <input type="number" id="km" name="km" placeholder="Km" min="0" />
-            </div>
-            <div class="col-span-4 info-field-group">
-                <label for="note">Ghi chú:</label>
-                <textarea id="note" name="note" placeholder="Ghi chú" rows="1"></textarea>
-            </div>
-
-            
-            <div class="col-span-6 info-field-group">
-                <label for="other">Khác:</label>
-                <input type="text" id="other" name="other" placeholder="Khác" />
-            </div>
-
-            <div class="col-span-6 info-field-group">
-                <label for="branchSelect">Chi nhánh:</label>
-                <select id="branchSelect" name="chiNhanh" class="info-input" required>
-                    <option value="">-- Chọn chi nhánh --</option>
-                    <option value="Chi Nhánh 1 - Bình Phước">Chi Nhánh 1 - Bình Phước</option>
-                    <option value="Chi Nhánh 2 - Đồng Xoài">Chi Nhánh 2 - Đồng Xoài</option>
-                    <option value="Chi Nhánh 3 - Bình Dương">Chi Nhánh 3 - Bình Dương</option>
-                </select>
-            </div>
-            </section>
+        <div class="col-span-3 info-field-group">
+            <label for="deliverDate">Ngày giao xe:</label>
+            <input type="date" id="deliverDate" name="deliverDate" />
+        </div>
+        <div class="col-span-3 info-field-group">
+            <label for="ktv">KTV:</label>
+            <input type="text" id="ktv" name="ktv" placeholder="Tên KTV" />
+        </div>
 
         
-        <section class="mb-3">
-            <div class="form-section-title">1. Yêu cầu ban đầu của khách hàng:</div>
-            <textarea name="customerRequest" placeholder="Nội dung yêu cầu ban đầu" rows="2" class="w-full border border-slate-400 rounded p-1 font-normal"></textarea>
+        <div class="col-span-2 info-field-group">
+            <label for="customerName">Tên KH:</label>
+            <input type="text" id="customerName" name="customerName" placeholder="Tên khách hàng" />
+        </div>
+        <div class="col-span-2 info-field-group">
+            <label for="vehicleTypeYear">Loại xe/NSX:</label>
+            <input type="text" id="vehicleTypeYear" name="vehicleTypeYear" placeholder="Loại xe / Năm SX" />
+        </div>
+        <div class="col-span-2 info-field-group">
+            <label for="licensePlate">Biển số:</label>
+            <input type="text" id="licensePlate" name="licensePlate" placeholder="Biển số" />
+        </div>
+
+        
+        <div class="col-span-2 info-field-group">
+            <label for="km">Số km:</label>
+            <input type="number" id="km" name="km" placeholder="Km" min="0" />
+        </div>
+        <div class="col-span-4 info-field-group">
+            <label for="note">Ghi chú:</label>
+            <textarea id="note" name="note" placeholder="Ghi chú" rows="1"></textarea>
+        </div>
+
+        
+        <div class="col-span-6 info-field-group">
+            <label for="other">Khác:</label>
+            <input type="text" id="other" name="other" placeholder="Khác" />
+        </div>
+
+        <div class="col-span-6 info-field-group">
+            <label for="branchSelect">Chi nhánh:</label>
+            <select id="branchSelect" name="chiNhanh" class="info-input" required>
+                <option value="">-- Chọn chi nhánh --</option>
+                <option value="Chi Nhánh 1 - Bình Phước">Chi Nhánh 1 - Bình Phước</option>
+                <option value="Chi Nhánh 2 - Đồng Xoài">Chi Nhánh 2 - Đồng Xoài</option>
+                <option value="Chi Nhánh 3 - Bình Dương">Chi Nhánh 3 - Bình Dương</option>
+            </select>
+        </div>
         </section>
 
-        
-        <section class="mb-2 text-white font-bold text-xs px-2 py-1 rounded" style="background-color: #003366;">
-            Khoảng cách mỗi lần bảo dưỡng: 5.000 hoặc 3 tháng tùy điều kiện nào tới trước.
-        </section>
+    
+    <section class="mb-3">
+        <div class="form-section-title">1. Yêu cầu ban đầu của khách hàng:</div>
+        <textarea name="customerRequest" placeholder="Nội dung yêu cầu ban đầu" rows="2" class="w-full border border-slate-400 rounded p-1 font-normal"></textarea>
+    </section>
 
-        
-        <section class="overflow-x-auto -mx-4 px-4">
-            <table class="min-w-full border border-slate-400 border-collapse text-sm">
-                <thead>
-                    <tr>
-                        <th class="border border-slate-400 bg-yellow-300 font-semibold p-2 text-left w-64" rowspan="2" style="min-width:180px;">Phần Gầm Trước</th>
-                        <th class="border border-slate-400 bg-yellow-300 font-semibold p-2 text-left" rowspan="2" style="min-width:280px;">Hiện trạng kiểm tra - khuyến nghị!</th>
-                        <th class="border border-slate-400 checkbox-header-thay font-semibold p-2 text-center" rowspan="2" style="width: 50px;">Thay</th>
-                        <th class="border border-slate-400 checkbox-header-luuy font-semibold p-2 text-center" rowspan="2" style="width: 50px;">Lưu Ý</th>
-                        <th class="border border-slate-400 checkbox-header-tot font-semibold p-2 text-center" rowspan="2" style="width: 50px;">Tốt</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                    <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn lái trong</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_lai_trong_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_trong_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_trong_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_trong_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn lái ngoài</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_lai_ngoai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_ngoai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_ngoai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_ngoai_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn trụ trên</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_tru_tren_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_tren_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_tren_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_tren_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn trụ dưới</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_tru_duoi_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_duoi_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_duoi_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_duoi_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn cân bằng ( giằng )</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_can_bang_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_can_bang_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_can_bang_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_can_bang_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn pass lái phụ</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_pass_lai_phu_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_pass_lai_phu_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_pass_lai_phu_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_pass_lai_phu_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Cao su chữ D</td><td class="border border-slate-400 p-1"><textarea name="front_cao_su_chu_d_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_d_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_d_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_d_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Cao su chữ A trên</td><td class="border border-slate-400 p-1"><textarea name="front_cao_su_chu_a_tren_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_tren_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_tren_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_tren_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Cao su chữ A dưới</td><td class="border border-slate-400 p-1"><textarea name="front_cao_su_chu_a_duoi_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_duoi_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_duoi_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_duoi_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Bố thắng trước</td><td class="border border-slate-400 p-1"><textarea name="front_bo_thang_truoc_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bo_thang_truoc_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bo_thang_truoc_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bo_thang_truoc_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Bạc đạn bánh trước trái - phải</td><td class="border border-slate-400 p-1"><textarea name="front_bac_dan_banh_truoc_trai_phai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bac_dan_banh_truoc_trai_phai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bac_dan_banh_truoc_trai_phai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bac_dan_banh_truoc_trai_phai_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Bát bèo phuộc trước</td><td class="border border-slate-400 p-1"><textarea name="front_bat_beo_phuoc_truoc_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bat_beo_phuoc_truoc_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bat_beo_phuoc_truoc_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bat_beo_phuoc_truoc_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Tăm bông phuộc trước</td><td class="border border-slate-400 p-1"><textarea name="front_tam_bong_phuoc_truoc_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_tam_bong_phuoc_truoc_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_tam_bong_phuoc_truoc_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_tam_bong_phuoc_truoc_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Phuộc trước trái - phải</td><td class="border border-slate-400 p-1"><textarea name="front_phuoc_truoc_trai_phai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_phuoc_truoc_trai_phai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_phuoc_truoc_trai_phai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_phuoc_truoc_trai_phai_tot" /></td></tr>
+    
+    <section class="mb-2 text-white font-bold text-xs px-2 py-1 rounded" style="background-color: #003366;">
+        Khoảng cách mỗi lần bảo dưỡng: 5.000 hoặc 3 tháng tùy điều kiện nào tới trước.
+    </section>
 
-                    
-                    <tr>
-                        <td class="border border-slate-400 bg-yellow-300 font-bold text-left p-2" colspan="5">Phần Gầm Sau</td>
-                    </tr>
+    
+    <section class="overflow-x-auto -mx-4 px-4">
+        <table class="min-w-full border border-slate-400 border-collapse text-sm">
+            <thead>
+                <tr>
+                    <th class="border border-slate-400 bg-yellow-300 font-semibold p-2 text-left w-64" rowspan="2" style="min-width:180px;">Phần Gầm Trước</th>
+                    <th class="border border-slate-400 bg-yellow-300 font-semibold p-2 text-left" rowspan="2" style="min-width:280px;">Hiện trạng kiểm tra - khuyến nghị!</th>
+                    <th class="border border-slate-400 checkbox-header-thay font-semibold p-2 text-center" rowspan="2" style="width: 50px;">Thay</th>
+                    <th class="border border-slate-400 checkbox-header-luuy font-semibold p-2 text-center" rowspan="2" style="width: 50px;">Lưu Ý</th>
+                    <th class="border border-slate-400 checkbox-header-tot font-semibold p-2 text-center" rowspan="2" style="width: 50px;">Tốt</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn lái trong</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_lai_trong_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_trong_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_trong_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_trong_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn lái ngoài</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_lai_ngoai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_ngoai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_ngoai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_lai_ngoai_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn trụ trên</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_tru_tren_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_tren_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_tren_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_tren_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn trụ dưới</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_tru_duoi_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_duoi_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_duoi_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_tru_duoi_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn cân bằng ( giằng )</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_can_bang_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_can_bang_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_can_bang_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_can_bang_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn pass lái phụ</td><td class="border border-slate-400 p-1"><textarea name="front_rotuyn_pass_lai_phu_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_pass_lai_phu_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_pass_lai_phu_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_rotuyn_pass_lai_phu_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Cao su chữ D</td><td class="border border-slate-400 p-1"><textarea name="front_cao_su_chu_d_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_d_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_d_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_d_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Cao su chữ A trên</td><td class="border border-slate-400 p-1"><textarea name="front_cao_su_chu_a_tren_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_tren_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_tren_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_tren_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Cao su chữ A dưới</td><td class="border border-slate-400 p-1"><textarea name="front_cao_su_chu_a_duoi_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_duoi_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_duoi_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_cao_su_chu_a_duoi_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Bố thắng trước</td><td class="border border-slate-400 p-1"><textarea name="front_bo_thang_truoc_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bo_thang_truoc_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bo_thang_truoc_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bo_thang_truoc_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Bạc đạn bánh trước trái - phải</td><td class="border border-slate-400 p-1"><textarea name="front_bac_dan_banh_truoc_trai_phai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bac_dan_banh_truoc_trai_phai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bac_dan_banh_truoc_trai_phai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bac_dan_banh_truoc_trai_phai_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Bát bèo phuộc trước</td><td class="border border-slate-400 p-1"><textarea name="front_bat_beo_phuoc_truoc_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bat_beo_phuoc_truoc_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bat_beo_phuoc_truoc_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_bat_beo_phuoc_truoc_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Tăm bông phuộc trước</td><td class="border border-slate-400 p-1"><textarea name="front_tam_bong_phuoc_truoc_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_tam_bong_phuoc_truoc_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_tam_bong_phuoc_truoc_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_tam_bong_phuoc_truoc_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Phuộc trước trái - phải</td><td class="border border-slate-400 p-1"><textarea name="front_phuoc_truoc_trai_phai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_phuoc_truoc_trai_phai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_phuoc_truoc_trai_phai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="front_phuoc_truoc_trai_phai_tot" /></td></tr>
 
-                    
-                    <tr><td class="border border-slate-400 p-1 pl-3">Bố thắng sau</td><td class="border border-slate-400 p-1"><textarea name="rear_bo_thang_sau_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bo_thang_sau_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bo_thang_sau_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bo_thang_sau_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Cao su chữ D</td><td class="border border-slate-400 p-1"><textarea name="rear_cao_su_chu_d_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_cao_su_chu_d_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_cao_su_chu_d_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_cao_su_chu_d_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn cân bằng sau</td><td class="border border-slate-400 p-1"><textarea name="rear_rotuyn_can_bang_sau_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_rotuyn_can_bang_sau_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_rotuyn_can_bang_sau_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_rotuyn_can_bang_sau_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Bạc đạn bánh sau trái - phải</td><td class="border border-slate-400 p-1"><textarea name="rear_bac_dan_banh_sau_trai_phai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bac_dan_banh_sau_trai_phai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bac_dan_banh_sau_trai_phai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bac_dan_banh_sau_trai_phai_tot" /></td></tr>
-                    <tr><td class="border border-slate-400 p-1 pl-3">Phuộc sau trái - phải</td><td class="border border-slate-400 p-1"><textarea name="rear_phuoc_sau_trai_phai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_phuoc_sau_trai_phai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_phuoc_sau_trai_phai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_phuoc_sau_trai_phai_tot" /></td></tr>
-                </tbody>
-            </table>
-        </section>
-        
-    </form>
+                
+                <tr>
+                    <td class="border border-slate-400 bg-yellow-300 font-bold text-left p-2" colspan="5">Phần Gầm Sau</td>
+                </tr>
+
+                
+                <tr><td class="border border-slate-400 p-1 pl-3">Bố thắng sau</td><td class="border border-slate-400 p-1"><textarea name="rear_bo_thang_sau_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bo_thang_sau_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bo_thang_sau_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bo_thang_sau_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Cao su chữ D</td><td class="border border-slate-400 p-1"><textarea name="rear_cao_su_chu_d_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_cao_su_chu_d_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_cao_su_chu_d_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_cao_su_chu_d_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Rotuyn cân bằng sau</td><td class="border border-slate-400 p-1"><textarea name="rear_rotuyn_can_bang_sau_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_rotuyn_can_bang_sau_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_rotuyn_can_bang_sau_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_rotuyn_can_bang_sau_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Bạc đạn bánh sau trái - phải</td><td class="border border-slate-400 p-1"><textarea name="rear_bac_dan_banh_sau_trai_phai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bac_dan_banh_sau_trai_phai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bac_dan_banh_sau_trai_phai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_bac_dan_banh_sau_trai_phai_tot" /></td></tr>
+                <tr><td class="border border-slate-400 p-1 pl-3">Phuộc sau trái - phải</td><td class="border border-slate-400 p-1"><textarea name="rear_phuoc_sau_trai_phai_status" class="w-full border border-slate-300 rounded p-1 table-textarea"></textarea></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_phuoc_sau_trai_phai_thay" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_phuoc_sau_trai_phai_luuy" /></td><td class="border border-slate-400 text-center"><input type="checkbox" name="rear_phuoc_sau_trai_phai_tot" /></td></tr>
+            </tbody>
+        </table>
+    </section>
+    
+</form>
 
     <script>
         // Constants for Local Storage keys
