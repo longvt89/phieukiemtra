@@ -8,417 +8,276 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* Align to top to prevent content overflow */
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .tire-form-button {
-            background: #28a745;
-            color: white;
-            padding: 5px 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .tire-form-button:hover { background: #218838; }
-        .container {
-            background-color: #ffffff;
-            padding: 32px;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            width: 100%;
-            max-width: 900px; /* Increased max-width for better display of results */
-        }
-        .input-group label {
-            font-weight: 500;
-            color: #374151;
-            margin-bottom: 8px;
-            display: block;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 16px;
-            color: #4b5563;
-        }
-        .search-button, .history-button {
-            background-color: #4f46e5;
-            color: #ffffff;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out;
-            width: 100%;
-            margin-top: 10px; /* Added margin for separation */
-        }
-        .search-button:hover, .history-button:hover {
-            background-color: #4338ca;
-        }
-        .history-button {
-            background-color: #10b981; /* Green for history */
-        }
-        .history-button:hover {
-            background-color: #059669;
-        }
-        .result-section {
-            margin-top: 32px;
-            border-top: 1px solid #e5e7eb;
-            padding-top: 24px;
-        }
-        .car-entry-block {
-            background-color: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .car-entry-block:last-child {
-            margin-bottom: 0;
-        }
-        .car-entry-block h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #6366f1;
-            padding-bottom: 10px;
-        }
-        .result-item {
-            display: flex;
-            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
-            margin-bottom: 12px;
-            padding: 8px 0;
-            border-bottom: 1px dashed #e5e7eb;
-        }
-        .result-item:last-child {
-            border-bottom: none;
-        }
-        .result-item strong {
-            flex: 0 0 180px; /* Fixed width for labels */
-            color: #1f2937;
-            font-weight: 600;
-        }
-        .result-item span {
-            flex: 1; /* Take remaining space */
-            color: #4b5563;
-            /* Để hiển thị xuống dòng từ \n */
-            white-space: pre-wrap; /* Giúp các ký tự xuống dòng (\n) được hiển thị */
-        }
-        .no-results {
-            color: #ef4444;
-            text-align: center;
-            font-weight: 600;
-            margin-top: 20px;
-        }
-        .loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #4f46e5;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-            display: none; /* Hidden by default */
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-            .result-item strong {
-                flex: 1 0 100%; /* Labels take full width on small screens */
-                margin-bottom: 4px;
-            }
-            .result-item span {
-                flex: 1 0 100%; /* Values take full width on small screens */
-            }
-        }
-        /* Styles for parsed service items table */
-        .parsed-service-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 0.9em;
-        }
-        .parsed-service-table th,
-        .parsed-service-table td {
-            border: 1px solid #e5e7eb;
-            padding: 8px;
-            text-align: left;
-        }
-        .parsed-service-table th {
-            background-color: #eef2ff; /* Light blue header */
-            font-weight: 600;
-            color: #374151;
-        }
-        .parsed-service-table tr:nth-child(even) {
-            background-color: #f6f8ff; /* Lightest blue for even rows */
-        }
-        .parsed-service-table td.qty-col,
-        .parsed-service-table td.total-col {
-            text-align: right;
-            white-space: nowrap; /* Keep numbers on one line */
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .container { background-color: #ffffff; padding: 32px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); width: 100%; max-width: 900px; margin: 20px; }
+        .search-button { background-color: #4f46e5; color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease-in-out; width: 100%; }
+        .search-button:hover { background-color: #4338ca; }
+        .loading-spinner { border: 4px solid #f3f3f3; border-top: 4px solid #4f46e5; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .result-section { margin-top: 32px; border-top: 1px solid #e5e7eb; padding-top: 24px; }
+        .result-block { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+        .result-block h3 { font-size: 1.25rem; font-weight: 600; color: #1f2937; margin-bottom: 15px; border-bottom: 2px solid #6366f1; padding-bottom: 10px; }
+        .history-block { background-color: #fff; border: 1px solid #d1d5db; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        .history-block h4 { font-size: 1.1rem; font-weight: 600; color: #374151; margin-bottom: 10px; }
+        .result-item { display: flex; flex-wrap: wrap; margin-bottom: 12px; padding: 8px 0; border-bottom: 1px dashed #e5e7eb; }
+        .result-item:last-child { border-bottom: none; }
+        .result-item strong { flex: 0 0 220px; color: #1f2937; font-weight: 600; }
+        .result-item span { flex: 1; color: #4b5563; white-space: pre-wrap; }
+        .no-results { color: #ef4444; text-align: center; font-weight: 600; margin-top: 20px; }
+        .parsed-service-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
+        .parsed-service-table th, .parsed-service-table td { border: 1px solid #e5e7eb; padding: 8px; text-align: left; }
+        .parsed-service-table th { background-color: #eef2ff; font-weight: 600; color: #374151; }
+        .parsed-service-table td.num-col { text-align: right; white-space: nowrap; }
     </style>
 </head>
-<body>
+<body class="flex justify-center items-start min-h-screen">
     <div class="container">
-        <div class="button-group">
-            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/phieunhandichvu.html'">📄 Phiếu Nhận Dịch Vụ </button>
-            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/Phieukiemlop2.html'">📄 Phiếu Kiểm Tra Lốp</button>
-            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/index.html'">📄 Phiếu Kiểm Tra Xe </button>
-            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/kiemtragam.html'">📄 Phiếu Kiểm Gầm</button>
-            <button class="tire-form-button" onclick="window.location.href='https://longvt89.github.io/phieukiemtra/baoduong.html'">📄 Phiếu Bảo Dưỡng</button>
-        </div>
-    <div class="container">
-        <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Tra Cứu Thông Tin Xe</h1>
-        <h2 style="font-size: 14px;">Tra Cứu Thông Tin Xe chỉ nhập biển số hoặc số điện thoại </h2>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center">Tra Cứu Thông Tin Xe</h1>
+        <p class="text-center text-gray-500 mb-8">Nhập Biển số xe hoặc Số điện thoại để tìm kiếm.</p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div class="input-group">
-                <label for="licensePlate" class="block text-sm">Biển số xe:</label>
-                <input type="text" id="licensePlate" placeholder="Nhập biển số xe" class="mt-1">
+                <label for="licensePlate" class="block text-sm font-medium text-gray-700">Biển số xe:</label>
+                <input type="text" id="licensePlate" placeholder="Ví dụ: 51K-123.45" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
             </div>
             <div class="input-group">
-                <label for="phoneNumber" class="block text-sm">Số điện thoại:</label>
-                <input type="text" id="phoneNumber" placeholder="Nhập số điện thoại" class="mt-1">
+                <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Số điện thoại:</label>
+                <input type="text" id="phoneNumber" placeholder="Ví dụ: 090xxxxxxx" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
             </div>
         </div>
 
-        <button id="searchButton" class="search-button">Tìm Kiếm</button>
-        <button id="historyButton" class="history-button hidden">Xem Lịch Sử</button>
+        <button id="searchButton" class="search-button">🔍 Tìm Kiếm</button>
 
         <div id="loadingSpinner" class="loading-spinner"></div>
 
         <div id="results" class="result-section hidden">
-            <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Mô tả hiện trạng xe</h2>
-            <div id="carDetailsContainer">
-                </div>
-            <div id="noResultsMessage" class="no-results hidden">
-                Không tìm thấy thông tin xe phù hợp.
             </div>
-            <div id="errorMessage" class="no-results hidden text-red-600">
-                Đã xảy ra lỗi khi tra cứu dữ liệu. Vui lòng thử lại sau.
-            </div>
-        </div>
     </div>
 
     <script>
-        // !!! QUAN TRỌNG: Thay thế URL này bằng URL Web App đã triển khai từ Google Apps Script của bạn !!!
-        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec'; // Cập nhật URL này nếu bạn triển khai lại Apps Script
+        // !!! QUAN TRỌNG: THAY THẾ URL BÊN DƯỚI BẰNG URL WEB APP CỦA BẠN
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec';
 
-        // Function to display car records
-        function displayCarRecords(records, isHistory = false) {
-            const carDetailsContainer = document.getElementById('carDetailsContainer');
-            carDetailsContainer.innerHTML = ''; // Clear previous results
+        // ĐỊNH NGHĨA NHÃN TIẾNG VIỆT CHO TẤT CẢ CÁC CỘT
+        const FIELD_LABELS = {
+            // Thông tin chung
+            FormType: "Loại Phiếu", Timestamp: "Ngày Tạo", hoten: "Tên Khách Hàng", customerName: "Tên Khách Hàng",
+            dienthoai: "Số Điện Thoại", email: "Email", bienso: "Biển Số Xe", licensePlate: "Biển Số Xe", 
+            loaixe: "Loại Xe", carModel: "Dòng Xe", vehicleTypeYear: "Đời xe", hangXe: "Hãng Xe",
+            sokm: "Số KM", sokmhientai: "Số KM Hiện Tại", mileage: "Số KM", sokmcu: "Số KM Cũ",
+            chiNhanh: "Chi Nhánh", branch: "Chi Nhánh", daiLyPhuTrach: "Đại lý phụ trách",
+            nhanxe: "Ngày Nhận Xe", giaoxe: "Ngày Giao Xe", duKienGiaoXe: "Dự Kiến Giao Xe", 
+            inspectionDate: "Ngày Kiểm Tra", receiveDate: "Ngày nhận", deliverDate: "Ngày giao",
+            receiptNumber: "Số phiếu", currentMonthYear: "Tháng/Năm",
+            
+            // Thông tin phiếu
+            yeuCauKhachHang: "Yêu Cầu Khách Hàng", customerRequest: "Yêu Cầu Khách Hàng",
+            ghiChuChung: "Ghi Chú Chung", note: "Ghi Chú", other: "Khác",
+            advisor: "Cố vấn dịch vụ", serviceAdvisor: "Cố vấn dịch vụ", nguoiTiepNhan: "Người tiếp nhận",
+            ktv: "Kỹ thuật viên", technician: "Kỹ thuật viên", inspector: "Người kiểm tra",
+            capDoBaoDuong: "Cấp độ bảo dưỡng", chanDoanBanDau: "Chẩn đoán ban đầu",
+            
+            // Thông tin lốp (Tire Info)
+            sizeLopKhuyenCao: "Size lốp khuyến cáo",
+            tire_pressure_FL: "Áp suất lốp (Trước Trái)", tire_thickness_FL: "Độ dày gai (Trước Trái)",
+            tire_pressure_FR: "Áp suất lốp (Trước Phải)", tire_thickness_FR: "Độ dày gai (Trước Phải)",
+            tire_pressure_RL: "Áp suất lốp (Sau Trái)", tire_thickness_RL: "Độ dày gai (Sau Trái)",
+            tire_pressure_RR: "Áp suất lốp (Sau Phải)", tire_thickness_RR: "Độ dày gai (Sau Phải)",
+            tire_pressure_Spare: "Áp suất lốp (Sơ cua)", tire_thickness_Spare: "Độ dày gai (Sơ cua)",
+            tire_size_1: "Lốp 1 - Kích thước", tire_depth_1: "Lốp 1 - Độ sâu gai", tire_pressure_1: "Lốp 1 - Áp suất", tire_dot_1: "Lốp 1 - DATE",
+            tire_size_2: "Lốp 2 - Kích thước", tire_depth_2: "Lốp 2 - Độ sâu gai", tire_pressure_2: "Lốp 2 - Áp suất", tire_dot_2: "Lốp 2 - DATE",
+            tire_size_3: "Lốp 3 - Kích thước", tire_depth_3: "Lốp 3 - Độ sâu gai", tire_pressure_3: "Lốp 3 - Áp suất", tire_dot_3: "Lốp 3 - DATE",
+            tire_size_4: "Lốp 4 - Kích thước", tire_depth_4: "Lốp 4 - Độ sâu gai", tire_pressure_4: "Lốp 4 - Áp suất", tire_dot_4: "Lốp 4 - DATE",
+            spare_tire_size: "Lốp sơ cua - Kích thước", spare_tire_depth: "Lốp sơ cua - Độ sâu gai", spare_tire_pressure: "Lốp sơ cua - Áp suất", spare_tire_dot: "Lốp sơ cua - DATE",
+            tireOverallCondition: "Ghi chú tình trạng lốp", tireStatusNote: "Ghi chú tình trạng lốp",
 
-            if (records.length === 0) {
-                document.getElementById('noResultsMessage').classList.remove('hidden');
+            // Thông tin phanh (Brake Info)
+            front_brake_pad: "Má phanh trước", rear_brake_pad: "Má phanh sau",
+            brakeNote: "Ghi chú phanh", brake_recommendation: "Khuyến nghị phanh",
+            
+            // Khuyến nghị (Recommendations)
+            rec_canchinhthuoclai: "KN: Cân chỉnh thước lái", rec_canbangdong: "KN: Cân bằng động",
+            rec_daolop: "KN: Đảo lốp", rec_thaythe: "KN: Thay thế",
+
+            // Tổng hợp & Chữ ký
+            tongCong: "Tổng Cộng", tongCongThanhToan: "Tổng Cộng Thanh Toán",
+            khachHangKyTen: "Khách hàng ký tên",
+            
+            // Các trường chi tiết
+            chiTietKiemTraAnToan: "Chi Tiết Kiểm Tra An Toàn", bangChiTietCongViec: "Bảng Chi Tiết Công Việc",
+            thongTinDichVuChiTiet: "Thông Tin Dịch Vụ Chi Tiết",
+            
+            // Các trường kiểm tra gầm (sẽ hiển thị nếu có giá trị là 'X')
+            front_rotuyn_lai_trong_thay: "Rô tuyn lái trong (Trước) - Thay", front_rotuyn_lai_trong_luuy: "Rô tuyn lái trong (Trước) - Lưu ý",
+            front_rotuyn_lai_ngoai_thay: "Rô tuyn lái ngoài (Trước) - Thay", front_rotuyn_lai_ngoai_luuy: "Rô tuyn lái ngoài (Trước) - Lưu ý",
+            front_rotuyn_tru_tren_thay: "Rô tuyn trụ trên (Trước) - Thay", front_rotuyn_tru_tren_luuy: "Rô tuyn trụ trên (Trước) - Lưu ý",
+            front_rotuyn_tru_duoi_thay: "Rô tuyn trụ dưới (Trước) - Thay", front_rotuyn_tru_duoi_luuy: "Rô tuyn trụ dưới (Trước) - Lưu ý",
+            front_rotuyn_can_bang_thay: "Rô tuyn cân bằng (Trước) - Thay", front_rotuyn_can_bang_luuy: "Rô tuyn cân bằng (Trước) - Lưu ý",
+            front_rotuyn_pass_lai_phu_thay: "Rotuyn pass lái phụ (Trước) - Thay", front_rotuyn_pass_lai_phu_luuy: "Rotuyn pass lái phụ (Trước) - Lưu ý",
+            front_cao_su_chu_d_thay: "Cao su chữ D (Trước) - Thay", front_cao_su_chu_d_luuy: "Cao su chữ D (Trước) - Lưu ý",
+            front_cao_su_chu_a_tren_thay: "Cao su chữ A trên (Trước) - Thay", front_cao_su_chu_a_tren_luuy: "Cao su chữ A trên (Trước) - Lưu ý",
+            front_cao_su_chu_a_duoi_thay: "Cao su chữ A dưới (Trước) - Thay", front_cao_su_chu_a_duoi_luuy: "Cao su chữ A dưới (Trước) - Lưu ý",
+            front_bo_thang_truoc_thay: "Bộ thắng trước - Thay", front_bo_thang_truoc_luuy: "Bộ thắng trước - Lưu ý",
+            front_bac_dan_banh_truoc_trai_phai_thay: "Bạc đạn bánh trước - Thay", front_bac_dan_banh_truoc_trai_phai_luuy: "Bạc đạn bánh trước - Lưu ý",
+            front_bat_beo_phuoc_truoc_thay: "Bát bèo phuộc (Trước) - Thay", front_bat_beo_phuoc_truoc_luuy: "Bát bèo phuộc (Trước) - Lưu ý",
+            front_tam_bong_phuoc_truoc_thay: "Tăm bông phuộc (Trước) - Thay", front_tam_bong_phuoc_truoc_luuy: "Tăm bông phuộc (Trước) - Lưu ý",
+            front_phuoc_truoc_trai_phai_thay: "Phuộc trước - Thay", front_phuoc_truoc_trai_phai_luuy: "Phuộc trước - Lưu ý",
+            rear_bo_thang_sau_thay: "Bộ thắng sau - Thay", rear_bo_thang_sau_luuy: "Bộ thắng sau - Lưu ý",
+            rear_cao_su_chu_d_thay: "Cao su chữ D (Sau) - Thay", rear_cao_su_chu_d_luuy: "Cao su chữ D (Sau) - Lưu ý",
+            rear_rotuyn_can_bang_sau_thay: "Rô tuyn cân bằng (Sau) - Thay", rear_rotuyn_can_bang_sau_luuy: "Rô tuyn cân bằng (Sau) - Lưu ý",
+            rear_bac_dan_banh_sau_trai_phai_thay: "Bạc đạn bánh sau - Thay", rear_bac_dan_banh_sau_trai_phai_luuy: "Bạc đạn bánh sau - Lưu ý",
+            rear_phuoc_sau_trai_phai_thay: "Phuộc sau - Thay", rear_phuoc_sau_trai_phai_luuy: "Phuộc sau - Lưu ý",
+        };
+        
+        // Các trường này sẽ được ẩn đi để tránh hiển thị trùng lặp hoặc không cần thiết
+        const IGNORED_FIELDS = new Set([
+            'sortTimestamp', 'thongTinDichVuChiTietParsed', 'FormType', 'Timestamp', 'kiemTraAnToan',
+            'khachHangKyTen', // Ẩn vì không có giá trị thực
+            // Ẩn các cột kiểm tra gầm chi tiết, chỉ hiển thị cột có giá trị
+            'front_rotuyn_lai_trong_status', 'front_rotuyn_lai_trong_tot',
+            'front_rotuyn_lai_ngoai_status', 'front_rotuyn_lai_ngoai_tot',
+            'front_rotuyn_tru_tren_status', 'front_rotuyn_tru_tren_tot',
+            'front_rotuyn_tru_duoi_status', 'front_rotuyn_tru_duoi_tot',
+            'front_rotuyn_can_bang_status', 'front_rotuyn_can_bang_tot',
+            'front_rotuyn_pass_lai_phu_status', 'front_rotuyn_pass_lai_phu_tot',
+            'front_cao_su_chu_d_status', 'front_cao_su_chu_d_tot',
+            'front_cao_su_chu_a_tren_status', 'front_cao_su_chu_a_tren_tot',
+            'front_cao_su_chu_a_duoi_status', 'front_cao_su_chu_a_duoi_tot',
+            'front_bo_thang_truoc_status', 'front_bo_thang_truoc_tot',
+            'front_bac_dan_banh_truoc_trai_phai_status', 'front_bac_dan_banh_truoc_trai_phai_tot',
+            'front_bat_beo_phuoc_truoc_status', 'front_bat_beo_phuoc_truoc_tot',
+            'front_tam_bong_phuoc_truoc_status', 'front_tam_bong_phuoc_truoc_tot',
+            'front_phuoc_truoc_trai_phai_status', 'front_phuoc_truoc_trai_phai_tot',
+            'rear_bo_thang_sau_status', 'rear_bo_thang_sau_tot',
+            'rear_cao_su_chu_d_status', 'rear_cao_su_chu_d_tot',
+            'rear_rotuyn_can_bang_sau_status', 'rear_rotuyn_can_bang_sau_tot',
+            'rear_bac_dan_banh_sau_trai_phai_status', 'rear_bac_dan_banh_sau_trai_phai_tot',
+            'rear_phuoc_sau_trai_phai_status', 'rear_phuoc_sau_trai_phai_tot'
+        ]);
+
+        const searchButton = document.getElementById('searchButton');
+        const licensePlateInput = document.getElementById('licensePlate');
+        const phoneNumberInput = document.getElementById('phoneNumber');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const resultsContainer = document.getElementById('results');
+
+        searchButton.addEventListener('click', searchData);
+        licensePlateInput.addEventListener('keyup', (event) => { if (event.key === 'Enter') searchData(); });
+        phoneNumberInput.addEventListener('keyup', (event) => { if (event.key === 'Enter') searchData(); });
+
+        async function searchData() {
+            const plate = licensePlateInput.value.trim();
+            const phone = phoneNumberInput.value.trim();
+
+            if (!plate && !phone) {
+                alert('Vui lòng nhập Biển số xe hoặc Số điện thoại.');
                 return;
             }
 
-            document.getElementById('noResultsMessage').classList.add('hidden');
-
-            const groupedRecords = {};
-            // Group records by license plate if searching by phone number and showing history
-            if (isHistory && document.getElementById('phoneNumber').value.trim() && !document.getElementById('licensePlate').value.trim()) {
-                records.forEach(record => {
-                    const lp = record.licensePlate || 'Không rõ biển số';
-                    if (!groupedRecords[lp]) {
-                        groupedRecords[lp] = [];
-                    }
-                    groupedRecords[lp].push(record);
-                });
-            } else {
-                // If searching by license plate, or showing latest, just use the records directly
-                // For 'latest', there will only be one record
-                // For history by license plate, all records are for that one license plate
-                // Sử dụng foundCar.licensePlate hoặc foundCar.phoneNumber để làm key nếu cần
-                records.forEach(record => {
-                    const key = record.licensePlate || record.phoneNumber || 'Thông tin xe';
-                    if (!groupedRecords[key]) {
-                        groupedRecords[key] = [];
-                    }
-                    groupedRecords[key].push(record);
-                });
-            }
-
-            for (const key in groupedRecords) { // Đổi licensePlate thành key
-                const recordsForThisCar = groupedRecords[key];
-                
-                const carBlock = document.createElement('div');
-                carBlock.className = 'car-entry-block';
-                carDetailsContainer.appendChild(carBlock);
-
-                const carTitle = document.createElement('h3');
-                carTitle.textContent = `Xe: ${key} (${recordsForThisCar[0].customerName || 'N/A'} - ${recordsForThisCar[0].phoneNumber || 'N/A'})`; // Sử dụng key
-                carBlock.appendChild(carTitle);
-
-                recordsForThisCar.forEach((foundCar, index) => {
-                    const entryTitle = document.createElement('h4');
-                    entryTitle.className = 'text-lg font-semibold text-gray-600 mb-3 mt-4';
-                    entryTitle.textContent = `Lần nhập liệu: ${foundCar.entryDate} - Loại phiếu: ${foundCar.formType}`;
-                    carBlock.appendChild(entryTitle);
-
-                    const entryDetails = document.createElement('div');
-                    let detailsHtml = `
-                        <div class="result-item"><strong>Họ tên khách:</strong><span>${foundCar.customerName || 'N/A'}</span></div>
-                        <div class="result-item"><strong>Số điện thoại:</strong><span>${foundCar.phoneNumber || 'N/A'}</span></div>
-                        <div class="result-item"><strong>Biển số xe:</strong><span>${foundCar.licensePlate || 'N/A'}</span></div>
-                        <div class="result-item"><strong>Hãng/Đời xe:</strong><span>${foundCar.carModel || 'N/A'}</span></div>
-                        <div class="result-item"><strong>Số kilomet:</strong><span>${foundCar.odometer || 'N/A'}</span></div>
-                        <div class="result-item"><strong>Ngày nhập liệu:</strong><span>${foundCar.entryDate || 'N/A'}</span></div>
-                    `;
-
-                    if (foundCar.formType === 'Phiếu Kiểm Tra Lốp') {
-                        detailsHtml += `
-                            <div class="result-item"><strong>Size lốp:</strong><span>${foundCar.tireSize || 'N/A'}</span></div>
-                            <div class="result-item"><strong>Hiện trạng lốp:</strong><span>${foundCar.tireStatus || 'Không có thông tin'}</span></div>
-                            <div class="result-item"><strong>Hạng mục chưa thay:</strong><span>${foundCar.unconfirmedItems || 'Không có'}</span></div>
-                            <div class="result-item"><strong>Hiện Trạng Khuyến nghị:</strong><span>${foundCar.recommendation || 'Không có'}</span></div>
-                        `;
-                    } else if (foundCar.formType === 'Phiếu Kiểm Tra Gầm') {
-                        detailsHtml += `
-                            <div class="result-item"><strong>Hạng mục chưa thay:</strong><span>${foundCar.unconfirmedItems || 'Không có'}</span></div>
-                            <div class="result-item"><strong>Hiện Trạng Khuyến nghị:</strong><span>${foundCar.recommendation || 'Không có'}</span></div>
-                        `;
-                    } else if (foundCar.formType === 'Phiếu Nhận Dịch Vụ') {
-                        detailsHtml += `
-                            <div class="result-item"><strong>Yêu cầu khách hàng:</strong><span>${foundCar.yeuCauKhachHang || 'Không có'}</span></div>
-                            <div class="result-item"><strong>Chẩn đoán ban đầu:</strong><span>${foundCar.chanDoanBanDau || 'Không có'}</span></div>
-                            <div class="result-item">
-                                <strong>Thông tin dịch vụ chi tiết (đã xác nhận):</strong>
-                                ${foundCar.thongTinDichVuChiTietParsed && foundCar.thongTinDichVuChiTietParsed.length > 0 ? 
-                                    `<table class="parsed-service-table">
-                                        <thead>
-                                            <tr><th>STT</th><th>Hạng mục</th><th class="qty-col">SL</th><th class="total-col">Thành tiền</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            ${foundCar.thongTinDichVuChiTietParsed.map(item => `
-                                                <tr>
-                                                    <td>${item.stt}</td>
-                                                    <td>${item.hangMuc || 'N/A'}</td>
-                                                    <td class="qty-col">${item.soLuong || 'N/A'}</td>
-                                                    <td class="total-col">${item.thanhTien ? parseFloat(item.thanhTien.replace(/\./g, '').replace(/,/g, '.')).toLocaleString('vi-VN') : '0'}</td>
-                                                </tr>
-                                            `).join('')}
-                                        </tbody>
-                                    </table>`
-                                    : `<span>Không có</span>`
-                                }
-                            </div>
-                            <div class="result-item"><strong>Tổng cộng:</strong><span>${foundCar.tongCong ? foundCar.tongCong.toLocaleString('vi-VN') + ' VNĐ' : '0 VNĐ'}</span></div>
-                        `;
-                    }
-                    
-                    detailsHtml += `
-                        <div class="result-item"><strong>Ghi chú chung:</strong><span>${foundCar.notes || 'Không có'}</span></div>
-                    `;
-
-                    entryDetails.innerHTML = detailsHtml;
-                    carBlock.appendChild(entryDetails);
-                });
-            }
-        }
-
-        // Main search function
-        async function performSearch(actionType) {
-            const licensePlateInput = document.getElementById('licensePlate').value.trim().toUpperCase();
-            const phoneNumberInput = document.getElementById('phoneNumber').value.trim();
-            const resultsSection = document.getElementById('results');
-            const noResultsMessage = document.getElementById('noResultsMessage');
-            const errorMessage = document.getElementById('errorMessage');
-            const loadingSpinner = document.getElementById('loadingSpinner');
-            const historyButton = document.getElementById('historyButton');
-
-            // Clear previous results and hide messages
-            document.getElementById('carDetailsContainer').innerHTML = '';
-            noResultsMessage.classList.add('hidden');
-            errorMessage.classList.add('hidden');
-            resultsSection.classList.add('hidden');
-            historyButton.classList.add('hidden'); // Hide history button initially
-
-            if (!licensePlateInput && !phoneNumberInput) {
-                errorMessage.textContent = 'Vui lòng nhập Biển số xe hoặc Số điện thoại để tìm kiếm.';
-                errorMessage.classList.remove('hidden');
-                resultsSection.classList.remove('hidden');
-                return;
-            }
-
-            loadingSpinner.style.display = 'block'; // Show loading spinner
+            loadingSpinner.style.display = 'block';
+            resultsContainer.innerHTML = '';
+            resultsContainer.classList.add('hidden');
 
             try {
-                let queryParams = new URLSearchParams();
-                if (licensePlateInput) {
-                    queryParams.append('licensePlate', licensePlateInput);
-                } else if (phoneNumberInput) {
-                    queryParams.append('phoneNumber', phoneNumberInput);
-                }
-                queryParams.append('action', actionType); // 'latest' or 'history'
-
-                const response = await fetch(`${GOOGLE_APPS_SCRIPT_WEB_APP_URL}?${queryParams.toString()}`);
+                const url = new URL(SCRIPT_URL);
+                if (plate) url.searchParams.append('plate', plate);
+                if (phone) url.searchParams.append('phone', phone);
+                
+                const response = await fetch(url);
                 const result = await response.json();
 
-                loadingSpinner.style.display = 'none'; // Hide loading spinner
-
                 if (result.result === 'success' && result.data && result.data.length > 0) {
-                    resultsSection.classList.remove('hidden');
-                    displayCarRecords(result.data, actionType === 'history');
-                    
-                    // Show history button only if a single car is found by license plate for 'latest' search
-                    // Or if a phone number search returns multiple cars
-                    if (actionType === 'latest' && (licensePlateInput || (phoneNumberInput && result.data.length > 1))) {
-                            // If searching by phone number and multiple cars are found, the history button should still appear
-                            // If searching by license plate, and a car is found, history button should appear
-                        historyButton.classList.remove('hidden');
-                    } else if (actionType === 'latest' && phoneNumberInput && result.data.length === 1) {
-                        // If phone number search returns only one car, still show history button for that car
-                        historyButton.classList.remove('hidden');
-                    } else if (actionType === 'history') {
-                        // If we are already viewing history, keep the button hidden or show a "Back to Latest" button if desired
-                        historyButton.classList.add('hidden'); // Hide history button when already showing history
-                    }
-
-
-                } else if (result.result === 'not_found') {
-                    resultsSection.classList.remove('hidden');
-                    noResultsMessage.classList.remove('hidden');
+                    displayResults(result.data);
+                } else if (result.result === 'error') {
+                    displayError(result.message);
                 } else {
-                    resultsSection.classList.remove('hidden');
-                    errorMessage.textContent = result.message || 'Đã xảy ra lỗi không xác định khi tra cứu dữ liệu.';
-                    errorMessage.classList.remove('hidden');
+                    displayError('Không tìm thấy thông tin phù hợp.');
                 }
             } catch (error) {
-                console.error('Lỗi khi tải dữ liệu:', error);
-                loadingSpinner.style.display = 'none'; // Hide loading spinner on error
-                resultsSection.classList.remove('hidden');
-                errorMessage.textContent = 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau.';
-                errorMessage.classList.remove('hidden');
+                console.error('Lỗi khi tìm kiếm:', error);
+                displayError('Đã xảy ra lỗi kết nối. Vui lòng thử lại.');
+            } finally {
+                loadingSpinner.style.display = 'none';
             }
         }
 
-        // Event listeners for buttons
-        document.getElementById('searchButton').addEventListener('click', function() {
-            performSearch('latest'); // Default to latest search
-        });
+        function displayResults(records) {
+            resultsContainer.classList.remove('hidden');
+            
+            // Lần gần nhất
+            const latestRecord = records[0];
+            const latestHtml = createRecordDetailHtml(latestRecord, true);
+            resultsContainer.insertAdjacentHTML('beforeend', latestHtml);
 
-        document.getElementById('historyButton').addEventListener('click', function() {
-            performSearch('history'); // Perform history search
-        });
+            // Lịch sử (nếu có)
+            if (records.length > 1) {
+                const historyHtml = records.slice(1)
+                    .map(record => createRecordDetailHtml(record, false))
+                    .join('');
+                
+                const historyWrapper = `
+                    <div class="mt-8">
+                        <h2 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Lịch sử các lần trước</h2>
+                        ${historyHtml}
+                    </div>
+                `;
+                resultsContainer.insertAdjacentHTML('beforeend', historyWrapper);
+            }
+        }
+
+        function createRecordDetailHtml(record, isLatest) {
+            const blockClass = isLatest ? 'result-block' : 'history-block';
+            const titleTag = isLatest ? 'h3' : 'h4';
+            const title = isLatest ? 'Kết quả mới nhất' : 'Lịch sử';
+
+            let detailsHtml = '';
+            for (const key in record) {
+                // Chỉ hiển thị nếu có giá trị, không nằm trong danh sách ẩn và không phải là cột dịch vụ chi tiết
+                if (record.hasOwnProperty(key) && record[key] && !IGNORED_FIELDS.has(key) && !key.startsWith('service_') && !key.startsWith('item_')) {
+                    const label = FIELD_LABELS[key] || key; // Dịch tên cột sang Tiếng Việt
+                    const value = (record[key] === 'X' || record[key] === 'on') ? 'Có' : record[key];
+
+                    detailsHtml += `<div class="result-item"><strong>${label}:</strong> <span>${value}</span></div>`;
+                }
+            }
+            
+            // Xử lý bảng chi tiết dịch vụ cho Phiếu Bảo Dưỡng
+            if (record.thongTinDichVuChiTietParsed && record.thongTinDichVuChiTietParsed.length > 0) {
+                let tableRows = record.thongTinDichVuChiTietParsed.map(item => `
+                    <tr>
+                        <td>${item.stt}</td>
+                        <td>${item.hangMuc}</td>
+                        <td>${item.dienGiai}</td>
+                        <td class="num-col">${item.soLuong}</td>
+                        <td class="num-col">${item.donGia}</td>
+                        <td class="num-col">${item.thanhTien}</td>
+                    </tr>
+                `).join('');
+
+                detailsHtml += `
+                    <div class="result-item flex-col items-start mt-4">
+                        <strong class="mb-2">Chi Tiết Dịch Vụ:</strong>
+                        <table class="parsed-service-table">
+                            <thead>
+                                <tr><th>STT</th><th>Hạng mục</th><th>Diễn giải</th><th>SL</th><th>Đơn giá</th><th>Thành tiền</th></tr>
+                            </thead>
+                            <tbody>${tableRows}</tbody>
+                        </table>
+                    </div>`;
+            }
+
+            return `
+                <div class="${blockClass}">
+                    <${titleTag}>${title} (${record.FormType || 'N/A'} - ${record.Timestamp || 'N/A'})</${titleTag}>
+                    ${detailsHtml}
+                </div>
+            `;
+        }
+
+        function displayError(message) {
+            resultsContainer.classList.remove('hidden');
+            resultsContainer.innerHTML = `<div class="no-results">${message}</div>`;
+        }
     </script>
 </body>
 </html>
