@@ -15,7 +15,22 @@
         .loading-spinner { border: 4px solid #f3f3f3; border-top: 4px solid #4f46e5; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* === BỐ CỤC KẾT QUẢ MỚI === */
+        /* === NÚT QUAY VỀ MỚI === */
+        .back-button {
+            display: inline-block;
+            margin-bottom: 24px;
+            padding: 10px 16px;
+            background-color: #6b7280; /* Màu xám */
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .back-button:hover {
+            background-color: #4b5563; /* Xám đậm hơn khi di chuột */
+        }
+
         .result-header { text-align: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #e5e7eb; }
         .result-header h2 { font-size: 1.75rem; font-weight: 700; color: #1f2937; }
         .result-header p { font-size: 1rem; color: #6b7280; margin-top: 4px; }
@@ -29,7 +44,6 @@
         .result-item strong { font-weight: 600; color: #1f2937; text-align: right; }
         .result-item span { color: #4b5563; white-space: pre-wrap; }
 
-        /* === KHU VỰC CHI TIẾT HÀNG NGANG MỚI === */
         .long-notes-section { margin-top: 24px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; }
         .long-notes-section h3 { font-size: 1.2rem; font-weight: 600; color: #374151; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 2px solid #10b981; }
 
@@ -43,6 +57,9 @@
 </head>
 <body class="flex justify-center items-start min-h-screen">
     <div class="container">
+        <a href="https://longvt89.github.io/phieukiemtra/index.html" class="back-button">⬅️ Phiếu Kiểm Tra Xe</a>
+		<a href="https://longvt89.github.io/phieukiemtra/Phieukiemlop2.html" class="back-button">⬅️ Phiếu Kiểm Lốp</a>
+
         <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center">Tra Cứu Thông Tin Xe</h1>
         <p class="text-center text-gray-500 mb-8">Nhập Biển số xe hoặc Số điện thoại để tìm kiếm.</p>
 
@@ -63,9 +80,9 @@
     </div>
 
     <script>
+        // Toàn bộ phần script không thay đổi
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec';
 
-        // Định nghĩa các nhóm hiển thị theo cột
         const FIELD_GROUPS = [
             {
                 title: 'Thông Tin Chung',
@@ -81,10 +98,8 @@
             }
         ];
         
-        // **MỚI**: Tách các trường có nội dung dài ra một danh sách riêng
         const LONG_TEXT_FIELDS = new Set(['yeuCauKhachHang', 'customerRequest', 'note', 'ghiChuChung', 'tireOverallCondition', 'tireStatusNote', 'bangChiTietCongViec', 'thongTinDichVuChiTiet', 'chiTietKiemTraAnToan']);
 
-        // Nhãn Tiếng Việt (Giữ nguyên)
         const FIELD_LABELS = { hoten: "Tên KH", customerName: "Tên KH", dienthoai: "SĐT", bienso: "Biển Số", licensePlate: "Biển Số", loaixe: "Loại Xe", carModel: "Dòng Xe", sokm: "Số KM", sokmhientai: "Số KM", mileage: "Số KM", chiNhanh: "Chi Nhánh", branch: "Chi Nhánh", nhanxe: "Ngày Nhận", giaoxe: "Ngày Giao", receiptNumber: "Số Phiếu", ghiChuChung: "Ghi Chú Chung", tire_pressure_FL: "Áp suất (Trước Trái)", tire_thickness_FL: "Độ dày gai (Trước Trái)", tire_pressure_FR: "Áp suất (Trước Phải)", tire_thickness_FR: "Độ dày gai (Trước Phải)", tire_pressure_RL: "Áp suất (Sau Trái)", tire_thickness_RL: "Độ dày gai (Sau Trái)", tire_pressure_RR: "Áp suất (Sau Phải)", tire_thickness_RR: "Độ dày gai (Sau Phải)", tire_pressure_Spare: "Áp suất (Sơ cua)", tire_thickness_Spare: "Độ dày gai (Sơ cua)", hangXe: "Hãng Xe", vehicleTypeYear: "Đời Xe", duKienGiaoXe: "Dự Kiến Giao", inspectionDate: "Ngày KT", advisor: "Cố vấn DV", serviceAdvisor: "Cố vấn DV", ktv: "KTV", technician: "KTV", nguoiTiepNhan: "Người nhận", front_brake_pad: "Phanh trước", rear_brake_pad: "Phanh sau", brakeNote: "Ghi chú phanh", brake_recommendation: "KN phanh", yeuCauKhachHang: "Yêu cầu KH", customerRequest: "Yêu cầu KH", note: "Ghi chú", tireOverallCondition: "Tổng quan lốp", tireStatusNote: "Ghi chú lốp", bangChiTietCongViec: "Chi tiết công việc", thongTinDichVuChiTiet: "Chi tiết dịch vụ", chiTietKiemTraAnToan: "KT an toàn" };
         
         const searchButton = document.getElementById('searchButton');
@@ -98,39 +113,28 @@
         function displayResults(records) {
             resultsContainer.innerHTML = '';
             resultsContainer.classList.remove('hidden');
-            
             const latestHtml = createRecordDetailHtml(records[0], true);
             resultsContainer.insertAdjacentHTML('beforeend', latestHtml);
-
             if (records.length > 1) {
                 const historyButton = `<button id="historyToggleBtn" class="history-toggle">Xem ${records.length - 1} lần ghé trước</button>`;
                 resultsContainer.insertAdjacentHTML('beforeend', historyButton);
-
                 const historySection = `<div id="historySection" class="history-section"><h2>Lịch sử các lần trước</h2></div>`;
                 resultsContainer.insertAdjacentHTML('beforeend', historySection);
-
                 const historyContainer = document.getElementById('historySection');
                 const historyHtml = records.slice(1).map(rec => createRecordDetailHtml(rec, false)).join('');
                 historyContainer.innerHTML += historyHtml;
-
                 document.getElementById('historyToggleBtn').addEventListener('click', () => {
                     historyContainer.style.display = historyContainer.style.display === 'none' ? 'block' : 'none';
                 });
             }
         }
 
-        // **MỚI**: Cập nhật hàm để tách biệt lưới thông tin và hàng ngang chi tiết
         function createRecordDetailHtml(record, isLatest = true) {
             let processedFields = new Set();
             let html = `<div class="result-container mb-8">`;
-            
-            // Header
             const headerTitle = isLatest ? 'Kết quả mới nhất' : `${record.FormType || 'N/A'}`;
             html += `<div class="result-header ${!isLatest ? 'border-t pt-8' : ''}"><h2>${headerTitle}</h2><p>${record.Timestamp || 'N/A'}</p></div>`;
-
-            // --- Phần 1: Lưới thông tin chính ---
             html += `<div class="result-grid">`;
-            
             FIELD_GROUPS.forEach(group => {
                 const groupItems = group.fields.map(fieldKey => {
                     if (record[fieldKey]) {
@@ -140,12 +144,10 @@
                     }
                     return '';
                 }).join('');
-
                 if (groupItems) {
                     html += `<div class="result-group"><h3>${group.title}</h3>${groupItems}</div>`;
                 }
             });
-
             let otherItems = '';
             for (const key in record) {
                 if (record[key] && !processedFields.has(key) && !LONG_TEXT_FIELDS.has(key)) {
@@ -157,9 +159,7 @@
             if (otherItems) {
                  html += `<div class="result-group"><h3>Thông Tin Khác</h3>${otherItems}</div>`;
             }
-            html += `</div>`; // Đóng result-grid
-
-            // --- Phần 2: Hàng ngang cho các chi tiết dài ---
+            html += `</div>`;
             let longNotesHtml = '';
             LONG_TEXT_FIELDS.forEach(key => {
                 if (record[key]) {
@@ -167,11 +167,10 @@
                     longNotesHtml += `<div class="result-item"><strong>${label}:</strong> <span>${record[key]}</span></div>`;
                 }
             });
-
             if (longNotesHtml) {
                 html += `<div class="long-notes-section"><h3>Chi Tiết & Ghi Chú</h3>${longNotesHtml}</div>`;
             }
-            html += `</div>`; // Đóng result-container
+            html += `</div>`;
             return html;
         }
 
