@@ -1824,9 +1824,7 @@ body {
             branch: branchValueInput.value,
 
             brakeFrontDepth: document.getElementById('front-mm').innerText,
-            brakeFrontStatus: document.querySelector('.gauges[data-field="brake_front_status"] .active') ? document.querySelector('.gauges[data-field="brake_front_status"] .active').ariaLabel : '',
             brakeBackDepth: document.getElementById('back-mm').innerText,
-            brakeBackStatus: document.querySelector('.gauges[data-field="brake_back_status"] .active') ? document.querySelector('.gauges[data-field="brake_back_status"] .active').ariaLabel : '',
             brakeNote: document.getElementById('brake-note').innerText,
 
             price: document.getElementById('price-input').value,
@@ -1839,29 +1837,34 @@ body {
             tire_size_1: document.querySelector('input[name="tire_size_1"]').value,
             tire_depth_1: document.querySelector('input[name="tire_depth_1"]').value,
             tire_pressure_1: document.querySelector('input[name="tire_pressure_1"]').value,
+			tire_brand_1: document.querySelector('input[name="tire_brand_1"]').value,
             tire_dot_1: document.querySelector('input[name="tire_dot_1"]').value,
 
             tire_size_2: document.querySelector('input[name="tire_size_2"]').value,
             tire_depth_2: document.querySelector('input[name="tire_depth_2"]').value,
             tire_pressure_2: document.querySelector('input[name="tire_pressure_2"]').value,
+			tire_brand_2: document.querySelector('input[name="tire_brand_2"]').value,
             tire_dot_2: document.querySelector('input[name="tire_dot_2"]').value,
 
             tire_size_3: document.querySelector('input[name="tire_size_3"]').value,
             tire_depth_3: document.querySelector('input[name="tire_depth_3"]').value,
             tire_pressure_3: document.querySelector('input[name="tire_pressure_3"]').value,
+			tire_brand_3: document.querySelector('input[name="tire_brand_3"]').value,
             tire_dot_3: document.querySelector('input[name="tire_dot_3"]').value,
 
             tire_size_4: document.querySelector('input[name="tire_size_4"]').value,
             tire_depth_4: document.querySelector('input[name="tire_depth_4"]').value,
             tire_pressure_4: document.querySelector('input[name="tire_pressure_4"]').value,
+			tire_brand_4: document.querySelector('input[name="tire_brand_4"]').value,
             tire_dot_4: document.querySelector('input[name="tire_dot_4"]').value,
 
             spare_tire_size: document.querySelector('input[name="spare_tire_size"]').value,
             spare_tire_depth: document.querySelector('input[name="spare_tire_depth"]').value,
             spare_tire_pressure: document.querySelector('input[name="spare_tire_pressure"]').value,
+			spare_tire_brand: document.querySelector('input[name="spare_tire_brand"]').value,
             spare_tire_dot: document.querySelector('input[name="spare_tire_dot"]').value,
 
-            tireOverallCondition: document.getElementById('tire-status-note').value,
+            tireStatusNote: document.getElementById('tire-status-note').value,
             inspector: document.getElementById('inspector').innerText,
             inspectionDate: document.getElementById('inspection-date').innerText,
             serviceAdvisor: document.getElementById('service-advisor').innerText,
@@ -1874,19 +1877,25 @@ body {
 
         fetch(googleAppsScriptURL, {
             method: 'POST',
-            mode: 'no-cors',
             cache: 'no-cache',
             headers: {
-                'Content-Type': 'application/json',
+                // Sửa Content-Type để tránh Preflight Request của trình duyệt
+                'Content-Type': 'text/plain;charset=utf-8',
             },
             body: JSON.stringify(formData)
         })
         .then(response => {
-            alert('Dữ liệu đã được gửi thành công!');
-            console.log('Success:', formData);
+            if (!response.ok) { 
+                return response.json().then(err => { throw new Error(err.message || 'Lỗi không xác định từ server'); });
+            }
+            return response.text();
+        })
+        .then(result => {
+             console.log('Success:', result);
+             alert('Dữ liệu đã được gửi thành công!');
         })
         .catch((error) => {
-            alert('Có lỗi xảy ra khi gửi dữ liệu: ' + error);
+            alert('Có lỗi xảy ra khi gửi dữ liệu: ' + error.toString());
             console.error('Error:', error);
         });
     }
