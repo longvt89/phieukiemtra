@@ -150,9 +150,10 @@
         /* Định dạng chung cho tiêu đề bảng và ô dữ liệu */
         .detailed-service th,
         .detailed-service td {
-            border: 1px solid #000; padding: 5px;
+            border: 1px solid #000; padding: 4px;
             text-align: center;
-            font-size: 11px;
+            font-size: 10px; /* THAY ĐỔI: Giảm kích thước chữ */
+            vertical-align: middle;
         }
 
         /* Định dạng tiêu đề bảng chính */
@@ -162,12 +163,20 @@
         }
 
         /* Chiều rộng cố định cho các cột */
-        .detailed-service .stt { width: 30px; }
-        .detailed-service .hang-muc { width: 120px; text-align: left; font-weight: bold;}
-        .detailed-service .dien-giai { width: 180px; }
-        .detailed-service .sl { width: 50px; }
-        .detailed-service .don-gia, .detailed-service .thanh-tien { width: 90px; }
-        .detailed-service .xac-nhan-col { width: 60px; } /* Đổi tên cột tình trạng thành xác nhận */
+        .detailed-service .stt { width: 3%; }
+        .detailed-service .hang-muc { width: 23%; text-align: left; font-weight: bold;}
+        .detailed-service .trang-thai-col { width: 3%; font-weight: bold; } /* THAY ĐỔI: Thu hẹp cột */
+        .detailed-service td.trang-thai-col { color: #0056b3; } /* THAY ĐỔI: Chỉ áp dụng màu cho nội dung, không phải tiêu đề */
+        .detailed-service .dien-giai { width: 17%; }
+        .detailed-service .sl { width: 4%; }
+        .detailed-service .don-gia, .detailed-service .thanh-tien { width: 8%; }
+        .detailed-service .status-col { width: 5%; }
+        .detailed-service .xac-nhan-col { width: 5%; }
+
+        /* Màu nền cho các cột trạng thái */
+        .detailed-service .tot-col { background-color: #d4edda; }
+        .detailed-service .luu-y-col { background-color: #fff3cd; }
+        .detailed-service .thay-col { background-color: #f8d7da; }
 
         /* Định dạng input text và number trong bảng */
         .detailed-service input[type="text"],
@@ -175,19 +184,19 @@
             width: 100%; border: none;
             text-align: center;
             padding: 2px 0;
-            font-size: 11px;
+            font-size: 10px; /* THAY ĐỔI: Giảm kích thước chữ */
             background: transparent;
         }
         /* Căn trái và in đậm cho cột hạng mục trong bảng */
         .detailed-service input[type="text"].hang-muc-input {
             text-align: left; font-weight: bold;
         }
-        /* Định dạng checkbox trong bảng */
+        /* Định dạng radio button và checkbox trong bảng */
+        .detailed-service input[type="radio"],
         .detailed-service input[type="checkbox"] {
             width: 15px; height: 15px;
             margin: 0 auto;
             display: block;
-            vertical-align: middle;
         }
 
         /* Định dạng hàng tổng cộng */
@@ -197,12 +206,22 @@
 
         /* Tiêu đề danh mục trong bảng (ví dụ: Level 1, Level 2) */
         .category-header th {
-            background: #e0e0e0; /* Màu nền xám nhạt */
+            background: #e0e0e0;
             color: #000; font-weight: bold;
             text-align: left;
             padding: 5px 10px;
             border: 1px solid #000;
-            font-size: 12px;
+            font-size: 11px; /* THAY ĐỔI: Giảm kích thước chữ */
+        }
+
+        /* Chú thích trạng thái */
+        .status-legend {
+            margin-top: 10px;
+            font-size: 10px;
+            font-style: italic;
+            text-align: left;
+            border-top: 1px dotted #ccc;
+            padding-top: 5px;
         }
 
         /* Phần chữ ký */
@@ -228,7 +247,7 @@
             text-align: center;
             padding: 2px 0;
             font-size: 12px;
-            margin-top: -20px; /* Điều chỉnh vị trí input lên cao hơn để chữ ký nằm gần dòng */
+            margin-top: -20px;
         }
 
         /* Chú thích "(Ký tên)" */
@@ -247,7 +266,7 @@
         /* Nhóm các nút chức năng ở đầu trang */
         .button-group {
             display: flex; justify-content: center;
-            flex-wrap: wrap; /* Cho phép các nút xuống dòng trên màn hình nhỏ */
+            flex-wrap: wrap;
             gap: 10px; margin-bottom: 20px;
         }
 
@@ -257,9 +276,9 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
-            white-space: nowrap; /* Ngăn văn bản trong nút bị xuống dòng */
-            flex-shrink: 0; /* Ngăn nút bị co lại */
-            background: #28a745; /* Màu xanh lá cây */
+            white-space: nowrap;
+            flex-shrink: 0;
+            background: #28a745;
             color: white;
         }
 
@@ -268,88 +287,72 @@
 
         /* Màu sắc riêng cho nút In */
         .print-button {
-            background: #007bff; /* Màu xanh dương */
+            background: #007bff;
             color: white;
         }
         .print-button:hover { background: #0056b3; }
 
         /* Màu sắc riêng cho nút Xóa Form */
         .clear-button {
-            background: #dc3545; /* Màu đỏ */
+            background: #dc3545;
             color: white;
         }
         .clear-button:hover { background: #c82333; }
 
         /* Các quy tắc CSS chỉ áp dụng khi in phiếu */
         @media print {
-            .button-group { display: none; } /* Ẩn các nút khi in */
+            .button-group, .status-legend { display: none; }
 
             body {
-                margin: 0; padding: 0;
-                background: white;
-                font-size: 11px;
-                font-weight: 500;
+                margin: 0; padding: 0; background: white;
+                font-size: 10px; font-weight: 500;
             }
 
             .container {
-                max-width: none; box-shadow: none;
-                margin: 0;
-                padding: 0;
+                max-width: none; box-shadow: none; margin: 0; padding: 0;
             }
 
             .form-content {
-                padding: 8mm; /* Giảm lề khi in */
-                width: 210mm; /* Kích thước A4 */
-                height: 297mm; box-sizing: border-box;
-                overflow: hidden;
+                padding: 8mm; width: 210mm; height: 297mm;
+                box-sizing: border-box; overflow: hidden;
             }
 
-            /* Điều chỉnh kích thước font và padding cho các phần khi in */
+            .detailed-service .tot-col,
+            .detailed-service .luu-y-col,
+            .detailed-service .thay-col {
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
             .header { margin-bottom: 8px; padding-bottom: 5px; }
             .header h1 { font-size: 18px; }
             .form-number { font-size: 14px; }
             .logo { width: 60px; height: 45px; font-size: 8px; }
-
             .info-section { margin-bottom: 8px; gap: 10px; }
-            .info-group { margin-bottom: 4px; font-size: 10px; }
-            .info-group label { font-size: 10px; }
-            .info-group .info-input { font-size: 10px; min-width: 40px; }
-            .info-group .info-input.name-input { min-width: 100px; }
-            .info-group .info-input.phone-email-input { min-width: 60px; }
-            .info-group .info-input.datetime-input { min-width: 90px; }
-            .info-group .info-input.car-type-input { min-width: 100px; }
-            .info-group .info-input.license-km-input { min-width: 60px; }
-
+            .info-group { margin-bottom: 4px; font-size: 9px; }
+            .info-group label { font-size: 9px; }
+            .info-group .info-input { font-size: 9px; min-width: 40px; }
             .request-details { padding: 5px; margin-bottom: 8px; }
-            .section-title { padding: 3px; font-size: 11px;
-            margin: -5px -5px 5px -5px; }
+            .section-title { padding: 3px; font-size: 10px; margin: -5px -5px 5px -5px; }
             .request-group { margin-bottom: 5px; }
-            .request-group label { font-size: 10px; margin-bottom: 2px; }
-            .request-group textarea { min-height: 40px; font-size: 10px; }
+            .request-group label { font-size: 9px; margin-bottom: 2px; }
+            .request-group textarea { min-height: 40px; font-size: 9px; }
 
-            .detailed-service { margin-top: 8px; font-size: 9px; }
-            .detailed-service th, .detailed-service td { padding: 2px; font-size: 9px; }
-            .detailed-service input[type="text"], .detailed-service input[type="number"] { font-size: 9px; }
-            .detailed-service input[type="text"].hang-muc-input { font-weight: bold; font-size: 11px; }
-
-            .category-header th {
-                font-size: 10px; padding: 3px 5px;
-            }
+            .detailed-service { margin-top: 8px; }
+            .detailed-service th, .detailed-service td { padding: 2px; font-size: 8px; }
+            .detailed-service input[type="text"], .detailed-service input[type="number"] { font-size: 8px; }
+            .detailed-service input[type="text"].hang-muc-input { font-weight: bold; font-size: 9px; }
+            .category-header th { font-size: 9px; padding: 3px 5px; }
 
             .footer { font-size: 8px; margin-top: 8px; padding-top: 5px; line-height: 1.1; }
-
             .signature-section { margin-top: 8px; padding-top: 5px; gap: 30px; }
             .signature-title { margin-bottom: 15px; font-size: 10px; }
             .signature-input { font-size: 10px; margin-top: -10px; }
             .signature-subtitle { font-size: 8px; }
-
-            /* Ngăn các phần lớn bị ngắt trang */
             .detailed-service, .signature-section { page-break-inside: avoid; }
 
-            /* In đậm dữ liệu nhập liệu của người dùng */
             .form-content input:not([readonly]),
             .form-content textarea,
-            .form-content select { /* Thêm select vào đây */
+            .form-content select {
                 font-weight: bold !important;
             }
             .detailed-service .thanh-tien-input,
@@ -428,7 +431,7 @@
                         </div>
                         <div class="info-group">
                             <label for="odometer">Số KM hiện tại:</label>
-                            <input type="text" id="odometer" name="sokm" class="info-input license-km-input">
+                            <input type="number" id="odometer" name="sokm" class="info-input license-km-input">
                         </div>
                         <div class="info-group">
                             <label for="branchSelect">Chi nhánh:</label>
@@ -459,62 +462,78 @@
                         <tr>
                             <th class="stt">STT</th>
                             <th class="hang-muc">HẠNG MỤC DỊCH VỤ/VẬT TƯ</th>
+                            <th class="trang-thai-col">TRẠNG THÁI</th>
                             <th class="dien-giai">DIỄN GIẢI</th>
                             <th class="sl">SL</th>
                             <th class="don-gia">ĐƠN GIÁ</th>
                             <th class="thanh-tien">THÀNH TIỀN</th>
-                            <th class="xac-nhan-col">XÁC NHẬN</th> </tr>
+                            <th class="status-col">TỐT</th>
+                            <th class="status-col">LƯU Ý</th>
+                            <th class="status-col">THAY</th>
+                            <th class="xac-nhan-col">XÁC NHẬN</th>
+                        </tr>
                     </thead>
                     <tbody>
                         <tr class="category-header">
-                            <th colspan="7">Level 1 - Dịch vụ cơ bản</th>
+                            <th colspan="11">Level 1 - Dịch vụ cơ bản</th>
                         </tr>
-                        <tr><td>01</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_1" value="Lốp Xe"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_1"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_1" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_1" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_1" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_1" value="X"></td></tr>
-                        <tr><td>02</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_2" value="Đảo lốp"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_2"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_2" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_2" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_2" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_2" value="X"></td></tr>
-                        <tr><td>03</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_3" value="Cân bằng động"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_3"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_3" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_3" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_3" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_3" value="X"></td></tr>
-                        <tr><td>04</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_4" value="Phanh"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_4"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_4" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_4" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_4" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_4" value="X"></td></tr>
-                        <tr><td>05</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_5" value="Dầu động cơ"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_5"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_5" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_5" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_5" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_5" value="X"></td></tr>
-                        <tr><td>06</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_6" value="Lọc dầu động cơ"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_6"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_6" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_6" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_6" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_6" value="X"></td></tr>
-                        <tr><td>07</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_7" value="Lọc gió động cơ"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_7"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_7" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_7" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_7" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_7" value="X"></td></tr>
-                        <tr><td>08</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_8" value="Lọc gió máy lạnh"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_8"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_8" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_8" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_8" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_8" value="X"></td></tr>
-                        <tr><td>09</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_9" value="Dầu phanh"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_9"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_9" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_9" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_9" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_9" value="X"></td></tr>
-                        <tr><td>10</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_10" value="Nước rửa kính"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_10"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_10" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_10" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_10" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_10" value="X"></td></tr>
-                        <tr><td>11</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_11" value="Gạt mưa"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_11"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_11" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_11" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_11" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_11" value="X"></td></tr>
-                        <tr><td>12</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_12" value="Ắc quy"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_12"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_12" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_12" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_12" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_12" value="X"></td></tr>
-                        <tr><td>13</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_13" value="Góc đặt bánh xe / Cân chỉnh lái"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_13"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_13" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_13" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_13" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_13" value="X"></td></tr>
+                        <tr><td>01</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_1" value="Kiểm tra an toàn"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_1"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_1" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_1" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_1" readonly></td><td class="tot-col"><input type="radio" name="service_status_1" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_1" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_1" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_1" value="X"></td></tr>
+                        <tr><td>02</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_2" value="Lốp Xe"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_2"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_2" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_2" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_2" readonly></td><td class="tot-col"><input type="radio" name="service_status_2" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_2" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_2" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_2" value="X"></td></tr>
+                        <tr><td>03</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_3" value="Đảo lốp"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_3"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_3" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_3" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_3" readonly></td><td class="tot-col"><input type="radio" name="service_status_3" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_3" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_3" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_3" value="X"></td></tr>
+                        <tr><td>04</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_4" value="Gạt mưa"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_4"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_4" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_4" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_4" readonly></td><td class="tot-col"><input type="radio" name="service_status_4" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_4" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_4" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_4" value="X"></td></tr>
+                        <tr><td>05</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_5" value="Nước rửa kính"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_5"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_5" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_5" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_5" readonly></td><td class="tot-col"><input type="radio" name="service_status_5" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_5" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_5" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_5" value="X"></td></tr>
+                        <tr><td>06</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_6" value="Má Phanh"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_6"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_6" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_6" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_6" readonly></td><td class="tot-col"><input type="radio" name="service_status_6" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_6" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_6" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_6" value="X"></td></tr>
+                        <tr><td>07</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_7" value="Đĩa Phanh"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_7"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_7" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_7" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_7" readonly></td><td class="tot-col"><input type="radio" name="service_status_7" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_7" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_7" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_7" value="X"></td></tr>
+                        <tr><td>08</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_8" value="Dầu phanh"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_8"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_8" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_8" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_8" readonly></td><td class="tot-col"><input type="radio" name="service_status_8" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_8" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_8" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_8" value="X"></td></tr>
+                        <tr><td>09</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_9" value="Dầu động cơ"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_9"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_9" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_9" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_9" readonly></td><td class="tot-col"><input type="radio" name="service_status_9" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_9" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_9" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_9" value="X"></td></tr>
+                        <tr><td>10</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_10" value="Lọc dầu động cơ"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_10"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_10" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_10" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_10" readonly></td><td class="tot-col"><input type="radio" name="service_status_10" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_10" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_10" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_10" value="X"></td></tr>
+                        <tr><td>11</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_11" value="Nước làm mát"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_11"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_11" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_11" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_11" readonly></td><td class="tot-col"><input type="radio" name="service_status_11" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_11" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_11" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_11" value="X"></td></tr>
+                        <tr><td>12</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_12" value="Ắc quy"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_12"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_12" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_12" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_12" readonly></td><td class="tot-col"><input type="radio" name="service_status_12" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_12" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_12" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_12" value="X"></td></tr>
+                        <tr><td>13</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_13" value="Lọc gió động cơ"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_13"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_13" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_13" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_13" readonly></td><td class="tot-col"><input type="radio" name="service_status_13" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_13" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_13" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_13" value="X"></td></tr>
+                        <tr><td>14</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_14" value="Lọc gió máy lạnh"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_14"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_14" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_14" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_14" readonly></td><td class="tot-col"><input type="radio" name="service_status_14" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_14" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_14" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_14" value="X"></td></tr>
+                        <tr><td>15</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_15" value="Góc đặt bánh xe / Cân chỉnh lái"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_15"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_15" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_15" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_15" readonly></td><td class="tot-col"><input type="radio" name="service_status_15" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_15" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_15" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_15" value="X"></td></tr>
+                        <tr><td>16</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_16" value="Cân bằng động"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_16"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_16" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_16" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_16" readonly></td><td class="tot-col"><input type="radio" name="service_status_16" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_16" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_16" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_16" value="X"></td></tr>
                         
                         <tr class="category-header">
-                            <th colspan="7">Level 2 - Dịch vụ mở rộng</th>
+                            <th colspan="11">Level 2 - Dịch vụ mở rộng</th>
                         </tr>
-                        <tr><td>14</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_14" value="Rotuyn (lái, trụ)"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_14"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_14" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_14" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_14" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_14" value="X"></td></tr>
-                        <tr><td>15</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_15" value="Phuộc"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_15"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_15" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_15" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_15" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_15" value="X"></td></tr>
-                        <tr><td>16</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_16" value="Bạc đạn bánh xe"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_16"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_16" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_16" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_16" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_16" value="X"></td></tr>
-                        <tr><td>17</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_17" value="Dầu hộp số tự động"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_17"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_17" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_17" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_17" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_17" value="X"></td></tr>
-                        <tr><td>18</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_18" value="Dầu vi sai / cầu"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_18"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_18" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_18" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_18" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_18" value="X"></td></tr>
-                        <tr><td>19</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_19" value="V-belt / Dây curoa ngoài"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_19"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_19" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_19" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_19" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_19" value="X"></td></tr>
-                        <tr><td>20</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_20" value="Bugi R: mỗi 40.000 km với loại thường và 100.000 km với loại điện cực hợp kim"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_20"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_20" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_20" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_20" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_20" value="X"></td></tr>
-                        <tr><td>21</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_21" value="Dầu trợ lực lái"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_21"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_21" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_21" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_21" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_21" value="X"></td></tr>
-                        <tr><td>22</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_22" value="Lọc nhiên liệu (diesel)"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_22"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_22" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_22" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_22" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_22" value="X"></td></tr>
-                        <tr><td>23</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_23" value="Lọc nhiên liệu động cơ xăng"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_23"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_23" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_23" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_23" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_23" value="X"></td></tr>
-                        <tr><td>24</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_24" value="Bóng đèn"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_24"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_24" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_24" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_24" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_24" value="X"></td></tr>
+                        <tr><td>17</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_17" value="Rotuyn (lái, trụ)"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_17"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_17" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_17" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_17" readonly></td><td class="tot-col"><input type="radio" name="service_status_17" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_17" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_17" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_17" value="X"></td></tr>
+                        <tr><td>18</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_18" value="Phuộc"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_18"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_18" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_18" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_18" readonly></td><td class="tot-col"><input type="radio" name="service_status_18" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_18" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_18" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_18" value="X"></td></tr>
+                        <tr><td>19</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_19" value="Bạc đạn bánh xe"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_19"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_19" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_19" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_19" readonly></td><td class="tot-col"><input type="radio" name="service_status_19" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_19" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_19" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_19" value="X"></td></tr>
+                        <tr><td>20</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_20" value="Dầu hộp số thường"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_20"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_20" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_20" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_20" readonly></td><td class="tot-col"><input type="radio" name="service_status_20" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_20" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_20" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_20" value="X"></td></tr>
+                        <tr><td>21</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_21" value="Dầu hộp số tự động"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_21"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_21" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_21" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_21" readonly></td><td class="tot-col"><input type="radio" name="service_status_21" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_21" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_21" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_21" value="X"></td></tr>
+                        <tr><td>22</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_22" value="Dầu vi sai / cầu"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_22"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_22" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_22" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_22" readonly></td><td class="tot-col"><input type="radio" name="service_status_22" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_22" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_22" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_22" value="X"></td></tr>
+                        <tr><td>23</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_23" value="V-belt / Dây curoa ngoài"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_23"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_23" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_23" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_23" readonly></td><td class="tot-col"><input type="radio" name="service_status_23" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_23" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_23" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_23" value="X"></td></tr>
+                        <tr><td>24</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_24" value="Bugi R: mỗi 40.000 km với loại thường và 100.000 km với loại điện cực hợp kim"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_24"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_24" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_24" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_24" readonly></td><td class="tot-col"><input type="radio" name="service_status_24" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_24" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_24" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_24" value="X"></td></tr>
+                        <tr><td>25</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_25" value="Dầu trợ lực lái"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_25"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_25" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_25" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_25" readonly></td><td class="tot-col"><input type="radio" name="service_status_25" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_25" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_25" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_25" value="X"></td></tr>
+                        <tr><td>26</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_26" value="Lọc nhiên liệu (diesel)"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_26"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_26" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_26" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_26" readonly></td><td class="tot-col"><input type="radio" name="service_status_26" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_26" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_26" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_26" value="X"></td></tr>
+                        <tr><td>27</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_27" value="Lọc nhiên liệu động cơ xăng"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_27"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_27" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_27" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_27" readonly></td><td class="tot-col"><input type="radio" name="service_status_27" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_27" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_27" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_27" value="X"></td></tr>
+                        <tr><td>28</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_28" value="Bóng đèn"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_28"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_28" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_28" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_28" readonly></td><td class="tot-col"><input type="radio" name="service_status_28" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_28" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_28" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_28" value="X"></td></tr>
 
                         <tr class="category-header">
-                            <th colspan="7">Level 2 Dịch vụ gia tăng giá trị - tăng Trải nghiệm. Khách hàng</th>
+                            <th colspan="11">Dịch vụ gia tăng giá trị - Khuyến nghị</th>
                         </tr>
-                        <tr><td>25</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_25" value="Vệ sinh giàn lạnh"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_25"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_25" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_25" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_25" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_25" value="X"></td></tr>
-                        <tr><td>26</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_26" value="Vệ sinh hệ thống nhiên liệu"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_26"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_26" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_26" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_26" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_26" value="X"></td></tr>
-                        <tr><td>27</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_27" value="Vệ sinh kim phun trực tiếp"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_27"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_27" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_27" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_27" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_27" value="X"></td></tr>
-                        <tr><td>28</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_28" value="Súc rửa động cơ A"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_28"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_28" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_28" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_28" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_28" value="X"></td></tr>
-                        <tr><td>29</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_29" value="Phụ gia nâng cấp nhớt"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_29"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_29" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_29" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_29" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_29" value="X"></td></tr>
-                        <tr><td>30</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_30" value="Vệ sinh họng ga"></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_30"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_30" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_30" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_30" readonly></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_30" value="X"></td></tr>
-                        
+                        <tr><td>29</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_29" value="Vệ sinh giàn lạnh"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_29"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_29" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_29" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_29" readonly></td><td class="tot-col"><input type="radio" name="service_status_29" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_29" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_29" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_29" value="X"></td></tr>
+                        <tr><td>30</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_30" value="Vệ sinh hệ thống nhiên liệu"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_30"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_30" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_30" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_30" readonly></td><td class="tot-col"><input type="radio" name="service_status_30" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_30" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_30" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_30" value="X"></td></tr>
+                        <tr><td>31</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_31" value="Vệ sinh kim phun trực tiếp"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_31"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_31" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_31" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_31" readonly></td><td class="tot-col"><input type="radio" name="service_status_31" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_31" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_31" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_31" value="X"></td></tr>
+                        <tr><td>32</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_32" value="Súc rửa động cơ"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_32"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_32" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_32" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_32" readonly></td><td class="tot-col"><input type="radio" name="service_status_32" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_32" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_32" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_32" value="X"></td></tr>
+                        <tr><td>33</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_33" value="Phụ gia nâng cấp nhớt"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_33"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_33" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_33" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_33" readonly></td><td class="tot-col"><input type="radio" name="service_status_33" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_33" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_33" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_33" value="X"></td></tr>
+                        <tr><td>34</td><td class="hang-muc"><input type="text" class="hang-muc-input" name="service_hangMuc_34" value="Vệ sinh họng ga"></td><td class="trang-thai-col"><span class="status-indicator"></span></td><td><input type="text" class="dien-giai-input" name="service_dienGiai_34"></td><td><input type="number" step="any" class="sl-input" name="service_soLuong_34" oninput="calculateRowTotal(this)"></td><td><input type="number" step="any" class="don-gia-input" name="service_donGia_34" oninput="calculateRowTotal(this)"></td><td><input type="text" class="thanh-tien-input" name="service_thanhTien_34" readonly></td><td class="tot-col"><input type="radio" name="service_status_34" value="Tốt"></td><td class="luu-y-col"><input type="radio" name="service_status_34" value="Lưu ý"></td><td class="thay-col"><input type="radio" name="service_status_34" value="Thay"></td><td class="xac-nhan-col"><input type="checkbox" name="service_xacNhan_34" value="X"></td></tr>
+
                         <tr class="total-row">
-                            <td colspan="5">TỔNG CỘNG</td>
+                            <td colspan="6">TỔNG CỘNG</td>
                             <td><input type="text" id="grand-total" name="tongCong" readonly style="font-weight: bold;"></td>
-                            <td></td>
+                            <td colspan="4"></td>
                         </tr>
                     </tbody>
                 </table>
+
+                <div class="status-legend">
+                    <strong>Ghi chú trạng thái:</strong> 
+                    <strong>I</strong> - Inspection: Kiểm tra và xử lí theo tình trạng; 
+                    <strong>A</strong> - Adjust: Vệ sinh hoặc căn chỉnh; 
+                    <strong>R</strong> - Replace: Thay thế.
+                </div>
 
                 <div class="request-details" style="margin-top: 15px;">
                     <div class="section-title">GHI CHÚ</div>
@@ -522,11 +541,6 @@
                         <label for="generalNotes">Ghi chú chung:</label>
                         <textarea id="generalNotes" name="ghiChuChung" placeholder="Các ghi chú hoặc yêu cầu đặc biệt khác"></textarea>
                     </div>
-                </div>
-
-                <div class="footer">
-                    <p><strong>Khuyến nghị:</strong></p>
-                    <p>□ "Tôi đồng ý đăng ký số liệu cá nhân được cung cấp theo mẫu này có thể được lưu trữ và sử dụng cho mục đích liên quan đến PHI LONG AUTO (Công Ty), nhằm mục đích truyền thông sản phẩm và dịch vụ của chúng tôi và các đối tác kinh doanh liên quan. Tôi có thể rút lại sự đồng ý của mình bất cứ lúc nào bằng cách liên hệ với Công Ty và yêu cầu loại bỏ thông tin cá nhân của tôi khỏi cơ sở dữ liệu này."</p>
                 </div>
 
                 <div class="signature-section">
@@ -546,406 +560,227 @@
     </div>
 
     <script>
-        // Các hằng số key cho Local Storage để lưu trạng thái form và số phiếu
+        // CÁC HÀM CŨ VÀ KHAI BÁO BIẾN
         const RECEIPT_NUMBER_KEY = 'serviceReceipt_receiptNumber';
         const LAST_MONTH_KEY = 'serviceReceipt_lastMonth';
         const FORM_DATA_KEY = 'serviceReceipt_formData';
-
-        // Constants for branch locations
         const branchLocations = [
             { name: 'Chi Nhánh 1 - Bình Phước', lat: 11.5145974, lon: 106.8931262 },
             { name: 'Chi Nhánh 2 - Đồng Xoài', lat: 11.537788, lon: 106.905191 },
             { name: 'Chi Nhánh 3 - Bình Dương', lat: 11.004401, lon: 106.6719367 }
         ];
-        const GEOLOCATION_ERROR_RADIUS = 100; // meters
+        const GEOLOCATION_ERROR_RADIUS = 100;
+        let hasSubmitted = false;
 
-        // --- Utility Functions ---
+        // =================================================================
+        // PHẦN LOGIC BẢO DƯỠNG MỚI
+        // =================================================================
 
-        /**
-         * Calculates the distance between two geographical points using the Haversine formula.
-         * @param {number} lat1 - Latitude of point 1 in degrees.
-         * @param {number} lon1 - Longitude of point 1 in degrees.
-         * @param {number} lat2 - Latitude of point 2 in degrees.
-         * @param {number} lon2 - Longitude of point 2 in degrees.
-         * @returns {number} Distance in meters.
-         */
-        function getDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371e3; // metres
-            const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
-            const φ2 = lat2 * Math.PI / 180;
-            const Δφ = (lat2 - lat1) * Math.PI / 180;
-            const Δλ = (lon2 - lon1) * Math.PI / 180;
+        const maintenanceSchedule = {
+            'Kiểm tra an toàn': [null, null, null, null], // Hạng mục mới
+            'Lốp Xe': ['I', 'A', 'A', 'A'],
+            'Gạt mưa': ['I', 'R', 'R', 'R'],
+            'Nước rửa kính': ['I', 'A', 'A', 'A'],
+            'Má Phanh': ['I', 'I', 'A', 'A'], // Hạng mục mới, dựa trên logic của Phanh
+            'Đĩa Phanh': ['I', 'I', 'A', 'A'], // Hạng mục mới, dựa trên logic của Phanh
+            'Dầu động cơ': ['I', 'I', 'I', 'I'],
+            'Lọc dầu động cơ': ['I', 'R', 'R', 'R'],
+            'Nước làm mát': [null, 'I', 'R', 'R'],
+            'Ắc quy': ['I', 'I', 'R', 'R'],
+            'Lọc gió động cơ': ['I', 'I', 'R', 'R'],
+            'Lọc gió máy lạnh': ['I', 'I', 'R', 'R'],
+            'Góc đặt bánh xe / Cân chỉnh lái': ['A', 'A', 'A', 'A'],
+            'Cân bằng động': ['A', 'A', 'A', 'A'],
+            'Dầu phanh': ['I', 'I', 'I', 'I'],
+            'Rotuyn (lái, trụ)': [null, null, 'I', 'I'],
+            'Phuộc': ['I', 'I', 'I', 'I'],
+            'Bạc đạn bánh xe': ['I', 'I', 'I', 'I'],
+            'Dầu hộp số thường': ['I', 'R', null, null], // Hạng mục mới
+            'Dầu hộp số tự động': ['I', 'R', null, null],
+            'Dầu vi sai / cầu': ['I', 'I', 'I', 'I'],
+            'V-belt / Dây curoa ngoài': ['I', 'I', 'I', 'I'],
+            'Bugi R: mỗi 40.000 km với loại thường và 100.000 km với loại điện cực hợp kim': ['R', null, null, null],
+            'Dầu trợ lực lái': ['I', null, 'I', 'R'],
+            'Lọc nhiên liệu (diesel)': ['R', 'R', null, null],
+            'Lọc nhiên liệu động cơ xăng': ['R', null, 'I', 'I'],
+            'Bóng đèn': ['I', 'I', 'I', 'I'],
+            'Vệ sinh giàn lạnh': ['A', 'A', 'A', 'A'],
+            'Vệ sinh hệ thống nhiên liệu': ['A', null, 'A', null],
+            'Vệ sinh kim phun trực tiếp': ['A', null, null, null],
+            'Súc rửa động cơ': ['A', 'A', 'A', 'A'],
+            'Phụ gia nâng cấp nhớt': ['A', 'A', 'A', 'A'],
+            'Vệ sinh họng ga': ['A', 'A', 'A', 'A']
+        };
 
-            const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-                      Math.cos(φ1) * Math.cos(φ2) *
-                      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-            const d = R * c; // in metres
-            return d;
+        function getMaintenanceLevel(km) {
+            if (km <= 0) return null;
+            if (km % 40000 === 0) return 4;
+            if (km % 20000 === 0) return 3;
+            if (km % 10000 === 0) return 2;
+            if (km % 5000 === 0) return 1;
+            return null;
         }
 
-        /**
-         * Determines the closest branch based on current geolocation and automatically selects it.
-         */
+        function updateAllMaintenanceStatus() {
+            const odometerInput = document.getElementById('odometer');
+            const km = parseInt(odometerInput.value, 10);
+
+            if (isNaN(km)) { 
+                clearAllStatus();
+                return;
+            }
+
+            const level = getMaintenanceLevel(km);
+            const levelIndex = level ? level - 1 : null; 
+
+            const serviceRows = document.querySelectorAll('.detailed-service tbody tr');
+
+            serviceRows.forEach(row => {
+                const hangMucInput = row.querySelector('.hang-muc-input');
+                const statusIndicator = row.querySelector('.status-indicator');
+
+                if (hangMucInput && statusIndicator) {
+                    const serviceName = hangMucInput.value;
+                    let status = ''; 
+                    if (levelIndex !== null && maintenanceSchedule[serviceName]) {
+                        status = maintenanceSchedule[serviceName][levelIndex] || ''; 
+                    }
+                    statusIndicator.textContent = status;
+                }
+            });
+        }
+        
+        function clearAllStatus() {
+             document.querySelectorAll('.status-indicator').forEach(indicator => {
+                indicator.textContent = '';
+            });
+        }
+
+        // =================================================================
+        // CÁC HÀM TIỆN ÍCH CŨ
+        // =================================================================
+
+        function getDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371e3; const φ1 = lat1 * Math.PI / 180; const φ2 = lat2 * Math.PI / 180; const Δφ = (lat2 - lat1) * Math.PI / 180; const Δλ = (lon2 - lon1) * Math.PI / 180; const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2); const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); return R * c;
+        }
         function getClosestBranch() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
-                        const userLat = position.coords.latitude;
-                        const userLon = position.coords.longitude;
-                        let closestBranch = null;
-                        let minDistance = Infinity;
-
-                        branchLocations.forEach(branch => {
-                            const distance = getDistance(userLat, userLon, branch.lat, branch.lon);
-                            if (distance < minDistance) {
-                                minDistance = distance;
-                                closestBranch = branch;
-                            }
-                        });
-
-                        const branchSelect = document.getElementById('branchSelect');
-                        if (closestBranch && minDistance <= GEOLOCATION_ERROR_RADIUS) { // Within 100 meters
-                            branchSelect.value = closestBranch.name;
-                            console.log(`Tự động chọn chi nhánh: ${closestBranch.name} (khoảng cách: ${minDistance.toFixed(2)}m)`);
-                        } else if (closestBranch) {
-                            console.log(`Chi nhánh gần nhất (${closestBranch.name}) ở ngoài bán kính cho phép (${minDistance.toFixed(2)}m > ${GEOLOCATION_ERROR_RADIUS}m). Không tự động chọn.`);
-                        } else {
-                            console.log('Không tìm thấy chi nhánh nào gần nhất.');
-                        }
-                        saveFormData(); // Save after potentially setting branch
-                    },
-                    (error) => {
-                        console.warn(`Lỗi khi lấy vị trí: ${error.message}`);
-                        alert('Không thể tự động xác định chi nhánh. Vui lòng chọn thủ công. Lỗi: ' + error.message);
-                    },
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 10000,
-                        maximumAge: 0
-                    }
+                        const userLat = position.coords.latitude; const userLon = position.coords.longitude; let closestBranch = null; let minDistance = Infinity;
+                        branchLocations.forEach(branch => { const distance = getDistance(userLat, userLon, branch.lat, branch.lon); if (distance < minDistance) { minDistance = distance; closestBranch = branch; } });
+                        const branchSelect = document.getElementById('branchSelect'); if (closestBranch && minDistance <= GEOLOCATION_ERROR_RADIUS) { branchSelect.value = closestBranch.name; }
+                        saveFormData();
+                    }, (error) => { console.warn(`Lỗi khi lấy vị trí: ${error.message}`); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
                 );
-            } else {
-                console.log('Trình duyệt không hỗ trợ Geolocation.');
-                alert('Trình duyệt của bạn không hỗ trợ định vị. Vui lòng chọn chi nhánh thủ công.');
             }
         }
-
-        // Hàm tính tổng tiền cho một hàng và cập nhật tổng cộng
         function calculateRowTotal(inputElement) {
-            const row = inputElement.closest('tr'); // Tìm hàng chứa input
-            const quantity = parseFloat(row.querySelector('.sl-input').value) || 0; // Lấy số lượng
-            const unitPrice = parseFloat(row.querySelector('.don-gia-input').value) || 0; // Lấy đơn giá
-            const total = quantity * unitPrice; // Tính thành tiền
-            row.querySelector('.thanh-tien-input').value = total.toLocaleString('vi-VN'); // Hiển thị thành tiền với định dạng VN
-            updateGrandTotal(); // Cập nhật tổng cộng
-            saveFormData(); // Lưu dữ liệu form vào Local Storage
+            const row = inputElement.closest('tr'); const quantity = parseFloat(row.querySelector('.sl-input').value) || 0; const unitPrice = parseFloat(row.querySelector('.don-gia-input').value) || 0; const total = quantity * unitPrice; row.querySelector('.thanh-tien-input').value = total.toLocaleString('vi-VN'); updateGrandTotal(); saveFormData();
         }
-
-        // Hàm cập nhật tổng cộng của toàn bộ bảng
         function updateGrandTotal() {
-            let grandTotal = 0;
-            // Duyệt qua tất cả các input thành tiền
-            document.querySelectorAll('.thanh-tien-input').forEach(input => {
-                // Parse giá trị đã định dạng (ví dụ: "1.000.000" thành 1000000)
-                const value = parseFloat(input.value.replace(/\./g, '').replace(/,/g, '.')) || 0;
-                grandTotal += value;
-            });
-            // Hiển thị tổng cộng cuối cùng với định dạng VN
-            document.getElementById('grand-total').value = grandTotal.toLocaleString('vi-VN');
+            let grandTotal = 0; document.querySelectorAll('.thanh-tien-input').forEach(input => { const value = parseFloat(input.value.replace(/\./g, '').replace(/,/g, '.')) || 0; grandTotal += value; }); document.getElementById('grand-total').value = grandTotal.toLocaleString('vi-VN');
         }
-
-        // Hàm lấy ngày giờ hiện tại theo định dạng local cho input datetime-local
         function getCurrentDateTimeLocal() {
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Điều chỉnh múi giờ
-            return now.toISOString().slice(0, 16); // Trả về định dạng "YYYY-MM-DDTHH:MM"
+            const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); return now.toISOString().slice(0, 16);
         }
-
-        // Hàm reset toàn bộ form và xóa dữ liệu đã lưu trong Local Storage
         function resetFormAndLocalStorage() {
-            const formElement = document.getElementById('serviceReceiptForm');
-            const receivedDateTimeInput = document.getElementById('receivedDateTime');
-
-            localStorage.removeItem(FORM_DATA_KEY); // Xóa dữ liệu form đã lưu
-            formElement.reset(); // Reset tất cả các trường trong form
-            initializeReceiptNumber(); // Khởi tạo lại số phiếu
-            receivedDateTimeInput.value = getCurrentDateTimeLocal(); // Đặt lại ngày giờ nhận xe hiện tại
-            expectedDeliveryTimeInput.value = ''; // Xóa ngày giờ dự kiến giao
-            updateGrandTotal(); // Cập nhật tổng cộng về 0
-            hasSubmitted = false; // Đặt lại trạng thái gửi form
-            alert('Form đã được xóa và reset thành công!');
+            const formElement = document.getElementById('serviceReceiptForm'); const receivedDateTimeInput = document.getElementById('receivedDateTime'); const expectedDeliveryTimeInput = document.getElementById('expectedDeliveryTime'); localStorage.removeItem(FORM_DATA_KEY); formElement.reset(); initializeReceiptNumber(); receivedDateTimeInput.value = getCurrentDateTimeLocal(); expectedDeliveryTimeInput.value = ''; updateGrandTotal(); hasSubmitted = false; clearAllStatus(); alert('Form đã được xóa và reset thành công!');
         }
-
-        // Hàm khởi tạo số phiếu và cập nhật tháng/năm
         function initializeReceiptNumber() {
-            const now = new Date();
-            const currentMonth = now.getMonth(); // 0-11
-            const currentYear = now.getFullYear();
-            const storedMonthData = localStorage.getItem(LAST_MONTH_KEY);
-            let receiptNumber = parseInt(localStorage.getItem(RECEIPT_NUMBER_KEY)) || 0;
-            let lastStoredMonth = null;
-            let lastStoredYear = null;
-            if (storedMonthData) {
-                try {
-                    const parsedMonthData = JSON.parse(storedMonthData);
-                    lastStoredMonth = parsedMonthData.month;
-                    lastStoredYear = parsedMonthData.year;
-
-                    // Nếu tháng hoặc năm thay đổi, reset số phiếu về 1
-                    if (currentMonth !== lastStoredMonth || currentYear !== lastStoredYear) {
-                        receiptNumber = 1;
-                        localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
-                        localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
-                    }
-                } catch (e) {
-                    console.error("Lỗi khi đọc dữ liệu tháng từ localStorage:", e);
-                    // Trường hợp lỗi parse, cũng reset về 1
-                    receiptNumber = 1;
-                    localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
-                    localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
-                }
-            } else {
-                // Lần đầu tiên chạy hoặc không có dữ liệu cũ, đặt số phiếu là 1
-                receiptNumber = 1;
-                localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
-                localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
-            }
-
-            // Hiển thị số phiếu và tháng/năm với định dạng 6 chữ số (000001) và MM/YYYY
-            document.getElementById('receiptNumber').textContent = String(receiptNumber).padStart(6, '0');
-            document.getElementById('currentMonth').textContent = `${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
+            const now = new Date(); const currentMonth = now.getMonth(); const currentYear = now.getFullYear(); const storedMonthData = localStorage.getItem(LAST_MONTH_KEY); let receiptNumber = parseInt(localStorage.getItem(RECEIPT_NUMBER_KEY)) || 0; let lastStoredMonth = null; let lastStoredYear = null;
+            if (storedMonthData) { try { const parsedMonthData = JSON.parse(storedMonthData); lastStoredMonth = parsedMonthData.month; lastStoredYear = parsedMonthData.year; if (currentMonth !== lastStoredMonth || currentYear !== lastStoredYear) { receiptNumber = 1; localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber); localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear })); } } catch (e) { receiptNumber = 1; localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber); localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear })); } } else { receiptNumber = 1; localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber); localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear })); }
+            document.getElementById('receiptNumber').textContent = String(receiptNumber).padStart(6, '0'); document.getElementById('currentMonth').textContent = `${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
         }
-
-        // Hàm tăng số phiếu khi in (giả định mỗi lần in là một phiếu mới)
         function incrementReceiptNumberOnPrint() {
-            const now = new Date();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-            let receiptNumber = parseInt(localStorage.getItem(RECEIPT_NUMBER_KEY)) || 0;
-            const storedMonthData = localStorage.getItem(LAST_MONTH_KEY);
-            let lastStoredMonth = null;
-            let lastStoredYear = null;
-
-            if (storedMonthData) {
-                try {
-                    const parsedMonthData = JSON.parse(storedMonthData);
-                    lastStoredMonth = parsedMonthData.month;
-                    lastStoredYear = parsedMonthData.year;
-                } catch (e) {
-                    console.error("Lỗi khi đọc dữ liệu tháng từ localStorage:", e);
-                }
-            }
-
-            // Nếu tháng hoặc năm thay đổi, reset số phiếu về 1 trước khi tăng
-            if (currentMonth !== lastStoredMonth || currentYear !== lastStoredYear) {
-                receiptNumber = 1;
-            } else {
-                receiptNumber++;
-            }
-
-            // Lưu lại số phiếu và thông tin tháng/năm mới
-            localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber);
-            localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear }));
-
-            // Cập nhật hiển thị số phiếu trên giao diện
-            document.getElementById('receiptNumber').textContent = String(receiptNumber).padStart(6, '0');
-            document.getElementById('currentMonth').textContent = `${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
+            const now = new Date(); const currentMonth = now.getMonth(); const currentYear = now.getFullYear(); let receiptNumber = parseInt(localStorage.getItem(RECEIPT_NUMBER_KEY)) || 0; const storedMonthData = localStorage.getItem(LAST_MONTH_KEY); let lastStoredMonth = null; let lastStoredYear = null; if (storedMonthData) { try { const parsedMonthData = JSON.parse(storedMonthData); lastStoredMonth = parsedMonthData.month; lastStoredYear = parsedMonthData.year; } catch (e) { console.error("Lỗi:", e); } }
+            if (currentMonth !== lastStoredMonth || currentYear !== lastStoredYear) { receiptNumber = 1; } else { receiptNumber++; }
+            localStorage.setItem(RECEIPT_NUMBER_KEY, receiptNumber); localStorage.setItem(LAST_MONTH_KEY, JSON.stringify({ month: currentMonth, year: currentYear })); document.getElementById('receiptNumber').textContent = String(receiptNumber).padStart(6, '0'); document.getElementById('currentMonth').textContent = `${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
         }
-
-        // Hàm lưu dữ liệu form vào Local Storage để giữ trạng thái khi tải lại trang
         function saveFormData() {
-            const form = document.getElementById('serviceReceiptForm');
-            if (!form) return;
-
-            const formData = {};
-            // Lấy tất cả input, textarea, select ngoại trừ các input readonly
-            const inputs = form.querySelectorAll('input:not([readonly]), textarea, select');
-            inputs.forEach(input => {
-                if (input.name) { // Chỉ xử lý các phần tử có thuộc tính 'name'
-                    if (input.type === 'checkbox') {
-                        formData[input.name] = input.checked; // Lưu trạng thái true/false của checkbox
-                    } else if (input.type === 'radio') {
-                        if (input.checked) {
-                            formData[input.name] = input.value; // Lưu giá trị của radio được chọn
-                        }
-                    } else {
-                        formData[input.name] = input.value; // Lưu giá trị của các input khác
-                    }
+            const form = document.getElementById('serviceReceiptForm'); if (!form) return; const formData = {}; const inputs = form.querySelectorAll('input:not([readonly]), textarea, select');
+            inputs.forEach(input => { if (input.name) { if (input.type === 'checkbox') { formData[input.name] = input.checked; } else if (input.type === 'radio') { if (input.checked) { formData[input.name] = input.value; } } else { formData[input.name] = input.value; } } });
+            localStorage.setItem(FORM_DATA_KEY, JSON.stringify(formData));
+        }
+        function loadFormData() {
+            const savedData = localStorage.getItem(FORM_DATA_KEY); if (!savedData) return; const formData = JSON.parse(savedData); const form = document.getElementById('serviceReceiptForm'); if (!form) return;
+            for (const name in formData) { const elements = form.querySelectorAll(`[name="${name}"]`); if (elements.length > 0) { elements.forEach(input => { if (input.type === 'checkbox') { input.checked = formData[name]; } else if (input.type === 'radio') { if (input.value === formData[name]) { input.checked = true; } } else { input.value = formData[name]; } }); } }
+            updateGrandTotal();
+        }
+        function collectFormDataAsUrlEncoded(formElement) {
+            const formData = new FormData(formElement); const params = new URLSearchParams();
+            for (const pair of formData.entries()) { let value = pair[1]; if (pair[0].startsWith('service_') && pair[0].endsWith('_thanhTien')) { value = String(value).replace(/\./g, '').replace(/,/g, '.'); } params.append(pair[0], value); }
+            formElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => { if (!checkbox.checked && !params.has(checkbox.name)) { params.append(checkbox.name, ''); } });
+            const radioGroupNames = new Set(); formElement.querySelectorAll('input[type="radio"]').forEach(radio => radioGroupNames.add(radio.name));
+            radioGroupNames.forEach(groupName => { const checkedRadioInGroup = formElement.querySelector(`input[type="radio"][name="${groupName}"]:checked`); if (!checkedRadioInGroup && !params.has(groupName)) { params.append(groupName, ''); } });
+            params.append('formType', formElement.querySelector('[name="formType"]').value); params.append('receiptNumber', document.getElementById('receiptNumber')?.textContent || ''); params.append('currentMonthYear', document.getElementById('currentMonth')?.textContent || '');
+            
+            document.querySelectorAll('.detailed-service tbody tr').forEach((row, index) => {
+                const hangMucInput = row.querySelector('.hang-muc-input');
+                const statusIndicator = row.querySelector('.status-indicator');
+                if (hangMucInput && statusIndicator) {
+                    const baseName = hangMucInput.name.replace('service_hangMuc_', '');
+                    params.append(`service_trangThai_${baseName}`, statusIndicator.textContent);
                 }
             });
-            localStorage.setItem(FORM_DATA_KEY, JSON.stringify(formData)); // Lưu dưới dạng chuỗi JSON
+            return params.toString();
         }
 
-        // Hàm tải dữ liệu đã lưu từ Local Storage và điền vào form
-        function loadFormData() {
-            const savedData = localStorage.getItem(FORM_DATA_KEY);
-            if (!savedData) return;
-
-            const formData = JSON.parse(savedData); // Parse chuỗi JSON thành đối tượng
-            const form = document.getElementById('serviceReceiptForm');
-            if (!form) return;
-
-            for (const name in formData) { // Duyệt qua từng trường dữ liệu đã lưu
-                const elements = form.querySelectorAll(`[name="${name}"]`);
-                if (elements.length > 0) {
-                    elements.forEach(input => {
-                        if (input.type === 'checkbox') {
-                            input.checked = formData[name]; // Khôi phục trạng thái checkbox
-                        } else if (input.type === 'radio') {
-                            if (input.value === formData[name]) {
-                                input.checked = true; // Khôi phục trạng thái radio
-                            }
-                        } else {
-                            input.value = formData[name]; // Khôi phục giá trị input khác
-                        }
-                    });
-                }
-            }
-            updateGrandTotal(); // Cập nhật tổng cộng sau khi tải dữ liệu
-        }
-
-        let hasSubmitted = false; // Biến cờ kiểm tra trạng thái gửi form thành công
-
-        // Chạy khi toàn bộ DOM đã được tải
+        // =================================================================
+        // KHỞI TẠO VÀ GÁN SỰ KIỆN
+        // =================================================================
         document.addEventListener('DOMContentLoaded', () => {
-            initializeReceiptNumber(); // Khởi tạo số phiếu khi tải trang
-            document.getElementById('receivedDateTime').value = getCurrentDateTimeLocal(); // Đặt ngày giờ nhận xe mặc định
-            loadFormData(); // Tải dữ liệu form nếu có
-            getClosestBranch(); // Attempt to get and set closest branch on load
+            initializeReceiptNumber();
+            document.getElementById('receivedDateTime').value = getCurrentDateTimeLocal();
+            loadFormData();
+            getClosestBranch();
             
+            updateAllMaintenanceStatus();
+
             const form = document.getElementById('serviceReceiptForm');
             if (form) {
-                // Gán sự kiện 'input' và 'change' để lưu form tự động
                 form.addEventListener('input', saveFormData);
                 form.addEventListener('change', saveFormData);
             }
+            
+            const odometerInput = document.getElementById('odometer');
+            if (odometerInput) {
+                odometerInput.addEventListener('input', updateAllMaintenanceStatus);
+            }
 
-            // Xử lý sự kiện khi click nút "Gửi Thông Tin"
             const submitButton = document.getElementById('submitToSheet');
             if (submitButton) {
                 submitButton.addEventListener('click', (event) => {
-                    event.preventDefault(); // Ngăn hành vi gửi form mặc định
-                    const scriptURL = form.action; // Lấy URL Apps Script từ thuộc tính 'action' của form
-
-                    // Kiểm tra validation của form
-                    if (!form.checkValidity()) {
-                        alert('Vui lòng điền đầy đủ các trường bắt buộc trước khi gửi!');
-                        form.reportValidity(); // Hiển thị lỗi validation của trình duyệt
-                        return;
-                    }
-
-                    // Vô hiệu hóa nút gửi và thay đổi text để tránh gửi nhiều lần
-                    submitButton.disabled = true;
-                    submitButton.textContent = 'Đang gửi...';
-
-                    // Thu thập dữ liệu form dưới dạng URL-encoded
+                    event.preventDefault();
+                    const scriptURL = form.action;
+                    if (!form.checkValidity()) { alert('Vui lòng điền đầy đủ các trường bắt buộc trước khi gửi!'); form.reportValidity(); return; }
+                    submitButton.disabled = true; submitButton.textContent = 'Đang gửi...';
                     const urlEncodedData = collectFormDataAsUrlEncoded(form);
-                    // Gửi dữ liệu đến Apps Script bằng Fetch API (POST request)
-                    fetch(scriptURL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: urlEncodedData
-                    })
-                    .then(response => response.json().then(data => {
-                        if (!response.ok) { // Kiểm tra nếu phản hồi không thành công (HTTP status code >= 400)
-                            throw new Error(data.message || 'Lỗi từ máy chủ không xác định.');
-                        }
-                        return data; // Trả về dữ liệu JSON
-                    }))
-                    .then(data => {
-                        if (data.result === 'success') {
-                            alert('✅ Gửi thông tin thành công! Bạn có thể in phiếu.');
-                            console.log('Dữ liệu đã gửi:', data.data); // Log dữ liệu trả về từ Apps Script
-                            hasSubmitted = true; // Đặt cờ đã gửi thành công
-                        } else {
-                            alert('❌ Không gửi được: ' + (data.message || 'Lỗi không xác định từ Apps Script.'));
-                            console.error('Lỗi từ Apps Script:', data.message);
-                        }
-                    })
-                    .catch(error => { // Bắt các lỗi trong quá trình fetch hoặc xử lý phản hồi
-                        alert('❌ Có lỗi xảy ra khi gửi. Vui lòng kiểm tra console (F12) để biết chi tiết.');
-                        console.error('Lỗi Fetch hoặc phản hồi không hợp lệ:', error);
-                    })
-                    .finally(() => { // Luôn chạy sau khi fetch hoàn tất (thành công hoặc lỗi)
-                        submitButton.disabled = false; // Kích hoạt lại nút gửi
-                        submitButton.textContent = '📤 Gửi Thông Tin'; // Đặt lại text nút
-                    });
+                    fetch(scriptURL, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: urlEncodedData })
+                    .then(response => response.json().then(data => { if (!response.ok) { throw new Error(data.message || 'Lỗi từ máy chủ không xác định.'); } return data; }))
+                    .then(data => { if (data.result === 'success') { alert('✅ Gửi thông tin thành công! Bạn có thể in phiếu.'); hasSubmitted = true; } else { alert('❌ Không gửi được: ' + (data.message || 'Lỗi không xác định.')); } })
+                    .catch(error => { alert('❌ Có lỗi xảy ra khi gửi.'); console.error('Lỗi Fetch:', error); })
+                    .finally(() => { submitButton.disabled = false; submitButton.textContent = '📤 Gửi Thông Tin'; });
                 });
             }
 
-            // Xử lý sự kiện khi click nút "In Phiếu"
             const printButton = document.getElementById('printButton');
             if (printButton) {
                 printButton.addEventListener('click', (event) => {
-                    event.preventDefault(); // Ngăn hành vi in mặc định
-                    if (!hasSubmitted) { // Yêu cầu gửi form trước khi in
-                        alert('Vui lòng nhấn "Gửi Thông Tin" trước khi in phiếu!');
-                        return;
-                    }
-                    incrementReceiptNumberOnPrint(); // Tăng số phiếu trước khi in
-                    window.print(); // Kích hoạt hộp thoại in
+                    event.preventDefault(); if (!hasSubmitted) { alert('Vui lòng nhấn "Gửi Thông Tin" trước khi in phiếu!'); return; }
+                    incrementReceiptNumberOnPrint(); window.print();
                 });
             }
 
-            // Xử lý sự kiện khi click nút "Xóa Form"
             const clearFormButton = document.getElementById('clearFormButton');
             if (clearFormButton) {
                 clearFormButton.addEventListener('click', () => {
-                    if (confirm('Bạn có chắc chắn muốn xóa toàn bộ thông tin trên form không? (Chỉ xóa sau khi đã in thành công)')) {
-                        resetFormAndLocalStorage(); // Gọi hàm reset form
+                    if (confirm('Bạn có chắc chắn muốn xóa toàn bộ thông tin trên form không?')) {
+                        resetFormAndLocalStorage();
                     }
                 });
             }
         });
-
-        // Hàm thu thập dữ liệu form và mã hóa thành URL-encoded string
-        function collectFormDataAsUrlEncoded(formElement) {
-            const formData = new FormData(formElement); // Tạo đối tượng FormData từ form
-            const params = new URLSearchParams(); // Tạo đối tượng URLSearchParams để mã hóa
-
-            // Duyệt qua từng cặp key-value từ FormData
-            for (const pair of formData.entries()) {
-                let value = pair[1];
-                // Xử lý đặc biệt cho cột Thành tiền (chuyển đổi định dạng số)
-                if (pair[0].startsWith('service_') && pair[0].endsWith('_thanhTien')) {
-                    value = String(value).replace(/\./g, '').replace(/,/g, '.'); // "1.000.000" -> "1000000"
-                } 
-                // Xử lý đặc biệt cho checkbox "Xác nhận" (gửi 'X' hoặc '')
-                else if (pair[0].startsWith('service_') && pair[0].endsWith('_xacNhan')) {
-                    value = pair[1] === 'on' ? 'X' : ''; // Nếu được tích ('on'), gửi 'X', ngược lại gửi rỗng
-                }
-                params.append(pair[0], value); // Thêm cặp key-value vào params
-            }
-
-            // Đảm bảo các checkbox không được tích vẫn được gửi với giá trị rỗng
-            formElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-                // Nếu checkbox không tích VÀ tên của nó chưa có trong params (FormData chỉ thêm checkbox tích)
-                if (!checkbox.checked && !params.has(checkbox.name)) {
-                    params.append(checkbox.name, ''); // Thêm vào với giá trị rỗng
-                }
-            });
-            // Đảm bảo các nhóm radio button không có lựa chọn nào được chọn vẫn được gửi với giá trị rỗng
-            const radioGroupNames = new Set();
-            formElement.querySelectorAll('input[type="radio"]').forEach(radio => radioGroupNames.add(radio.name));
-            radioGroupNames.forEach(groupName => {
-                const checkedRadioInGroup = formElement.querySelector(`input[type="radio"][name="${groupName}"]:checked`);
-                if (!checkedRadioInGroup && !params.has(groupName)) {
-                    params.append(groupName, ''); // Thêm vào với giá trị rỗng
-                }
-            });
-
-            // Thêm các trường thông tin chung từ span elements (không phải input trực tiếp)
-            params.append('formType', formElement.querySelector('[name="formType"]').value);
-            params.append('receiptNumber', document.getElementById('receiptNumber')?.textContent || '');
-            params.append('currentMonthYear', document.getElementById('currentMonth')?.textContent || '');
-
-            return params.toString(); // Trả về chuỗi URL-encoded
-        }
     </script>
 </body>
 </html>
-
