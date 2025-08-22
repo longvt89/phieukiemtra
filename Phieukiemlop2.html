@@ -1274,8 +1274,12 @@ body {
 
             <div class="form-fields" role="form" aria-label="Thông tin xe khách hàng">
                 <div class="field-group">
-                    <span class="field-label-bold">Tên khách hàng / SDT:</span>
+                    <span class="field-label-bold">Tên khách hàng:</span>
                     <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="customer-name"></span>
+                </div>
+                <div class="field-group">
+                    <span class="field-label-bold">Số điện thoại:</span>
+                    <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="phone-number"></span>
                 </div>
                 <div class="field-group">
                     <span class="field-label-bold">Km chạy:</span>
@@ -1628,8 +1632,9 @@ body {
         branchValueInput.value = event.target.value;
     });
 
+    // ***** THAY ĐỔI 2: CẬP NHẬT DANH SÁCH PHẦN TỬ FORM *****
     const formElements = document.querySelectorAll(
-        '#customer-name, #mileage, #car-model, #license-plate, input[name^="tire_size"], input[name^="tire_depth"], input[name^="tire_pressure"], input[name^="tire_dot"], input[name^="spare_tire"], #price-input, #tire-status-note, #inspector, #inspection-date, #service-advisor, input[type="checkbox"][name="recommendation"], .position-row .input-line, #branch-select'
+        '#customer-name, #phone-number, #mileage, #car-model, #license-plate, input[name^="tire_size"], input[name^="tire_depth"], input[name^="tire_pressure"], input[name^="tire_dot"], input[name^="spare_tire"], #price-input, #tire-status-note, #inspector, #inspection-date, #service-advisor, input[type="checkbox"][name="recommendation"], .position-row .input-line, #branch-select'
     );
     const storageKey = 'tireInspectionForm';
 
@@ -1779,9 +1784,10 @@ body {
         }, 100);
     }
     // --- KẾT THÚC HÀM MỚI ---
-
+    
+    // ***** THAY ĐỔI 3: CẬP NHẬT DANH SÁCH PHẦN TỬ ĐỂ DI CHUYỂN BẰNG PHÍM ENTER *****
     const focusedElements = document.querySelectorAll(
-        '#customer-name, #mileage, #car-model, #license-plate, input[name^="tire_size"], input[name^="tire_depth"], input[name^="tire_pressure"], input[name^="tire_dot"], input[name^="spare_tire"], #price-input, #tire-status-note, #inspector, #inspection-date, #service-advisor'
+        '#customer-name, #phone-number, #mileage, #car-model, #license-plate, input[name^="tire_size"], input[name^="tire_depth"], input[name^="tire_pressure"], input[name^="tire_dot"], input[name^="spare_tire"], #price-input, #tire-status-note, #inspector, #inspection-date, #service-advisor'
     );
 
     function setupEnterKeyListener() {
@@ -1814,10 +1820,12 @@ body {
     function submitFormData() {
         const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec';
 
+        // ***** THAY ĐỔI 4: THÊM `dienthoai` VÀO DỮ LIỆU GỬI ĐI *****
         const formData = {
             formType: 'PhieuDanhGiaLopMoi',
 
             customerName: document.getElementById('customer-name').innerText,
+            dienthoai: document.getElementById('phone-number').innerText, // Dữ liệu từ trường mới
             mileage: document.getElementById('mileage').innerText,
             carModel: document.getElementById('car-model').innerText,
             licensePlate: document.getElementById('license-plate').innerText,
